@@ -1,0 +1,19 @@
+
+#TestmakerContainer{
+    background: mintcream;
+    text-align: center;
+    padding: 2em;
+}
+.textInput{
+    width: 100%;
+    color: blue;
+    margin-left: 1em;
+}
+
+.checkBox{
+    display: inline-block;
+}
+
+#options{
+    text-align: left;
+}
