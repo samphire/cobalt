@@ -5,6 +5,7 @@ import {FormControlLabel, Slider, TextField, Typography, Button} from "@material
 import './Testmaker.css'
 import {CloudUpload} from "@material-ui/icons";
 
+
 export default function Testmaker(props) {
     const [state, setState] = useState({
         mySwitch: false
@@ -14,19 +15,45 @@ export default function Testmaker(props) {
         setState({mySwitch: event.target.checked});
     };
 
+
     const submit = (e) => {
         e.preventDefault();
         const myData = {
             name: document.getElementById('textName').value,
             description: document.getElementById('textDesc').value,
-            retain: document.getElementById('retain').checked,
-            shuffle: document.getElementById('shuffle').checked,
-            oneshot: state.mySwitch,
-            praccy: (document.getElementById("praccy") === null ? 0: document.getElementById("praccy").checked),
-            timer: (document.getElementById('fucker') === null ? 0: document.getElementById('fucker').children[2].value)
+            pwrong: document.getElementById('pwrong').checked || 0,
+            panswer: document.getElementById('panswer').checked || 0,
+            retain: document.getElementById('retain').checked || 0,
+            oneshot: state.mySwitch || 0,
+            praccy: (document.getElementById("praccy") === null ? 0 : document.getElementById("praccy").checked),
+            timer: (document.getElementById('fucker') === null ? 0 : document.getElementById('fucker').children[2].value)
         };
-        alert(myData.name + ", " + myData.description + ", " +  myData.retain + ", " + myData.shuffle  + ", " + myData.oneshot + ", " + myData.praccy + ", " + myData.timer);
-    };
+        console.log(myData);
+
+    //     fetch('http://localhost/optikonTest/testmakerData.php', {
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify(myData)
+    //     }).then((response) => {
+    //         response.text().then((text)=>{
+    //             console.log(text === 'success' ? 'oh yeah, buddy!' : 'fuck!');
+    //         })
+    //     });
+    // };
+
+    async function bob(){
+        let responseObj = await fetch('http://localhost/optikonTest/testmakerData.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(myData)
+        });
+        let responseText = await responseObj.text();
+        console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'fuck!');
+    }
+
+    bob();
+
+};
 
     // useEffect(
     //     () => {
@@ -36,15 +63,6 @@ export default function Testmaker(props) {
     // )
 
     const myThing = <>
-        <FormControlLabel
-            control={
-                <Checkbox
-                    id="praccy"
-                    name="praccy"
-                />
-            }
-            label="praccy"
-        />
         <br/><br/>
         <Typography> Timer </Typography>
         <Slider id="fucker"
@@ -86,24 +104,39 @@ export default function Testmaker(props) {
                     className={'checkBox'}
                     control={
                         <Checkbox
-                            id='retain'
-                            name="retain"
+                            id='pwrong'
+                            name="pwrong"
+                            defaultValue={0}
                         />
                     }
-                    label="retain"
+                    label="print wrong"
                 />
                 <br/>
                 <FormControlLabel
                     className={'checkBox'}
                     control={
                         <Checkbox
-                            id="shuffle"
-                            name="shuffle"
+                            id='panswer'
+                            name="panswer"
+                            defaultValue={0}
                         />
                     }
-                    label="shuffle"
+                    label="print answer"
                 />
                 <br/>
+                <FormControlLabel
+                    className={'checkBox'}
+                    control={
+                        <Checkbox
+                            id='retain'
+                            name="retain"
+                            defaultValue={0}
+                        />
+                    }
+                    label="retain"
+                />
+                <br/>
+
                 <FormControlLabel
                     control={
                         <Switch
