@@ -30,30 +30,30 @@ export default function Testmaker(props) {
         };
         console.log(myData);
 
-    //     fetch('http://localhost/optikonTest/testmakerData.php', {
-    //         method: 'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(myData)
-    //     }).then((response) => {
-    //         response.text().then((text)=>{
-    //             console.log(text === 'success' ? 'oh yeah, buddy!' : 'fuck!');
-    //         })
-    //     });
-    // };
+        //     fetch('http://localhost/optikonTest/testmakerData.php', {
+        //         method: 'POST',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify(myData)
+        //     }).then((response) => {
+        //         response.text().then((text)=>{
+        //             console.log(text === 'success' ? 'oh yeah, buddy!' : 'fuck!');
+        //         })
+        //     });
+        // };
 
-    async function bob(){
-        let responseObj = await fetch('http://localhost/optikonTest/testmakerData.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(myData)
-        });
-        let responseText = await responseObj.text();
-        console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'fuck!');
-    }
+        async function bob() {
+            let responseObj = await fetch('http://localhost/optikonTest/testmakerData.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(myData)
+            });
+            let responseText = await responseObj.text();
+            console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'fuck!');
+        }
 
-    bob();
+        bob();
 
-};
+    };
 
     // useEffect(
     //     () => {
@@ -80,89 +80,91 @@ export default function Testmaker(props) {
     </>;
 
     return (
-        <div id="TestmakerContainer">
+        <>
             <h1>Create Test</h1>
+            <div id="TestmakerContainer">
 
-            <TextField
-                id="textName"
-                className={'textInput'}
-                label={"name"}
-                variant={"outlined"}
-                name={"readerName"}
-            />
-            <br/><br/>
-            <TextField
-                id="textDesc"
-                className={'textInput'}
-                label={"description"}
-                variant={"outlined"}
-                name={"readerDesc"}
-            />
-            <br/>
-            <div id="options">
-                <FormControlLabel
-                    className={'checkBox'}
-                    control={
-                        <Checkbox
-                            id='pwrong'
-                            name="pwrong"
-                            defaultValue={0}
-                        />
-                    }
-                    label="print wrong"
+                <TextField
+                    id="textName"
+                    className={'textInput'}
+                    label={"name"}
+                    variant={"outlined"}
+                    name={"readerName"}
+                />
+                <br/><br/>
+                <TextField
+                    id="textDesc"
+                    className={'textInput'}
+                    label={"description"}
+                    variant={"outlined"}
+                    name={"readerDesc"}
                 />
                 <br/>
-                <FormControlLabel
-                    className={'checkBox'}
-                    control={
-                        <Checkbox
-                            id='panswer'
-                            name="panswer"
-                            defaultValue={0}
-                        />
-                    }
-                    label="print answer"
-                />
-                <br/>
-                <FormControlLabel
-                    className={'checkBox'}
-                    control={
-                        <Checkbox
-                            id='retain'
-                            name="retain"
-                            defaultValue={0}
-                        />
-                    }
-                    label="retain"
-                />
-                <br/>
+                <div id="options">
+                    <FormControlLabel
+                        className={'checkBox'}
+                        control={
+                            <Checkbox
+                                id='pwrong'
+                                name="pwrong"
+                                defaultValue={0}
+                            />
+                        }
+                        label="print wrong"
+                    />
+                    <br/>
+                    <FormControlLabel
+                        className={'checkBox'}
+                        control={
+                            <Checkbox
+                                id='panswer'
+                                name="panswer"
+                                defaultValue={0}
+                            />
+                        }
+                        label="print answer"
+                    />
+                    <br/>
+                    <FormControlLabel
+                        className={'checkBox'}
+                        control={
+                            <Checkbox
+                                id='retain'
+                                name="retain"
+                                defaultValue={0}
+                            />
+                        }
+                        label="retain"
+                    />
+                    <br/>
 
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={state.mySwitch}
-                            onChange={handleChange}
-                            color="primary"
-                            name="mySwitch"
-                        />
-                    }
-                    label="oneshot"
-                />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={state.mySwitch}
+                                onChange={handleChange}
+                                color="primary"
+                                name="mySwitch"
+                            />
+                        }
+                        label="oneshot"
+                    />
 
-                <br/>
+                    <br/>
 
-                {state.mySwitch && myThing}
+                    {state.mySwitch && myThing}
+                </div>
+                <br/><br/>
+                <Button
+                    variant="contained"
+                    startIcon={<CloudUpload/>}
+                    color="primary"
+                    onClick={submit}
+                >
+                    CREATE
+                </Button>
+
             </div>
-            <br/><br/>
-            <Button
-                variant="contained"
-                startIcon={<CloudUpload/>}
-                color="primary"
-                onClick={submit}
-            >
-                CREATE
-            </Button>
-
-        </div>
+        </>
     );
 }

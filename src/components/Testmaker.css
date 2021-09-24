@@ -1,8 +1,11 @@
 
 #TestmakerContainer{
-    background: mintcream;
+    background: ivory;
     text-align: center;
     padding: 2em;
+    max-width: 900px;
+    margin: 20px auto;
+    border: 1px solid black;
 }
 .textInput{
     width: 100%;

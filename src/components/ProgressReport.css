@@ -1,0 +1,28 @@
+table{
+    width: 900px;
+    border: 1px solid black;
+}
+
+li{
+    display: flex;
+background-color: orange;
+    padding: 15px;
+    border-radius: 3px;
+    margin-top: 10px;
+
+}
+ul{
+    display: flex;
+    justify-content: space-around;
+    max-width: 900px;
+    margin: auto;
+    padding-inline-start: unset;
+}
+.myNav{
+    color: red !important;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
