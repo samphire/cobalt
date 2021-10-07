@@ -1,6 +1,6 @@
 
 #TestmakerContainer{
-    background: ivory;
+    background: #fff3ed;
     text-align: center;
     padding: 2em;
     max-width: 900px;
@@ -9,7 +9,7 @@
 }
 .textInput{
     width: 100%;
-    color: blue;
+    color: #123c69;
     margin-left: 1em;
 }
 

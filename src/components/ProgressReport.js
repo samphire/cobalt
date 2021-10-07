@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-
+import {FormControl, Select, MenuItem, InputLabel} from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,15 +17,38 @@ import Box from '@mui/material/Box';
 
 export default function ProgressReport() {
     const [data, setData] = useState([]);
+    const [myClass, setClass] = useState(14);
 
     useEffect(async () => {
-        const result = await bob();
+        const result = await bob(myClass);
         setData(result);
     }, [])
+
+    const handleChange = async (e) => {
+        setClass(e.target.value);
+        const result = await bob(e.target.value);
+        setData(result);
+    };
 
     return (
         <>
             <h1>Progress Report</h1>
+            <div id='select'>
+                <FormControl >
+                    <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Age"
+                        value={myClass}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value={14}>중등반</MenuItem>
+                        <MenuItem value={16}>고등반</MenuItem>
+
+                    </Select>
+                </FormControl>
+            </div>
             <TableContainer component={Paper}>
                 <Table sx={{maxWidth: 900, margin: 'auto'}} size="small" aria-label="a dense table">
                     <TableHead sx={{backgroundColor: "#444"}}>
@@ -45,7 +68,7 @@ export default function ProgressReport() {
                             return (
 
                                 <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={item.id}>
-                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell sx={{fontWeight: 800}}>{item.name}</TableCell>
                                     <TableCell>{item.numLearned}</TableCell>
                                     <TableCell>{item.numLearning}</TableCell>
                                     <TableCell>{item.avgRepnum > 0 ? item.avgRepnum : ''}</TableCell>
@@ -84,8 +107,8 @@ export default function ProgressReport() {
 }
 
 
-async function bob() {
-    let responseObj = await fetch('https://notborder.org/scopic/showProgress.php', {
+async function bob(myClass) {
+    let responseObj = await fetch('https://notborder.org/scopic/showProgress.php?classid=' + myClass, {
         method: 'GET',
         headers: {
             'Content-Type': 'text/plain'

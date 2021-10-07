@@ -82,7 +82,7 @@ export default function Testmaker(props) {
     return (
         <>
             <h1>Create Test</h1>
-            <div id="TestmakerContainer">
+            <div id="container">
 
                 <TextField
                     id="textName"
@@ -158,7 +158,7 @@ export default function Testmaker(props) {
                 <Button
                     variant="contained"
                     startIcon={<CloudUpload/>}
-                    color="primary"
+                    color="secondary"
                     onClick={submit}
                 >
                     CREATE
