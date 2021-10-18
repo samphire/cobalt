@@ -15,34 +15,19 @@ export default function Testmaker(props) {
         setState({mySwitch: event.target.checked});
     };
 
-
     const submit = (e) => {
         e.preventDefault();
         const myData = {
             name: document.getElementById('textName').value,
             description: document.getElementById('textDesc').value,
-            pwrong: document.getElementById('pwrong').checked || 0,
-            panswer: document.getElementById('panswer').checked || 0,
-            retain: document.getElementById('retain').checked || 0,
-            oneshot: state.mySwitch || 0,
-            praccy: (document.getElementById("praccy") === null ? 0 : document.getElementById("praccy").checked),
+            retain: -document.getElementById('retain').checked || 0,
+            oneshot: -state.mySwitch || 0,
             timer: (document.getElementById('fucker') === null ? 0 : document.getElementById('fucker').children[2].value)
         };
         console.log(myData);
 
-        //     fetch('http://localhost/optikonTest/testmakerData.php', {
-        //         method: 'POST',
-        //         headers: {'Content-Type': 'application/json'},
-        //         body: JSON.stringify(myData)
-        //     }).then((response) => {
-        //         response.text().then((text)=>{
-        //             console.log(text === 'success' ? 'oh yeah, buddy!' : 'fuck!');
-        //         })
-        //     });
-        // };
-
         async function bob() {
-            let responseObj = await fetch('http://localhost/optikonTest/testmakerData.php', {
+            let responseObj = await fetch('https://notborder.org/cobalt/testmakerData.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(myData)
@@ -50,9 +35,7 @@ export default function Testmaker(props) {
             let responseText = await responseObj.text();
             console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'fuck!');
         }
-
         bob();
-
     };
 
     // useEffect(
@@ -101,30 +84,6 @@ export default function Testmaker(props) {
                 />
                 <br/>
                 <div id="options">
-                    <FormControlLabel
-                        className={'checkBox'}
-                        control={
-                            <Checkbox
-                                id='pwrong'
-                                name="pwrong"
-                                defaultValue={0}
-                            />
-                        }
-                        label="print wrong"
-                    />
-                    <br/>
-                    <FormControlLabel
-                        className={'checkBox'}
-                        control={
-                            <Checkbox
-                                id='panswer'
-                                name="panswer"
-                                defaultValue={0}
-                            />
-                        }
-                        label="print answer"
-                    />
-                    <br/>
                     <FormControlLabel
                         className={'checkBox'}
                         control={

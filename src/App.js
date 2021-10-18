@@ -11,24 +11,24 @@ function App() {
         <div className="App">
             <nav>
                 <ul>
-                    <li className={'myNav'}><a href="/optikonTest/q">Question Maker</a></li>
-                    <li><a href="/optikonTest/t">Test Maker</a></li>
-                    <li><a href="/optikonTest/s">Student Maker</a></li>
-                    <li><a href="/optikonTest/progress">Progress Report</a></li>
+                    <li className={'myNav'}><a href="https://notborder.org/cobalt/q">Question Maker</a></li>
+                    <li><a href="/cobalt/t">Test Maker</a></li>
+                    <li><a href="/cobalt/s">Student Maker</a></li>
+                    <li><a href="/cobalt/progress">Progress Report</a></li>
                 </ul>
             </nav>
             <BrowserRouter>
                 <Switch>
-                    <Route path="/optikonTest/q">
+                    <Route path="/cobalt/q">
                         <Questionmaker/>
                     </Route>
-                    <Route path="/optikonTest/t">
+                    <Route path="/cobalt/t">
                         <Testmaker/>
                     </Route>
-                    <Route path="/optikonTest/s">
+                    <Route path="/cobalt/s">
                         <Studentmaker/>
                     </Route>
-                    <Route path="/optikonTest/progress">
+                    <Route path="/cobalt/progress">
                         <ProgressReport/>
                     </Route>
                 </Switch>
