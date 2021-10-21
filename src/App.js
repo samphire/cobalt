@@ -6,12 +6,16 @@ import Questionmaker from "./components/Questionmaker";
 import Studentmaker from "./components/Studentmaker";
 import ProgressReport from "./components/ProgressReport";
 
+//global urls
+// const globalURL = "http://localhost/cobalt";
+const globalURL = "https://notborder.org/cobalt"
+
 function App() {
     return (
         <div className="App">
             <nav>
                 <ul>
-                    <li className={'myNav'}><a href="https://notborder.org/cobalt/q">Question Maker</a></li>
+                    <li className={'myNav'}><a href={globalURL + '/q'}>Question Maker</a></li>
                     <li><a href="/cobalt/t">Test Maker</a></li>
                     <li><a href="/cobalt/s">Student Maker</a></li>
                     <li><a href="/cobalt/progress">Progress Report</a></li>

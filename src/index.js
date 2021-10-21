@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '@fontsource/roboto';
 
+// Global variables
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

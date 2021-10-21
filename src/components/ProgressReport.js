@@ -108,7 +108,7 @@ export default function ProgressReport() {
 
 
 async function bob(myClass) {
-    let responseObj = await fetch('https://notborder.org/cobalt/showProgress.php?classid=' + myClass, {
+    let responseObj = await fetch('showProgress.php?classid=' + myClass, {
         method: 'GET',
         headers: {
             'Content-Type': 'text/plain'
