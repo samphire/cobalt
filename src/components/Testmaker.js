@@ -3,6 +3,8 @@ import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox';
 import {FormControlLabel, Slider, TextField, Typography, Button} from "@material-ui/core";
 import './Testmaker.css'
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import {CloudUpload} from "@material-ui/icons";
 
 
@@ -10,11 +12,15 @@ export default function Testmaker(props) {
     const [state, setState] = useState({
         mySwitch: false
     });
-
+    const [testCreated, setTestCreated] = useState(false);
+    const [testFail, setTestFail] = useState(false);
     const handleChange = (event) => {
         setState({mySwitch: event.target.checked});
     };
-
+    const handleClose = (event, reason) => {
+        setTestCreated(false);
+        setTestFail(false);
+    }
     const submit = (e) => {
         e.preventDefault();
         const myData = {
@@ -33,17 +39,21 @@ export default function Testmaker(props) {
                 body: JSON.stringify(myData)
             });
             let responseText = await responseObj.text();
-            console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'fuck!');
+            if (responseText === 'success') {
+                setTestCreated(true);
+            } else {
+                setTestFail(true);
+            }
         }
         bob();
     };
 
-    // useEffect(
-    //     () => {
-    //         alert(state.mySwitch);
-    //     },
-    //     [state.mySwitch]
-    // )
+// useEffect(
+//     () => {
+//         alert(state.mySwitch);
+//     },
+//     [state.mySwitch]
+// )
 
     const myThing = <>
         <br/><br/>
@@ -124,6 +134,26 @@ export default function Testmaker(props) {
                 </Button>
 
             </div>
+            <Snackbar
+                open={testCreated}
+                onClose={handleClose}
+                autoHideDuration={2500}
+                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+            >
+                <Alert onClose={handleClose} severity="success" variant="filled" sx={{width: '100%'}}>
+                    Test Created
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={testFail}
+                onClose={handleClose}
+                autoHideDuration={2500}
+                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+            >
+                <Alert onClose={handleClose} severity="error" variant="filled" sx={{width: '100%'}}>
+                    Test Creation Failed!
+                </Alert>
+            </Snackbar>
         </>
     );
 }
