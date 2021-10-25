@@ -32,14 +32,34 @@ on tim.userid = oboe.userid
 ) as grey
 on users.user_id=grey.userid;
 ";
-$result = mysqli_query($myConn, $sql) or die("7".mysqli_error($myConn));
-
-$sql="SELECT tommy.*, class_id AS classid from
+$result = mysqli_query($myConn, $sql) or die("7 ".mysqli_error($myConn));
+ $sql="drop table if exists optikon.sid";
+ mysqli_query($myConn, $sql) or die("8 ".mysqli_error($myConn));
+//$sql="SELECT tommy.*, class_id AS classid from
+ $sql="create temporary table optikon.sid SELECT tommy.*, class_id AS classid from
 (select  user_email AS id, name, numLearned, numLearning, avgRepnum, MathPerc, numLearned + round(numLearning * avgRepnum * 0.1) as wordscore from
 optikon.carvery left join (SELECT BOB.*, duck.goalwords  from optikon.BOB left join optikon.duck on BOB.id = duck.user_email) as wowbob on carvery.user_email = wowbob.id) as tommy
 join optikon.lnk_student_class on tommy.id=optikon.lnk_student_class.student_id
 where class_id={$_GET['classid']} order by id;";
-$result = mysqli_query($myConn, $sql) or die("8".mysqli_error($myConn));
+$result = mysqli_query($myConn, $sql) or die("9 ".mysqli_error($myConn));
+
+
+mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
+
+
+ $sql="drop table if exists optikon.testscores";
+ mysqli_query($myConn, $sql) or die("10 ".mysqli_error($myConn));
+ $sql="create temporary table `optikon`.`testscores` select id, round(avg(score)) AS avgscore from
+ `optikon`.`tbl_testscore` join `optikon`.`tbl_students` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
+//  print ("\n\n$sql\n\n");
+ mysqli_query($myConn, $sql) or die("11 ".mysqli_error($myConn));
+ $sql="drop table if exists optikon.dolly";
+ mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
+ $sql="create table optikon.dolly select sid.*, testscores.avgscore from sid join testscores on sid.id = testscores.id";
+ mysqli_query($myConn, $sql) or die("13 ".mysqli_error($myConn));
+ $sql="select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum*20, 100)) AS activity,
+ round(((avgscore +  round((least(wordscore, 1000))/10) + (least(MathPerc, 100)) + round(least(avgrepnum*20, 100)))/ 4)) AS total from dolly";
+ $result = mysqli_query($myConn, $sql) or die("14 ".mysqli_error($myConn));
 
 $array = Array();
 while($row = mysqli_fetch_assoc($result)){
