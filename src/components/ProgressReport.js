@@ -138,10 +138,17 @@ export default function ProgressReport() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <div id={"progressBarContainer"}>
+                <div className={"progbar"}>
+                    <div id={"progressBarData"}/>
+                </div>
+                <div className={"progbar"}>
+                    <div id={"progressBarTime"}/>
+                </div>
+            </div>
         </>
     );
 }
-
 
 async function bob(myClass) {
     let responseObj = await fetch('showProgress.php?classid=' + myClass, {
@@ -153,28 +160,60 @@ async function bob(myClass) {
     let responseText = await responseObj.text();
     // console.log(responseText);
     const myArr = JSON.parse(responseText);
-    //     item.numLearning = item.numLearning > 0 ? item.numLearning : 0;
-    //     item.avgRepnum = item.avgRepnum > 0 ? item.avgRepnum : 0;
-    //     item.wordscore = item.wordscore > 0 ? item.wordscore : 0;
-    //     item.word = item.word > 0 ? item.word : 0;
-    //     item.activity = item.activity > 0 ? item.activity : 0;
-    // });
+
     myArr.map((item) => {
         console.log("treating array");
-        item.numLearned = item.numLearned === null ? 0: parseInt(item.numLearned);
-        item.numLearning =  item.numLearning === null ? 0: parseInt(item.numLearning);
-        item.avgRepnum =  item.avgRepnum === null ? 0: parseInt(item.avgRepnum);
-        item.MathPerc =  item.MathPerc === null ? 0: parseInt(item.MathPerc);
-        item.wordscore =  item.wordscore === null ? 0: parseInt(item.wordscore);
-        item.avgscore =  item.avgscore === null ? 0: parseInt(item.avgscore);
-        item.word =  item.word === null ? 0: parseInt(item.word);
-        item.math =  item.math === null ? 0: parseInt(item.math);
-        item.activity =  item.activity === null ? 0: parseInt(item.activity);
-        item.total =  item.total === null ? 0: parseInt(item.total);
-        item.total = item.total > 0 ? item.total : Math.round((item.avgscore + item.word + item.math + item.activity) /4)
+        item.numLearned = item.numLearned === null ? 0 : parseInt(item.numLearned);
+        item.numLearning = item.numLearning === null ? 0 : parseInt(item.numLearning);
+        item.avgRepnum = item.avgRepnum === null ? 0 : parseInt(item.avgRepnum);
+        item.MathPerc = item.MathPerc === null ? 0 : parseInt(item.MathPerc);
+        item.wordscore = item.wordscore === null ? 0 : parseInt(item.wordscore);
+        item.avgscore = item.avgscore === null ? 0 : parseInt(item.avgscore);
+        item.word = item.word === null ? 0 : parseInt(item.word);
+        item.math = item.math === null ? 0 : parseInt(item.math);
+        item.activity = item.activity === null ? 0 : parseInt(item.activity);
+        item.total = item.total === null ? 0 : parseInt(item.total);
+        item.total = item.total > 0 ? item.total : Math.round((item.avgscore + item.word + item.math + item.activity) / 4)
     });
 
     //TODO don't need to calculate total in the php file, offload this to clients.
+
+    const classTotal = myArr.reduce((acc, el) => acc + el.total, 0);
+    console.log("class total is " + classTotal);
+    const classAvg = classTotal / myArr.length;
+    console.log("class average is " + classAvg);
     console.log(myArr);
+    progress(classAvg);
     return myArr;
+}
+
+function progress(percent) {
+    let col;
+    // Date value
+    const day = 1000 * 60 * 60 * 24;
+    const now = new Date();
+    const startDate = new Date("2021-09-01");
+    const endDate = new Date("2021-12-25");
+    const diff = Math.ceil((endDate - startDate) / day);
+    const timeProg = Math.ceil((((now - startDate) / day) / diff) * 100);
+
+    console.log("timeprog is " + timeProg);
+
+    // Colors
+    let percGood = percent / timeProg;
+    if (percGood > 1.2) col = "#44ff4b";
+    if (percGood < 1.2) col = "#abce39";
+    if (percGood < 1.05) col = "#cecb39";
+    if (percGood < 0.9) col = "#ce9c39";
+    if (percGood < 0.75) col = "#ce3939";
+
+    const progBarContainer = document.getElementById("progressBarContainer");
+    const dataProgbar = document.getElementById("progressBarData");
+    const timeProgbar = document.getElementById("progressBarTime");
+
+    let progressBarWidth = percent * progBarContainer.offsetWidth / 100;
+    let timeBarWidth = timeProg * progBarContainer.offsetWidth / 100;
+    const myStyle = 'width: ' + progressBarWidth + 'px; height: 20px; background-color: ' + col;
+    dataProgbar.setAttribute('style', myStyle);
+    timeProgbar.setAttribute('style', "width: " + timeBarWidth + "px; height: 20px; background-color: #ffffff");
 }

@@ -34,3 +34,22 @@ a{
     margin: 20px auto 10px auto;
 
 }
+.progbar{
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 7px;
+    margin: 10px 0 0 0;
+}
+#progressBarContainer{
+    width: 800px;
+    margin: 10px auto;
+    padding: 0;
+}
+#progressBarData{
+    margin: 0;
+    border-radius: 7px 0 0 7px;
+}
+#progressBarTime{
+    margin: 0;
+    border-radius: 7px 0 0 7px;
+}
