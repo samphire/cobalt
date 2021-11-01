@@ -21,7 +21,7 @@ $sql="
 create temporary table optikon.carvery
 select user_email, numLearned, numLearning, avgRepnum from
 reader3.users left join
-(SELECT oboe.userid, numLearned, numLearning, avgRepnum from
+(SELECT tim.userid, numLearned, numLearning, avgRepnum from
 (SELECT amy.userid, numLearned, numLearning from
 (SELECT userid, COUNT(headwordid) AS numLearned FROM reader3.learned group by userid) as amy
 left join
@@ -33,6 +33,13 @@ on tim.userid = oboe.userid
 on users.user_id=grey.userid;
 ";
 $result = mysqli_query($myConn, $sql) or die("7 ".mysqli_error($myConn));
+
+$sql="update optikon.carvery set numLearning = 0 where numLearning is null";
+mysqli_query($myConn, $sql) or die("7b ".mysqli_error($myConn));
+$sql="update optikon.carvery set avgRepnum = 0 where avgRepnum is null";
+mysqli_query($myConn, $sql) or die("7c ".mysqli_error($myConn));
+
+
  $sql="drop table if exists optikon.sid";
  mysqli_query($myConn, $sql) or die("8 ".mysqli_error($myConn));
 //$sql="SELECT tommy.*, class_id AS classid from

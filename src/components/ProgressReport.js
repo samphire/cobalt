@@ -215,5 +215,5 @@ function progress(percent) {
     let timeBarWidth = timeProg * progBarContainer.offsetWidth / 100;
     const myStyle = 'width: ' + progressBarWidth + 'px; height: 20px; background-color: ' + col;
     dataProgbar.setAttribute('style', myStyle);
-    timeProgbar.setAttribute('style', "width: " + timeBarWidth + "px; height: 20px; background-color: #ffffff");
+    timeProgbar.setAttribute('style', "width: " + timeBarWidth + "px; height: 20px; background-color: #24507a");
 }
