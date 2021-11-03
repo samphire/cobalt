@@ -7,7 +7,8 @@ header('Content-Type: text/plain');
 $myConn = mysqli_connect("localhost", "root", "Fk!i=a0@:K") or die('Error making custom mysqli connection' . mysqli_connect_error());
 $sql="drop table if exists optikon.BOB";
 $result = mysqli_query($myConn, $sql) or die("1".mysqli_error($myConn));
-$sql="create temporary table optikon.BOB SELECT id, name, round(cash_earned/60) AS MathPerc FROM math.tbl_user join optikon.lnk_student_class on tbl_user.id = lnk_student_class.student_id where lnk_student_class.class_id={$_GET['classid']};";
+$sql="create temporary table optikon.BOB SELECT student_id as id, coalesce(round(cash_earned/60), 0) AS MathPerc FROM
+optikon.lnk_student_class left join math.tbl_user on tbl_user.id = lnk_student_class.student_id where lnk_student_class.class_id={$_GET['classid']};";
 $result = mysqli_query($myConn, $sql) or die("2".mysqli_error($myConn));
 $sql="drop table if exists optikon.duck";
 $result = mysqli_query($myConn, $sql) or die("3".mysqli_error($myConn));
@@ -19,7 +20,7 @@ $sql="drop table if exists optikon.carvery";
 $result = mysqli_query($myConn, $sql) or die("6".mysqli_error($myConn));
 $sql="
 create temporary table optikon.carvery
-select user_email, numLearned, numLearning, avgRepnum from
+select user_email, user_name as name, numLearned, numLearning, avgRepnum from
 reader3.users left join
 (SELECT tim.userid, numLearned, numLearning, avgRepnum from
 (SELECT amy.userid, numLearned, numLearning from
@@ -34,9 +35,9 @@ on users.user_id=grey.userid;
 ";
 $result = mysqli_query($myConn, $sql) or die("7 ".mysqli_error($myConn));
 
-$sql="update optikon.carvery set numLearning = 0 where numLearning is null";
+$sql="update optikon.carvery set numLearning = 0, avgRepnum=0 where numLearning is null";
 mysqli_query($myConn, $sql) or die("7b ".mysqli_error($myConn));
-$sql="update optikon.carvery set avgRepnum = 0 where avgRepnum is null";
+$sql="update optikon.carvery set numLearned=0 where numLearned is null";
 mysqli_query($myConn, $sql) or die("7c ".mysqli_error($myConn));
 
 
@@ -50,22 +51,21 @@ join optikon.lnk_student_class on tommy.id=optikon.lnk_student_class.student_id
 where class_id={$_GET['classid']} order by id;";
 $result = mysqli_query($myConn, $sql) or die("9 ".mysqli_error($myConn));
 
-
 mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
-
 
  $sql="drop table if exists optikon.testscores";
  mysqli_query($myConn, $sql) or die("10 ".mysqli_error($myConn));
  $sql="create temporary table `optikon`.`testscores` select id, round(avg(score)) AS avgscore from
- `optikon`.`tbl_testscore` join `optikon`.`tbl_students` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
+`optikon`.`tbl_students` left join `optikon`.`tbl_testscore` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
 //  print ("\n\n$sql\n\n");
  mysqli_query($myConn, $sql) or die("11 ".mysqli_error($myConn));
  $sql="drop table if exists optikon.dolly";
  mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
- $sql="create table optikon.dolly select sid.*, testscores.avgscore from sid join testscores on sid.id = testscores.id";
+ $sql="create temporary table optikon.dolly select sid.*, coalesce(testscores.avgscore, 0) as avgscore from sid join testscores on sid.id = testscores.id";
  mysqli_query($myConn, $sql) or die("13 ".mysqli_error($myConn));
- $sql="select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum*20, 100)) AS activity,
- round(((avgscore +  round((least(wordscore, 1000))/10) + (least(MathPerc, 100)) + round(least(avgrepnum*20, 100)))/ 4)) AS total from dolly";
+ $sql="select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum * 10, 50) + least(numLearning, 50)) AS activity,
+ round(((avgscore +  round((least(wordscore, 1000))/10) + (least(MathPerc, 100)) + round(least(avgrepnum * 10, 50) + least(numLearning, 50)))/ 4)) AS total from dolly";
+
  $result = mysqli_query($myConn, $sql) or die("14 ".mysqli_error($myConn));
 
 $array = Array();
