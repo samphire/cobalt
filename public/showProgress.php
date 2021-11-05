@@ -63,10 +63,26 @@ mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
  mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
  $sql="create temporary table optikon.dolly select sid.*, coalesce(testscores.avgscore, 0) as avgscore from sid join testscores on sid.id = testscores.id";
  mysqli_query($myConn, $sql) or die("13 ".mysqli_error($myConn));
- $sql="select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum * 10, 50) + least(numLearning, 50)) AS activity,
+ $sql="create temporary table dodo select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum * 10, 50) + least(numLearning, 50)) AS activity,
  round(((avgscore +  round((least(wordscore, 1000))/10) + (least(MathPerc, 100)) + round(least(avgrepnum * 10, 50) + least(numLearning, 50)))/ 4)) AS total from dolly";
 
  $result = mysqli_query($myConn, $sql) or die("14 ".mysqli_error($myConn));
+
+ $sql="create temporary table chris select student_id,
+      coalesce(greatest(datediff(session_end, session_start)
+       - greatest(datediff(begin, session_start), 0)
+       - greatest(datediff(session_end, end), 0), 0)/datediff(session_end, session_start), 0)
+       as student_participation_percent
+       from tbl_classes join lnk_student_class on tbl_classes.id=lnk_student_class.class_id
+      where id={$_GET['classid']}";
+
+ mysqli_query($myConn, $sql) or die("15 ".mysqli_error($myConn));
+
+ $sql = "update dodo join chris on dodo.id=chris.student_id set total = least(round(total/student_participation_percent), 100)";
+
+ mysqli_query($myConn, $sql) or die("16 ".mysqli_error($myConn));
+
+  $result = mysqli_query($myConn, "select * from dodo") or die("14 ".mysqli_error($myConn));
 
 $array = Array();
 while($row = mysqli_fetch_assoc($result)){
