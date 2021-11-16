@@ -50,7 +50,7 @@ export default function ProgressReport() {
                 </FormControl>
             </div>
             <TableContainer component={Paper}>
-                <Table sx={{maxWidth: 900, margin: 'auto'}} size="small" aria-label="a dense table">
+                <Table sx={{maxWidth: 900, margin: 'auto', width: "50%"}} size="small" aria-label="a dense table">
                     <TableHead sx={{backgroundColor: "#444"}}>
                         <TableRow sx={{color: "white"}}>
                             {/*<TableCell sx={{color: "white"}}>name</TableCell>*/}
@@ -59,12 +59,12 @@ export default function ProgressReport() {
                             {/*<TableCell sx={{color: "white"}}>Avg Rep</TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}>Word Score</TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}>구구단</TableCell>*/}
-                            <TableCell sx={{color: "white"}}>name</TableCell>
-                            <TableCell sx={{color: "white"}}>Avg Test Score</TableCell>
-                            <TableCell sx={{color: "white"}}>구구단</TableCell>
-                            <TableCell sx={{color: "white"}}>Word Score</TableCell>
-                            <TableCell sx={{color: "white"}}>activity</TableCell>
-                            <TableCell sx={{color: "white"}}>TOTAL</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>Name</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>Tests</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>구구단</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>Words</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>WordTests</TableCell>
+                            <TableCell sx={{color: "white", width: "10%"}}>TOTAL</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -72,44 +72,13 @@ export default function ProgressReport() {
                             item.MathPerc = item.MathPerc > 100 ? 100 : item.MathPerc;
                             item.avgRepnum = Math.round(item.avgRepnum * 100) / 100;
                             return (
-
-                                // <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={item.id}>
-                                //     <TableCell sx={{fontWeight: 800}}>{item.name}</TableCell>
-                                //     <TableCell>{item.numLearned}</TableCell>
-                                //     <TableCell>{item.numLearning}</TableCell>
-                                //     <TableCell>{item.avgRepnum > 0 ? item.avgRepnum : ''}</TableCell>
-                                //     <TableCell>{item.wordscore}</TableCell>
-                                //     <TableCell>
-                                //         <Box sx={{position: 'relative', display: 'inline-flex'}}>
-                                //             <CircularProgress color='success' variant='determinate'
-                                //                               value={item.MathPerc}/>
-                                //             <Box sx={{
-                                //                 top: 0,
-                                //                 left: 0,
-                                //                 bottom: 0,
-                                //                 right: 0,
-                                //                 position: 'absolute',
-                                //                 display: 'flex',
-                                //                 alignItems: 'center',
-                                //                 justifyContent: 'center',
-                                //                 color: 'black',
-                                //                 backgroundColor: ''
-                                //
-                                //             }}>
-                                //                 <Typography variant='caption' component='div' color='text.secondary'>
-                                //                     {item.MathPerc}%
-                                //                 </Typography>
-                                //             </Box>
-                                //         </Box>
-                                //     </TableCell>
-                                // </TableRow>
                                 <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={item.id}>
-                                    <TableCell sx={{fontWeight: 800}}>{item.name}</TableCell>
-                                    <TableCell>{item.avgscore}</TableCell>
-                                    <TableCell>{item.math}</TableCell>
-                                    <TableCell>{item.word}</TableCell>
-                                    <TableCell>{item.activity > 0 ? item.activity : ''}</TableCell>
-                                    <TableCell>
+                                    <TableCell sx={{fontWeight: 800, lineHeight: "0.23"}}>{item.name}</TableCell>
+                                    <TableCell sx={{lineHeight: "0.23"}}>{item.avgscore}</TableCell>
+                                    <TableCell sx={{lineHeight: "0.23"}}>{item.math}</TableCell>
+                                    <TableCell sx={{lineHeight: "0.23"}}>{item.word}</TableCell>
+                                    <TableCell sx={{lineHeight: "0.23"}}>{item.activity > 0 ? item.activity : ''}</TableCell>
+                                    <TableCell sx={{lineHeight: "0.23"}}>
                                         <Box sx={{position: 'relative', display: 'inline-flex'}}>
                                             <CircularProgress color='success' variant='determinate'
                                                               value={item.total}/>
