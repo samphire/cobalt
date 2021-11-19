@@ -1,4 +1,12 @@
+html {
+    height: 100%;
+}
 
+body {
+    height: 100%;
+    background-image: url("../img/bg.jpg");
+    background-size: 100% 100%;
+}
 #TestmakerContainer{
     background: #fff3ed;
     text-align: center;

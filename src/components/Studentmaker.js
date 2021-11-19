@@ -16,8 +16,6 @@ export default function Questionmaker() {
     return (
         <><h1>Student Maker</h1>
             <div id='container'>
-
-
                 <TextField
                     id="id"
                     className={'textInput'}
