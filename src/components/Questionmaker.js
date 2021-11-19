@@ -79,9 +79,9 @@ export default function Questionmaker() {
     }, [])
 
     function handleKeyEvent(e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        e.stopPropagation();
+        // e.preventDefault();
+        // e.stopImmediatePropagation();
+        // e.stopPropagation();
         console.log(e.code);
         console.log(e.keyCode);
         console.log(questionsArray.length);
