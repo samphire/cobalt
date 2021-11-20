@@ -1,10 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Switch from '@material-ui/core/Switch';
-import Checkbox from '@material-ui/core/Checkbox';
-import {FormControlLabel, Slider, TextField, Typography, Button} from "@material-ui/core";
 import './Questionmaker.css'
 import girl from '../img/girl.png'
-
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 let QArr = [];
 let idx = 0;
@@ -29,54 +27,24 @@ const initialState = {
     video: "",
 }
 
-class Question {
-    constructor() {
-        max++;
-        idx = max;
-        // qnum.value = idx + 1;
-        // Setting values of qnum and testid in the object
-        this._qnum = idx + 1;
-    }
-}
-
-
-function submitQuestions(e) {
-    e.preventDefault();
-    console.log(QArr);
-
-    for (var property in QArr) {
-        console.log(property, ":", QArr[property]);
-    }
-
-    console.log(QArr[0]._qnum);
-    console.log(QArr[0].qnum);
-
-    async function postQuestions() {
-        let responseObj = await fetch('https://notborder.org/maker/postData.php?type=questions', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(QArr)
-        });
-        let responseText = await responseObj.text();
-        console.log(responseText === 'success' ? 'oh yeah, buddy!' : 'oh dear!');
-    }
-
-    postQuestions();
-    return true;
-}
-
-
 export default function Questionmaker() {
 
     const left = useRef(null);
     const right = useRef(null);
     const del = useRef(null);
+    const [questionsArray, setQuestionsArray] = useState([]);
+    const [questionData, setQuestionData] = useState(initialState)
+    const [questionsCreated, setQuestionsCreated] = useState(false)
 
+    const handleClose = (event, reason) => {
+        setQuestionsCreated(false);
+    }
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyEvent);
         return () => document.removeEventListener('keydown', handleKeyEvent);
     }, [])
+
 
     function handleKeyEvent(e) {
         // e.preventDefault();
@@ -104,8 +72,6 @@ export default function Questionmaker() {
         }
     }
 
-    const [questionsArray, setQuestionsArray] = useState([]);
-    const [questionData, setQuestionData] = useState(initialState)
 
     function goLeft() {
         oldidx = idx;
@@ -155,17 +121,18 @@ export default function Questionmaker() {
 
 
     function deleteQuestion() {
-        console.log(idx + "," + max);
-        if (max > 0) {
-            QArr.splice(idx, 1);
-            max--;
-            renumber();
-            if (idx === 0) {
-                // goRight();
-            } else {
-                goLeft();
-            }
-        }
+        alert("not implemented yet");
+        // console.log(idx + "," + max);
+        // if (max > 0) {
+        //     QArr.splice(idx, 1);
+        //     max--;
+        //     renumber();
+        //     if (idx === 0) {
+        //         // goRight();
+        //     } else {
+        //         goLeft();
+        //     }
+        // }
     }
 
     function renumber() {
@@ -176,6 +143,39 @@ export default function Questionmaker() {
 
     const setType = event => {
         setQuestionData({...questionData, type: parseInt(event.target.value)});
+    }
+
+    function submitQuestions(e) {
+        e.preventDefault()
+
+        // console.log(questionsArray)
+        // console.log(JSON.stringify(questionsArray))
+
+        // for (var property in QArr) {
+        //     console.log(property, ":", QArr[property]);
+        // }
+        //
+        // console.log(QArr[0]._qnum);
+        // console.log(QArr[0].qnum);
+
+        async function postQuestions() {
+            let responseObj = await fetch('https://notborder.org/cobalt/postData.php?type=questions', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(questionsArray)
+            });
+            let responseText = await responseObj.text();
+            // console.log(responseText);
+            console.log(responseText === 'success' ? 'postData.php reports success on posting questions' : 'posting questions failed in postData.php');
+            if(responseText === "success"){
+                console.log("SHOULD BE OPENING SNACKBAR");
+                setQuestionsCreated(true);
+            }
+        }
+
+        postQuestions().then(r => console.log(r));
+
+        return true;
     }
 
     return (
@@ -323,7 +323,16 @@ export default function Questionmaker() {
                     </div>
                 </div>
             </div>
+            <Snackbar
+                open={questionsCreated}
+                onClose={handleClose}
+                autoHideDuration={3500}
+                anchorOrigin={{horizontal: 'center', vertical: 'top'}}
+            >
+                <Alert onClose={handleClose} severity="success" variant="filled" sx={{fontSize: '24px', color: 'white', fontWeight: 'bolder', width: '100%'}}>
+                    Questions Uploaded!
+                </Alert>
+            </Snackbar>
         </>
     );
-
 }
