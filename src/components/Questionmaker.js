@@ -9,8 +9,8 @@ let idx = 0;
 let oldidx = 0;
 let max = 0;
 
-const initialState = {
-    testid: "98",
+let initialState = {
+    testid: "",
     qnum: 1,
     text1: "",
     text2: "",
@@ -60,10 +60,10 @@ export default function Questionmaker() {
             case 39:
                 right.current.click();
                 break;
-            case 8:
-            case 46:
-                del.current.click();
-                break;
+            // case 8:   // YOU MUPPET... YOU NEED DELETE AND BACKSPACE TO EDIT QUESTIONS!!!
+            // case 46:
+            //     del.current.click();
+            //     break;
             case 13:
                 right.current.click();
                 break;
@@ -198,7 +198,10 @@ export default function Questionmaker() {
                                        fontWeight: 'bolder'
                                    }}
                                    id="testid"
-                                   onChange={e => setQuestionData({...questionData, testid: e.target.value})}
+                                   onChange={(e) => {
+                                       setQuestionData({...questionData, testid: e.target.value})
+                                       initialState.testid = e.target.value
+                                   }}
                             />
                         </div>
                         <div className="input">
