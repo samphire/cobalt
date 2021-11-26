@@ -8,58 +8,63 @@ body {
     background-size: 100% 100%;
 }
 
-table{
-    width: 900px;
+table {
+    width: 700px;
     border: 1px solid black;
 }
 
-li{
+li {
     display: flex;
-background-color: #edc7b7;
+    background-color: #edc7b7;
     padding: 15px;
     border-radius: 3px;
     margin-top: 10px;
 
 }
 
-ul{
+ul {
     display: flex;
     justify-content: space-around;
     max-width: 900px;
     margin: auto;
     padding-inline-start: unset;
 }
-.myNav{
+
+.myNav {
     color: red !important;
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
 
-#select{
+#select {
     width: 300px;
     text-align: center;
     margin: 20px auto 10px auto;
 
 }
-.progbar{
+
+.progbar {
+    box-sizing: border-box;
     height: 20px;
     border: 2px solid black;
-    border-radius: 7px;
+    border-radius: 5px;
     margin: 10px 0 0 0;
 }
-#progressBarContainer{
-    width: 50%;
+
+#progressBarContainer {
+    width: 90%;
     margin: 10px auto;
-    padding: 0;
 }
-#progressBarData{
+
+#progressBarData, #progressBarTime {
     margin: 0;
-    border-radius: 7px 0 0 7px;
+    border-radius: 3px 0 0 3px;
+    height: 16px;
 }
-#progressBarTime{
-    margin: 0;
-    border-radius: 7px 0 0 7px;
+
+th, td{
+    font-size: 14px;
 }

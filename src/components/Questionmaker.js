@@ -35,6 +35,7 @@ export default function Questionmaker() {
     const [questionsArray, setQuestionsArray] = useState([]);
     const [questionData, setQuestionData] = useState(initialState)
     const [questionsCreated, setQuestionsCreated] = useState(false)
+    const [blah, setBlah] = useState(false);
 
     const handleClose = (event, reason) => {
         setQuestionsCreated(false);
@@ -167,7 +168,7 @@ export default function Questionmaker() {
             let responseText = await responseObj.text();
             // console.log(responseText);
             console.log(responseText === 'success' ? 'postData.php reports success on posting questions' : 'posting questions failed in postData.php');
-            if(responseText === "success"){
+            if (responseText === "success") {
                 console.log("SHOULD BE OPENING SNACKBAR");
                 setQuestionsCreated(true);
             }
@@ -176,6 +177,15 @@ export default function Questionmaker() {
         postQuestions().then(r => console.log(r));
 
         return true;
+    }
+
+    function setMultiGuess(e) {
+        initialState.text2 = "1";
+        initialState.text3 = "2";
+        initialState.text4 = "3";
+        initialState.text5 = "4";
+        // e.target.color = "white";
+        setBlah(true);
     }
 
     return (
@@ -216,6 +226,7 @@ export default function Questionmaker() {
                                    }} id="qnum"
                                    onChange={e => setQuestionData({...questionData, qnum: parseInt(e.target.value)})}/>
                         </div>
+                        <button onClick={setMultiGuess}>1, 2, 3, 4</button>
                     </div>
 
                     <div className="col-sm-4">
@@ -301,6 +312,7 @@ export default function Questionmaker() {
                             <label htmlFor="image">image</label>
                             <input type="text" value={questionData.image} id="image" onChange={(e) => {
                                 setQuestionData({...questionData, image: e.target.value})
+                                initialState.image = questionData.image
                             }}/>
                             <label htmlFor="audio">audio</label>
                             <input type="text" value={questionData.audio} id="audio" onChange={(e) => {
@@ -332,7 +344,8 @@ export default function Questionmaker() {
                 autoHideDuration={3500}
                 anchorOrigin={{horizontal: 'center', vertical: 'top'}}
             >
-                <Alert onClose={handleClose} severity="success" variant="filled" sx={{fontSize: '24px', color: 'white', fontWeight: 'bolder', width: '100%'}}>
+                <Alert onClose={handleClose} severity="success" variant="filled"
+                       sx={{fontSize: '24px', color: 'white', fontWeight: 'bolder', width: '100%'}}>
                     Questions Uploaded!
                 </Alert>
             </Snackbar>

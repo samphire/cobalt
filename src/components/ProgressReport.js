@@ -49,8 +49,9 @@ export default function ProgressReport() {
                     </Select>
                 </FormControl>
             </div>
-            <TableContainer component={Paper}>
-                <Table sx={{maxWidth: 900, margin: 'auto', width: "50%"}} size="small" aria-label="a dense table">
+
+            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
+                <Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">
                     <TableHead sx={{backgroundColor: "#444"}}>
                         <TableRow sx={{color: "white"}}>
                             {/*<TableCell sx={{color: "white"}}>name</TableCell>*/}
@@ -59,12 +60,12 @@ export default function ProgressReport() {
                             {/*<TableCell sx={{color: "white"}}>Avg Rep</TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}>Word Score</TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}>구구단</TableCell>*/}
-                            <TableCell sx={{color: "white", width: "10%"}}>Name</TableCell>
-                            <TableCell sx={{color: "white", width: "10%"}}>Tests</TableCell>
-                            <TableCell sx={{color: "white", width: "10%"}}>구구단</TableCell>
-                            <TableCell sx={{color: "white", width: "10%"}}>Words</TableCell>
-                            <TableCell sx={{color: "white", width: "10%"}}>WordTests</TableCell>
-                            <TableCell sx={{color: "white", width: "10%"}}>TOTAL</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Name</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Tests</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>구구단</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Words</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>WordTests</TableCell>
+                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>TOTAL</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -73,11 +74,12 @@ export default function ProgressReport() {
                             item.avgRepnum = Math.round(item.avgRepnum * 100) / 100;
                             return (
                                 <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={item.id}>
-                                    <TableCell sx={{fontWeight: 800, lineHeight: "0.23"}}>{item.name}</TableCell>
-                                    <TableCell sx={{lineHeight: "0.23"}}>{item.avgscore}</TableCell>
-                                    <TableCell sx={{lineHeight: "0.23"}}>{item.math}</TableCell>
-                                    <TableCell sx={{lineHeight: "0.23"}}>{item.word}</TableCell>
-                                    <TableCell sx={{lineHeight: "0.23"}}>{item.activity > 0 ? item.activity : ''}</TableCell>
+                                    <TableCell sx={{fontSize: "14px", fontWeight: 800, lineHeight: "0.23"}}>{item.name}</TableCell>
+                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.avgscore}</TableCell>
+                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
+                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
+                                    <TableCell
+                                        sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.activity > 0 ? item.activity : ''}</TableCell>
                                     <TableCell sx={{lineHeight: "0.23"}}>
                                         <Box sx={{position: 'relative', display: 'inline-flex'}}>
                                             <CircularProgress color='success' variant='determinate'
@@ -95,7 +97,7 @@ export default function ProgressReport() {
                                                 backgroundColor: ''
 
                                             }}>
-                                                <Typography variant='caption' component='div' color='text.secondary'>
+                                                <Typography fontSize={"14px"} variant='caption' component='div' color='text.secondary'>
                                                     {item.total}%
                                                 </Typography>
                                             </Box>
@@ -106,15 +108,15 @@ export default function ProgressReport() {
                         })}
                     </TableBody>
                 </Table>
+                <div id={"progressBarContainer"}>
+                    <div className={"progbar"}>
+                        <div id={"progressBarData"}/>
+                    </div>
+                    <div className={"progbar"}>
+                        <div id={"progressBarTime"}/>
+                    </div>
+                </div>
             </TableContainer>
-            <div id={"progressBarContainer"}>
-                <div className={"progbar"}>
-                    <div id={"progressBarData"}/>
-                </div>
-                <div className={"progbar"}>
-                    <div id={"progressBarTime"}/>
-                </div>
-            </div>
         </>
     );
 }
@@ -182,7 +184,7 @@ function progress(percent) {
 
     let progressBarWidth = percent * progBarContainer.offsetWidth / 100;
     let timeBarWidth = timeProg * progBarContainer.offsetWidth / 100;
-    const myStyle = 'width: ' + progressBarWidth + 'px; height: 20px; background-color: ' + col;
+    const myStyle = 'width: ' + progressBarWidth + 'px; background-color: ' + col;
     dataProgbar.setAttribute('style', myStyle);
-    timeProgbar.setAttribute('style', "width: " + timeBarWidth + "px; height: 20px; background-color: #24507a");
+    timeProgbar.setAttribute('style', "width: " + timeBarWidth + "px; background-color: #24507a");
 }

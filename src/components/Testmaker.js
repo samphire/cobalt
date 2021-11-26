@@ -35,7 +35,7 @@ export default function Testmaker(props) {
         async function bob() {
             let responseObj = await fetch('https://notborder.org/cobalt/testmakerData.php', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json; charset=UTF-8'},
                 body: JSON.stringify(myData)
             });
             let responseText = await responseObj.text();
@@ -58,7 +58,7 @@ export default function Testmaker(props) {
     const myThing = <>
         <br/><br/>
         <Typography> Timer </Typography>
-        <Slider id="fucker"
+        <Slider id="slyder"
                 style={{width: 330}}
                 defaultValue={30}
                 valueLabelDisplay={"auto"}
