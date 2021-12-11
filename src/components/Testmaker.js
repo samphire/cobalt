@@ -14,6 +14,7 @@ export default function Testmaker(props) {
     });
     const [testCreated, setTestCreated] = useState(false);
     const [testFail, setTestFail] = useState(false);
+    const [testid, setTestid] = useState();
     const handleChange = (event) => {
         setState({mySwitch: event.target.checked});
     };
@@ -32,28 +33,23 @@ export default function Testmaker(props) {
         };
         console.log(myData);
 
-        async function bob() {
+        async function postTest() {
             let responseObj = await fetch('https://notborder.org/cobalt/testmakerData.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json; charset=UTF-8'},
                 body: JSON.stringify(myData)
             });
             let responseText = await responseObj.text();
-            if (responseText === 'success') {
-                setTestCreated(true);
-            } else {
+            if (responseText === 'fail') {
                 setTestFail(true);
+            } else {
+                setTestid(parseInt(responseText));
+                setTestCreated(true);
             }
         }
-        bob();
-    };
 
-// useEffect(
-//     () => {
-//         alert(state.mySwitch);
-//     },
-//     [state.mySwitch]
-// )
+        postTest().then();
+    };
 
     const myThing = <>
         <br/><br/>
@@ -137,20 +133,22 @@ export default function Testmaker(props) {
             <Snackbar
                 open={testCreated}
                 onClose={handleClose}
-                autoHideDuration={2500}
-                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+                autoHideDuration={4000}
+                anchorOrigin={{horizontal: 'center', vertical: 'top'}}
             >
-                <Alert onClose={handleClose} severity="success" variant="filled" sx={{width: '100%'}}>
-                    Test Created
+                <Alert onClose={handleClose} severity="success" variant="filled"
+                       sx={{fontSize: '24px', color: 'white', fontWeight: 'bolder', width: '100%'}}>
+                    Test Created: id = {testid}
                 </Alert>
             </Snackbar>
             <Snackbar
                 open={testFail}
                 onClose={handleClose}
-                autoHideDuration={2500}
-                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+                autoHideDuration={4000}
+                anchorOrigin={{horizontal: 'center', vertical: 'top'}}
             >
-                <Alert onClose={handleClose} severity="error" variant="filled" sx={{width: '100%'}}>
+                <Alert onClose={handleClose} severity="error" variant="filled"
+                       sx={{fontSize: '24px', color: 'white', fontWeight: 'bolder', width: '100%'}}>
                     Test Creation Failed!
                 </Alert>
             </Snackbar>

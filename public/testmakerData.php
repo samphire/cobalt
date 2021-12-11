@@ -21,6 +21,9 @@ $sql = "INSERT INTO `optikon`.`tbl_tests`
         {$data['timer']});
 ";
 $query = mysqli_query($conn, $sql);
-echo mysqli_affected_rows($conn)?'success':'fail';
-
+if(mysqli_affected_rows($conn)){
+echo mysqli_query($conn, 'select LAST_INSERT_ID() as bob')->fetch_object()->bob;
+} else{
+echo 'fail';
+}
 ?>
