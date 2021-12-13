@@ -55,12 +55,12 @@ export default function Questionmaker() {
         console.log(e.keyCode);
         console.log(questionsArray.length);
         switch (e.keyCode) {
-            case 37:
-                left.current.click();
-                break;
-            case 39:
-                right.current.click();
-                break;
+            // case 37:  // NO, MUPPET, YOU NEED LEFT AND RIGHT ARROWS TO EDIT STUFF!!!
+            //     left.current.click();
+            //     break;
+            // case 39:
+            //     right.current.click();
+            //     break;
             // case 8:   // YOU MUPPET... YOU NEED DELETE AND BACKSPACE TO EDIT QUESTIONS!!!
             // case 46:
             //     del.current.click();

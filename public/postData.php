@@ -32,3 +32,25 @@ if ($_GET['type'] == "questions") {
     }
     echo "success";
 }
+if($_GET['type'] == "individual_test_data"){
+    $sql="
+    select id, name, oneshot, score from tbl_tests join
+    (select valid_tests.student_id, valid_tests.test_id, score from tbl_testscore
+    right join
+    (select student_id, test_id from
+    (select test_id, start from lnk_class_test where class_id=" . $_GET['classid'] . ") as classTests
+    join
+    (select student_id, begin, end from lnk_student_class where student_id='" . $_GET['studid'] . "' and class_id=" . $_GET['classid'] . ")
+    as studentDates
+    where start > begin and start < end) as valid_tests
+    on tbl_testscore.student_id = valid_tests.student_id and tbl_testscore.test_id = valid_tests.test_id)
+    AS scores_for_student
+    on tbl_tests.id = scores_for_student.test_id
+    order by oneshot, score";
+    $result = mysqli_query($conn, $sql);
+    $array = Array();
+    while($row = mysqli_fetch_assoc($result)){
+        array_push($array,$row);
+    }
+    echo json_encode($array);
+}

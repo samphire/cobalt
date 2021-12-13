@@ -13,11 +13,20 @@ import CircularProgress from '@mui/material/CircularProgress';
 import './ProgressReport.css';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import {getBreakdown} from "../services/dataService";
+import Dialog from "@material-ui/core/Dialog"
+import {Button, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 
 export default function ProgressReport() {
     const [data, setData] = useState([]);
     const [myClass, setClass] = useState(14);
+    const [open, setOpen] = useState(false);
+    const [testDataString, setStuffString] = useState("");
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     useEffect(async () => {
         const result = await bob(myClass);
@@ -28,6 +37,24 @@ export default function ProgressReport() {
         setClass(e.target.value);
         const result = await bob(e.target.value);
         setData(result);
+    };
+
+    let stuffString;
+
+    const getStuff = (e) => {
+        stuffString = "";
+        console.log(e.target.dataset.studid + ", " + e.target.dataset.classid);
+        getBreakdown(e.target.dataset.studid, e.target.dataset.classid).then((data) => {
+            console.log(data);
+            data.map((item, idx) => {
+                console.log(idx + " " + item + ", " + item.name);
+                stuffString += "<h3>" + item.id + ", " + item.name + ", " + item.oneshot + ", " + item.score + "</h3>";
+            });
+        }).then(() => {
+            console.log("stuffString: " + stuffString);
+            setStuffString(stuffString);
+            setOpen(true);
+        });
     };
 
     return (
@@ -50,10 +77,33 @@ export default function ProgressReport() {
                 </FormControl>
             </div>
 
-            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
+            <Dialog
+                open={open}
+                onclose={handleClose}
+                aria-labelledby="alert-dialog-title">
+                <DialogTitle>
+                    Individual Test Results
+                </DialogTitle>
+                {/*<DialogContent>*/}
+
+                    {testDataString}
+
+                {/*</DialogContent>*/}
+
+                <DialogActions>
+                    <Button onClick={handleClose} autofocus>
+                        Close
+                    </Button>
+
+                </DialogActions>
+            </Dialog>
+
+            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory-"}} component={Paper}>
                 <Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">
                     <TableHead sx={{backgroundColor: "#444"}}>
-                        <TableRow sx={{color: "white"}}>
+                        <TableRow sx={{color: "white"}} onClick={() => {
+                            console.log('hello from click handler on row')
+                        }}>
                             {/*<TableCell sx={{color: "white"}}>name</TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}><BatteryFullIcon/></TableCell>*/}
                             {/*<TableCell sx={{color: "white"}}><BatteryCharging50Icon/></TableCell>*/}
@@ -74,12 +124,23 @@ export default function ProgressReport() {
                             item.avgRepnum = Math.round(item.avgRepnum * 100) / 100;
                             return (
                                 <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={item.id}>
-                                    <TableCell sx={{fontSize: "14px", fontWeight: 800, lineHeight: "0.23"}}>{item.name}</TableCell>
-                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.avgscore}</TableCell>
+                                    <TableCell sx={{
+                                        fontSize: "14px",
+                                        fontWeight: 800,
+                                        lineHeight: "0.23"
+                                    }}>{item.name}</TableCell>
+                                    <TableCell data-studid={item.id} data-classid={item.classid}
+                                               sx={{fontWeight: "bold", fontSize: "14px", lineHeight: "0.23"}}
+                                               onClick={(e) => {
+                                                   getStuff(e)
+                                               }}>{item.avgscore}</TableCell>
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
                                     <TableCell
-                                        sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.activity > 0 ? item.activity : ''}</TableCell>
+                                        sx={{
+                                            fontSize: "14px",
+                                            lineHeight: "0.23"
+                                        }}>{item.activity > 0 ? item.activity : ''}</TableCell>
                                     <TableCell sx={{lineHeight: "0.23"}}>
                                         <Box sx={{position: 'relative', display: 'inline-flex'}}>
                                             <CircularProgress color='success' variant='determinate'
@@ -97,7 +158,8 @@ export default function ProgressReport() {
                                                 backgroundColor: ''
 
                                             }}>
-                                                <Typography fontSize={"14px"} variant='caption' component='div' color='text.secondary'>
+                                                <Typography fontSize={"14px"} variant='caption' component='div'
+                                                            color='text.secondary'>
                                                     {item.total}%
                                                 </Typography>
                                             </Box>
@@ -118,7 +180,8 @@ export default function ProgressReport() {
                 </div>
             </TableContainer>
         </>
-    );
+    )
+        ;
 }
 
 async function bob(myClass) {
@@ -129,11 +192,12 @@ async function bob(myClass) {
         }
     });
     let responseText = await responseObj.text();
-    // console.log(responseText);
+    console.log(responseText);
     const myArr = JSON.parse(responseText);
 
     myArr.map((item) => {
         console.log("treating array");
+        console.log(item);
         item.numLearned = item.numLearned === null ? 0 : parseInt(item.numLearned);
         item.numLearning = item.numLearning === null ? 0 : parseInt(item.numLearning);
         item.avgRepnum = item.avgRepnum === null ? 0 : parseInt(item.avgRepnum);
