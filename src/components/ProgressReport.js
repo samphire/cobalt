@@ -22,7 +22,7 @@ export default function ProgressReport() {
     const [data, setData] = useState([]);
     const [myClass, setClass] = useState(14);
     const [open, setOpen] = useState(false);
-    const [testDataString, setStuffString] = useState("");
+    const [testData, setTestData] = useState([]);
 
     const handleClose = () => {
         setOpen(false);
@@ -39,20 +39,17 @@ export default function ProgressReport() {
         setData(result);
     };
 
-    let stuffString;
-
     const getStuff = (e) => {
-        stuffString = "";
-        console.log(e.target.dataset.studid + ", " + e.target.dataset.classid);
+        let stuffArr = Array();
         getBreakdown(e.target.dataset.studid, e.target.dataset.classid).then((data) => {
-            console.log(data);
+            // console.log(data);
             data.map((item, idx) => {
-                console.log(idx + " " + item + ", " + item.name);
-                stuffString += "<h3>" + item.id + ", " + item.name + ", " + item.oneshot + ", " + item.score + "</h3>";
+                // stuffArr.push(item.id + ", " + item.name + ", " + item.oneshot + ", " + item.score);
+                stuffArr.push(item);
             });
         }).then(() => {
-            console.log("stuffString: " + stuffString);
-            setStuffString(stuffString);
+            setTestData(stuffArr);
+            // console.log(stuffArr);
             setOpen(true);
         });
     };
@@ -81,14 +78,20 @@ export default function ProgressReport() {
                 open={open}
                 onclose={handleClose}
                 aria-labelledby="alert-dialog-title">
-                <DialogTitle>
+                <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
                     Individual Test Results
                 </DialogTitle>
-                {/*<DialogContent>*/}
+               <DialogContent sx={{fontSize: '14px'}}>
+                   {console.log("printing item")}
+                   {testData.map((item)=>{
+                       console.log(item);
+                       return(
+                           item.oneshot === "-1" ?  (
+                               <div style={{color: '#00F'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
+                               <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
+                           )})}
 
-                    {testDataString}
-
-                {/*</DialogContent>*/}
+               </DialogContent>
 
                 <DialogActions>
                     <Button onClick={handleClose} autofocus>
@@ -130,7 +133,7 @@ export default function ProgressReport() {
                                         lineHeight: "0.23"
                                     }}>{item.name}</TableCell>
                                     <TableCell data-studid={item.id} data-classid={item.classid}
-                                               sx={{fontWeight: "bold", fontSize: "14px", lineHeight: "0.23"}}
+                                               sx={{fontWeight: "bold", fontSize: "14px", lineHeight: "0.23", cursor: "zoom-in"}}
                                                onClick={(e) => {
                                                    getStuff(e)
                                                }}>{item.avgscore}</TableCell>
