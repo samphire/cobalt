@@ -44,7 +44,6 @@ export default function ProgressReport() {
         getBreakdown(e.target.dataset.studid, e.target.dataset.classid).then((data) => {
             // console.log(data);
             data.map((item, idx) => {
-                // stuffArr.push(item.id + ", " + item.name + ", " + item.oneshot + ", " + item.score);
                 stuffArr.push(item);
             });
         }).then(() => {
@@ -81,17 +80,19 @@ export default function ProgressReport() {
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
                     Individual Test Results
                 </DialogTitle>
-               <DialogContent sx={{fontSize: '14px'}}>
-                   {console.log("printing item")}
-                   {testData.map((item)=>{
-                       console.log(item);
-                       return(
-                           item.oneshot === "-1" ?  (
-                               <div style={{color: '#00F'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
-                               <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
-                           )})}
+                <DialogContent sx={{fontSize: '14px'}}>
+                    {console.log("printing item")}
+                    {testData.map((item) => {
+                        console.log(item);
+                        return (
+                            item.oneshot === "-1" ? (
+                                <div
+                                    style={{color: '#00F'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
+                                <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
+                        )
+                    })}
 
-               </DialogContent>
+                </DialogContent>
 
                 <DialogActions>
                     <Button onClick={handleClose} autofocus>
@@ -133,7 +134,12 @@ export default function ProgressReport() {
                                         lineHeight: "0.23"
                                     }}>{item.name}</TableCell>
                                     <TableCell data-studid={item.id} data-classid={item.classid}
-                                               sx={{fontWeight: "bold", fontSize: "14px", lineHeight: "0.23", cursor: "zoom-in"}}
+                                               sx={{
+                                                   fontWeight: "bold",
+                                                   fontSize: "14px",
+                                                   lineHeight: "0.23",
+                                                   cursor: "zoom-in"
+                                               }}
                                                onClick={(e) => {
                                                    getStuff(e)
                                                }}>{item.avgscore}</TableCell>

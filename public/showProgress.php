@@ -55,10 +55,21 @@ mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
 
  $sql="drop table if exists optikon.testscores";
  mysqli_query($myConn, $sql) or die("10 ".mysqli_error($myConn));
- $sql="create temporary table `optikon`.`testscores` select id, round(avg(score)) AS avgscore from
-`optikon`.`tbl_students` left join `optikon`.`tbl_testscore` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
-//  print ("\n\n$sql\n\n");
+
+
+
+
+$sql="create temporary table optikon.testscores(id varchar(255), avgscore int, primary key(`id`))";
+
+//  $sql="create temporary table `optikon`.`testscores` select id, round(avg(score)) AS avgscore from
+// `optikon`.`tbl_students` left join `optikon`.`tbl_testscore` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
+// //  print ("\n\n$sql\n\n");
+
  mysqli_query($myConn, $sql) or die("11 ".mysqli_error($myConn));
+
+ mysqli_query($myConn, "CALL curdemo({$_GET['classid']})");
+
+
  $sql="drop table if exists optikon.dolly";
  mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
  $sql="create temporary table optikon.dolly select sid.*, coalesce(testscores.avgscore, 0) as avgscore from sid join testscores on sid.id = testscores.id";
