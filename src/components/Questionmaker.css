@@ -75,21 +75,21 @@ input[type='radio']{
 }
 
 
-button {
-    background-color: peru;
-    box-shadow: 0 3px 7px 0 grey;
-    border: 1px solid grey;
-    cursor: pointer;
-    color: #000000;
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 18px;
-    text-decoration: none;
-    text-transform: uppercase;
-    display: block;
-    margin: 0 auto;
-}
+/*button {*/
+/*    background-color: peru;*/
+/*    box-shadow: 0 3px 7px 0 grey;*/
+/*    border: 1px solid grey;*/
+/*    cursor: pointer;*/
+/*    color: #000000;*/
+/*    font-family: 'Open Sans Condensed', sans-serif;*/
+/*    font-size: 14px;*/
+/*    font-weight: bold;*/
+/*    padding: 8px 18px;*/
+/*    text-decoration: none;*/
+/*    text-transform: uppercase;*/
+/*    display: block;*/
+/*    margin: 0 auto;*/
+/*}*/
 
 button:active {
     position: relative;

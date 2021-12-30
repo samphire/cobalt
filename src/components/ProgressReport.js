@@ -1,28 +1,60 @@
 import React, {useEffect, useState} from 'react';
-import {FormControl, Select, MenuItem, InputLabel} from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import BatteryFullIcon from '@mui/icons-material/BatteryFull';
-import BatteryCharging50Icon from '@mui/icons-material/BatteryCharging50';
-import CircularProgress from '@mui/material/CircularProgress';
-import './ProgressReport.css';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableRow,
+    TableContainer,
+    TableCell,
+    FormControl,
+    Select,
+    MenuItem,
+    InputLabel
+} from "@mui/material";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    makeStyles
+} from "@material-ui/core";
+import {Paper, Typography, Box, CircularProgress} from '@mui/material';
 import {getBreakdown} from "../services/dataService";
-import Dialog from "@material-ui/core/Dialog"
-import {Button, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import './ProgressReport.css';
 
+const useStyles = makeStyles(theme => ({
+    select: {
+        '& .MuiSelect-select': {
+            fontSize: "18px"
+        },
+        '& .MuiInputLabel-formControl': {
+            fontSize: '18px',
+        }
+    },
+    bobby: {
+        maxWidth: '700px',
+        fontSize: '24px',
+        '& thead th': {
+            color: "white",
+            fontSize: "16px",
+            width: "10%"
+        },
+        '& tbody tr:hover': {
+            backgroundColor: '#00fbf2',
+            cursor: 'pointer'
+        }
+    }
+}));
 
 export default function ProgressReport() {
     const [data, setData] = useState([]);
     const [myClass, setClass] = useState(14);
     const [open, setOpen] = useState(false);
     const [testData, setTestData] = useState([]);
+
+    const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
@@ -65,6 +97,7 @@ export default function ProgressReport() {
                         label="Age"
                         value={myClass}
                         onChange={handleChange}
+                        className={classes.select}
                     >
                         <MenuItem value={14}>중등반</MenuItem>
                         <MenuItem value={16}>고등반</MenuItem>
@@ -102,24 +135,19 @@ export default function ProgressReport() {
                 </DialogActions>
             </Dialog>
 
-            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory-"}} component={Paper}>
-                <Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">
+            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
+                {/*<Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">*/}
+                <Table className={classes.bobby} size="small" aria-label="a dense table">
                     <TableHead sx={{backgroundColor: "#444"}}>
                         <TableRow sx={{color: "white"}} onClick={() => {
                             console.log('hello from click handler on row')
                         }}>
-                            {/*<TableCell sx={{color: "white"}}>name</TableCell>*/}
-                            {/*<TableCell sx={{color: "white"}}><BatteryFullIcon/></TableCell>*/}
-                            {/*<TableCell sx={{color: "white"}}><BatteryCharging50Icon/></TableCell>*/}
-                            {/*<TableCell sx={{color: "white"}}>Avg Rep</TableCell>*/}
-                            {/*<TableCell sx={{color: "white"}}>Word Score</TableCell>*/}
-                            {/*<TableCell sx={{color: "white"}}>구구단</TableCell>*/}
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Name</TableCell>
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Tests</TableCell>
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>구구단</TableCell>
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>Words</TableCell>
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>WordTests</TableCell>
-                            <TableCell sx={{color: "white", width: "10%", fontSize: "16px"}}>TOTAL</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Tests</TableCell>
+                            <TableCell>구구단</TableCell>
+                            <TableCell>Words</TableCell>
+                            <TableCell>WordTests</TableCell>
+                            <TableCell>TOTAL</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
