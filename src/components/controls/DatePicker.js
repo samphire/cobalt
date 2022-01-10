@@ -20,34 +20,15 @@ function DatePicker(props) {
     })
 
     return (
-        // <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        //     <MuiDatePicker disableToolbar
-        //                         variant="inline"
-        //                         inputVariant="outlined"
-        //                         disableFuture
-        //                         autoOk
-        //                         label={label}
-        //                         format="yyyy-MM-dd"
-        //                         name={name}
-        //                         value={value}
-        //                         onChange={date => onChange(convertToDefaultEventParameter(name, date))}
-        //     />
-
-
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+       <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MuiDatePicker
                 variant='dialog'
                 disableFuture
                 autoOk
                 format='yyyy-MM-dd'
                 value={value} onChange={date => onChange(convertToDefaultEventParameter(name, date))}
-                label={"Date of Birth"}/>
+                label={label}/>
         </MuiPickersUtilsProvider>
-
-
-
-
-        // </MuiPickersUtilsProvider>
     );
 }
 

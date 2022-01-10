@@ -14,10 +14,26 @@ if ($_POST['type'] == "student") {
         $_POST['notes'] . "\",\"" .
         $_POST['picURL'] . "\")";
 
+
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn));
 
     print "<h1>New Student Added</h1>";
 }
+
+if ($_GET['type'] == "students") {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: *");
+    $sql = "SELECT * FROM optikon.tbl_students";
+    $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+
 if ($_GET['type'] == "questions") {
 
     $request_body = file_get_contents('php://input');
@@ -32,8 +48,8 @@ if ($_GET['type'] == "questions") {
     }
     echo "success";
 }
-if($_GET['type'] == "individual_test_data"){
-    $sql="
+if ($_GET['type'] == "individual_test_data") {
+    $sql = "
     select id, name, oneshot, score from tbl_tests join
     (select valid_tests.student_id, valid_tests.test_id, score from tbl_testscore
     right join
@@ -48,9 +64,9 @@ if($_GET['type'] == "individual_test_data"){
     on tbl_tests.id = scores_for_student.test_id
     order by oneshot, score";
     $result = mysqli_query($conn, $sql);
-    $array = Array();
-    while($row = mysqli_fetch_assoc($result)){
-        array_push($array,$row);
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
     }
     echo json_encode($array);
 }

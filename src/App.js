@@ -41,7 +41,7 @@ function App() {
                     <ul>
                         <li className={'myNav'}><a href={globalURL + '/q'}>Question Maker</a></li>
                         <li><a href="/cobalt/t">Test Maker</a></li>
-                        <li><a href="/cobalt/s">Student Maker</a></li>
+                        {/*<li><a href="/cobalt/s">Student Maker</a></li>*/}
                         <li><a href="/cobalt/progress">Progress Report</a></li>
                         <li><a href="/cobalt/students">Students</a></li>
                     </ul>

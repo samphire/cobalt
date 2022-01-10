@@ -8,9 +8,7 @@ import '@fontsource/roboto';
 // Global variables
 
 ReactDOM.render(
-  // <React.StrictMode>
     <App />,
-  // </React.StrictMode>,
   document.getElementById('root')
 );
 
