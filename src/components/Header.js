@@ -7,10 +7,15 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 const useStyles = makeStyles(theme => ({
     logout: {
         fontSize: '2rem',
-        '&:hover':{
+        '&:hover': {
             cursor: 'pointer'
         }
+    },
+    Toolbar: {
+            backgroundColor: '#1976d2',
+        color: 'white'
     }
+
 }))
 
 function Header(props) {
@@ -19,8 +24,8 @@ function Header(props) {
     const classes = useStyles();
     return (
         <AppBar position="static">
-            <Toolbar>
-                <Grid container>
+            <Toolbar className={classes.Toolbar}>
+                <Grid>
                     <div onClick={logout} className={classes.logout}>
                         <EmojiPeopleIcon fontSize="large"/> Logout
                     </div>

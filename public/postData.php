@@ -1,5 +1,9 @@
 <?php
 include "sessionheader.inc";
+
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: *");
+
 if ($_POST['type'] == "student") {
     $sql = "insert into tbl_students(id, name, DOB, join_date, fk_fee_id, pass, mobile, email, notes, pic) VALUES(\"" .
         $_POST['id'] . "\",\"" .
@@ -21,8 +25,6 @@ if ($_POST['type'] == "student") {
 }
 
 if ($_GET['type'] == "students") {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: *");
     $sql = "SELECT * FROM optikon.tbl_students";
     $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
     $array = array();
@@ -64,6 +66,15 @@ if ($_GET['type'] == "individual_test_data") {
     on tbl_tests.id = scores_for_student.test_id
     order by oneshot, score";
     $result = mysqli_query($conn, $sql);
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+}
+if($_GET['type'] == "languages"){
+$sql = "SELECT * FROM optikon.tbl_language";
+$result = mysqli_query($conn, $sql);
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
         array_push($array, $row);

@@ -1,5 +1,3 @@
-import {isArray} from "chart.js/helpers";
-
 export function insertStudent(data) {
     console.log(data)
     Object.values(data).map((i) => {
@@ -15,5 +13,16 @@ export async function getAllStudents() {
             'Content-Type': 'application/json'
         }
     })
-    return await response.json();
+    return response.json();
+}
+
+export async function getLanguages(){
+    const response = await fetch('https://notborder.org/cobalt/postData.php?type=languages', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    return response.json();
 }

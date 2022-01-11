@@ -39,7 +39,7 @@ function App() {
                 <Header clicko={logout}/>
                 <nav>
                     <ul>
-                        <li className={'myNav'}><a href={globalURL + '/q'}>Question Maker</a></li>
+                        <li className={'myNav'}><a href="/cobalt/q">Question Maker</a></li>
                         <li><a href="/cobalt/t">Test Maker</a></li>
                         {/*<li><a href="/cobalt/s">Student Maker</a></li>*/}
                         <li><a href="/cobalt/progress">Progress Report</a></li>
@@ -54,9 +54,9 @@ function App() {
                         <Route path="/cobalt/t">
                             <Testmaker/>
                         </Route>
-                        <Route path="/cobalt/s">
-                            <Studentmaker/>
-                        </Route>
+                        {/*<Route path="/cobalt/s">*/}
+                        {/*    <Studentmaker/>*/}
+                        {/*</Route>*/}
                         <Route path="/cobalt/progress">
                             <ProgressReport/>
                         </Route>
