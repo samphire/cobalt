@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function UseTable(records, headCells) {
+export default function UseTable(records, headCells, filterFn) {
 
     const classes = useStyles()
 
@@ -133,14 +133,9 @@ export default function UseTable(records, headCells) {
     }
 
     const recordsAfterPagingAndSorting = () => {
-        console.log('recs')
-        console.log(page)
-        console.log(rowsPerPage)
-        // console.log(records.length)
         if (records) {
-            return sort(records, getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+            return sort(filterFn.fn(records), getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage)
         }
-
     }
 
     return {

@@ -1,23 +1,31 @@
 <?php
 include "sessionheader.inc";
 
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 
-if ($_POST['type'] == "student") {
-    $sql = "insert into tbl_students(id, name, DOB, join_date, fk_fee_id, pass, mobile, email, notes, pic) VALUES(\"" .
-        $_POST['id'] . "\",\"" .
-        $_POST['name'] . "\",\"" .
-        $_POST['sex'] . "\",\"" .
-        $_POST['language_id'] . "\",\"" .
-        $_POST['DOB'] . "\",\"" .
-        $_POST['join_date'] . "\",\"" .
-        $_POST['pass'] . "\",\"" .
-        $_POST['mobile'] . "\",\"" .
-        $_POST['email'] . "\",\"" .
-        $_POST['notes'] . "\",\"" .
-        $_POST['picURL'] . "\")";
+if ($_GET['type'] == "newStudent") {
 
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+
+    $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
+        $data->id . "\",\"" .
+        $data->name . "\",\"" .
+        $data->dob . "\",\"" .
+        $data->gender . "\",\"" .
+        $data->mobile . "\",\"" .
+        $data->email . "\",\"" .
+        $data->comment . "\",\"" .
+        $data->avatar . "\",\"" .
+        $data->language . "\",\"" .
+        $data->joinDate . "\",\"" .
+        $data->lastActiveDate . "\"," .
+        $data->isActive . ",\"" .
+        $data->guardianName . "\",\"" .
+        $data->guardianMobile . "\")";
+
+    echo $sql;
 
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn));
 
@@ -72,9 +80,9 @@ if ($_GET['type'] == "individual_test_data") {
     }
     echo json_encode($array);
 }
-if($_GET['type'] == "languages"){
-$sql = "SELECT * FROM optikon.tbl_language";
-$result = mysqli_query($conn, $sql);
+if ($_GET['type'] == "languages") {
+    $sql = "SELECT * FROM optikon.tbl_language";
+    $result = mysqli_query($conn, $sql);
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
         array_push($array, $row);

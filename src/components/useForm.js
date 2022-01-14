@@ -9,21 +9,21 @@ const useStyles = makeStyles(theme => ({
             margin: theme.spacing(1),
         },
         '& .MuiFormLabel-root, .MuiSelect-root': {
-            fontSize: '1.6rem',
+            // fontSize: '1.6rem',
         },
         '& .MuiInputBase-input': {
-            fontSize: '1.6rem',
+            // fontSize: '1.6rem',
             color: '#be152a',
             fontWeight: '500'
         },
         '& .MuiFormControlLabel-label': {
-            fontSize: '1.6rem'
+            // fontSize: '1.6rem'
         },
         '& .PrivateNotchedOutline-legendLabelled-9': {
-            fontSize: '1.4rem'
+            // fontSize: '1.4rem'
         },
         '& .MuiFormHelperText-root': {
-            fontSize: '1.2rem'
+            // fontSize: '1.2rem'
         }
     }
 }))

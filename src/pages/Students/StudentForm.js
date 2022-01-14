@@ -9,11 +9,12 @@ const initialFieldValues = {
     id: 'cjs001',
     name: '',
     dob: new Date("2005-07-01"),
-    gender: 'male',
+    gender: 'm',
     language: '',
     email: '',
     mobile: '',
     guardianName: '',
+    guardianMobile: '',
     avatar: '',
     comment: '',
     joinDate: new Date(),
@@ -27,9 +28,9 @@ const languages = [
     {id: 4, title: 'Chinese'}
 ];
 const genderItems = [
-    {id: 'male', title: 'Male'},
-    {id: 'female', title: 'Female'},
-    {id: 'alien', title: 'Alien '}
+    {id: 'm', title: '남자'},
+    {id: 'f', title: '여자'},
+    {id: 'a', title: '외개인'}
 ]
 
 
@@ -39,7 +40,7 @@ export default function StudentForm(props) {
         let temp = {}
         temp.name = values.name ? "" : "이름이 필수 입니다"
         temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
-        temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
+        temp.mobile = (/^\d{1}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
         temp.language = values.language?"": "언어가 필수 입니다"
         setErrors({
             ...temp
@@ -66,7 +67,7 @@ export default function StudentForm(props) {
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={12} sm={6} xl={4}>
+                <Grid item xs={12} sm={6}>
                     <Controls.Input
                         label="ID"
                         value={values.id}
@@ -75,50 +76,50 @@ export default function StudentForm(props) {
                         disabled
                     />
                     <Controls.Input
-                        label="Name"
+                        label="성암"
                         error={errors.name}
                         value={values.name}
                         name="name"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
-                        label="Email"
+                        label="전자메일"
                         error={errors.email}
                         value={values.email}
                         name="email"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
-                        label="Cellphone"
+                        label="휴대폰"
                         error={errors.mobile}
                         value={values.mobile}
                         name="mobile"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="DOB"
+                        label="탄생날"
                         value={values.dob}
                         name="dob"
                         onChange={handleInputChange}
                     />
                     <Controls.RadioGroup
                         name="gender"
-                        label="Gender"
+                        label="성별"
                         value={values.gender}
                         onChange={handleInputChange}
                         items={genderItems}
                     />
                     <Controls.Checkbox
-                        label="Is Active?"
+                        label="활성?"
                         value={values.isActive}
                         name="isActive"
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} xl={4}>
+                <Grid item xs={12} sm={6}>
                     <Controls.Select
                         name="language"
-                        label="First Language"
+                        label="언어"
                         value={values.language}
                         onChange={handleInputChange}
                         options={languages}
@@ -126,33 +127,41 @@ export default function StudentForm(props) {
                     />
                     <Controls.Input
                         variant="outlined"
-                        label="Guardian Name"
+                        label="보호자 성암"
                         value={values.guardianName}
                         name="guardianName"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
                         variant="outlined"
-                        label="Avatar"
-                        value={values.avatar}
-                        name="avatar"
+                        label="보호자 전화번호"
+                        error={errors.mobile}
+                        value={values.guardianMobile}
+                        name="guardianMobile"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
                         variant="outlined"
-                        label="Comment"
+                        label="사진"
+                        value={values.avatar}
+                        name="Avatar"
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Input
+                        variant="outlined"
+                        label="주석"
                         value={values.comment}
                         name="comment"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="Join Date"
+                        label="가입날"
                         value={values.joinDate}
                         name="joinDate"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="Last Active"
+                        label="전활성날"
                         value={values.lastActiveDate}
                         name="lastActiveDate"
                         onChange={handleInputChange}

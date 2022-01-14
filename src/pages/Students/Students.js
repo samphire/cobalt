@@ -2,10 +2,14 @@ import React, {useEffect, useState} from 'react';
 import StudentForm from "./StudentForm";
 import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
 import PageHeader from "../../components/PageHeader";
-import {makeStyles, Paper, TableBody, TableCell, TableRow} from "@material-ui/core";
+import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar} from "@material-ui/core";
 import useTable from "../../components/useTable"
 import * as studentService from "../../services/studentService"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Controls from '../../components/controls/Controls'
+import {Search} from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/Add"
+import Popup from "../../components/Popup"
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -15,7 +19,13 @@ const useStyles = makeStyles(theme => ({
             fontSize: '12px',
             borderRight: '1px solid silver'
         },
-
+    },
+    searchInput: {
+        width: '15%'
+    },
+    oblong: {
+        position: 'absolute',
+        right: '10px'
     }
 }))
 
@@ -41,12 +51,15 @@ export default function Students(props) {
 
     const classes = useStyles();
     const [records, setRecords] = useState(null);
+    const [filterFn, setFilterFn] = useState({fn: items => (items)});
+    const [openPopup, setOpenPopup] = useState(false);
+
     const {
         TblContainer,
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(records, headCells);
+    } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
         let students = await studentService.getAllStudents()
@@ -54,12 +67,24 @@ export default function Students(props) {
         const studs = students.map(x => ({
                 ...x,
                 languageName: languages[x.language_id - 1].name,
-                isActive: x.isActive?<CheckCircleOutlineIcon fontSize='large'/>:'no'
+                isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
             }
         ))
         console.log(studs)
         setRecords(studs)
     }, []);
+
+    const handleSearch = e => {
+        let target = e.target
+        setFilterFn({
+            fn: items => {
+                if (target.value == "")
+                    return items;
+                else
+                    return items.filter(x => x.name.toLowerCase().includes(target.value))
+            }
+        })
+    }
 
     return (
         <>
@@ -67,7 +92,29 @@ export default function Students(props) {
                         icon={<PeopleOutlineTwoToneIcon fontSize="xx-large"/>}
             />
             <Paper className={classes.pageContent}>
-                {/*    /!*<StudentForm/>*!/*/}
+
+                <Toolbar>
+                    <Controls.Input
+                        label="검색"
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start">
+                                <Search/>
+                            </InputAdornment>)
+                        }}
+                        className={classes.searchInput}
+                        onChange={handleSearch}
+                    />
+                    <Controls.Button
+                        text="Add New"
+                        variant="outlined"
+                        startIcon={<AddIcon/>}
+                        onClick={() => {
+                            setOpenPopup(true);
+                        }}
+                        style={{position: 'absolute', right: '10px'}}
+                        // className={classes.oblong}
+                    />
+                </Toolbar>
                 <TblContainer>
                     <TblHead/>
                     <TableBody>
@@ -101,6 +148,13 @@ export default function Students(props) {
                 </TblContainer>
                 <TblPagination/>
             </Paper>
+            <Popup
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+                title="학생 만들기 "
+            >
+                <StudentForm/>
+            </Popup>
         </>
     )
 }

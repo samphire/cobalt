@@ -3,7 +3,6 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './App.css';
 import Testmaker from './components/Testmaker'
 import Questionmaker from "./components/Questionmaker";
-import Studentmaker from "./components/Studentmaker";
 import ProgressReport from "./components/ProgressReport";
 import Students from "./pages/Students/Students";
 import Login from "./pages/Login"
@@ -41,7 +40,6 @@ function App() {
                     <ul>
                         <li className={'myNav'}><a href="/cobalt/q">Question Maker</a></li>
                         <li><a href="/cobalt/t">Test Maker</a></li>
-                        {/*<li><a href="/cobalt/s">Student Maker</a></li>*/}
                         <li><a href="/cobalt/progress">Progress Report</a></li>
                         <li><a href="/cobalt/students">Students</a></li>
                     </ul>
@@ -54,10 +52,7 @@ function App() {
                         <Route path="/cobalt/t">
                             <Testmaker/>
                         </Route>
-                        {/*<Route path="/cobalt/s">*/}
-                        {/*    <Studentmaker/>*/}
-                        {/*</Route>*/}
-                        <Route path="/cobalt/progress">
+                                            <Route path="/cobalt/progress">
                             <ProgressReport/>
                         </Route>
                         <Route path="/cobalt/students">

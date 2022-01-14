@@ -120,7 +120,6 @@ export default function Questionmaker() {
         console.log(questionData)
     }
 
-
     function deleteQuestion() {
         alert("not implemented yet");
         // console.log(idx + "," + max);
@@ -190,7 +189,6 @@ export default function Questionmaker() {
 
     return (
         <>
-
             <image></image>
             <img src={girl} alt='image of girl'
                  style={{float: 'left', width: '400px', position: 'absolute', left: '100px', top: '40px'}}/>
