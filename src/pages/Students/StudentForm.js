@@ -1,24 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
-import {insertStudent} from "../../services/studentService";
 
 const initialFieldValues = {
     id: 'cjs001',
     name: '',
-    dob: new Date("2005-07-01"),
-    gender: 'm',
-    language: '',
+    DOB: new Date("2005-07-01"),
+    sex: 'm',
+    language_id: 1,
     email: '',
     mobile: '',
     guardianName: '',
     guardianMobile: '',
-    avatar: '',
-    comment: '',
-    joinDate: new Date(),
-    lastActiveDate: new Date(),
+    picUrl: '',
+    notes: '',
+    join_date: new Date(),
+    last_active_date: new Date(),
     isActive: false
 }
 const languages = [
@@ -36,12 +35,14 @@ const genderItems = [
 
 export default function StudentForm(props) {
 
+    const {addOrEdit, recordForEdit} = props;
+
     const validate = () => {
         let temp = {}
         temp.name = values.name ? "" : "이름이 필수 입니다"
         temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
         temp.mobile = (/^\d{1}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
-        temp.language = values.language?"": "언어가 필수 입니다"
+        temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
         setErrors({
             ...temp
         })
@@ -55,14 +56,20 @@ export default function StudentForm(props) {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        resetForm,
+        isEdit
     } = UseForm(initialFieldValues);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate())
-            insertStudent(values)
+            addOrEdit(values, resetForm)
     }
+
+    useEffect(() => {
+        if (recordForEdit != null)
+            setValues({...recordForEdit})
+    }, [recordForEdit])
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -73,7 +80,7 @@ export default function StudentForm(props) {
                         value={values.id}
                         name="id"
                         onChange={handleInputChange}
-                        disabled
+                        // disabled
                     />
                     <Controls.Input
                         label="성암"
@@ -98,14 +105,14 @@ export default function StudentForm(props) {
                     />
                     <Controls.DatePicker
                         label="탄생날"
-                        value={values.dob}
-                        name="dob"
+                        value={values.DOB}
+                        name="DOB"
                         onChange={handleInputChange}
                     />
                     <Controls.RadioGroup
-                        name="gender"
+                        name="sex"
                         label="성별"
-                        value={values.gender}
+                        value={values.sex}
                         onChange={handleInputChange}
                         items={genderItems}
                     />
@@ -118,9 +125,9 @@ export default function StudentForm(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Controls.Select
-                        name="language"
+                        name="language_id"
                         label="언어"
-                        value={values.language}
+                        value={values.language_id}
                         onChange={handleInputChange}
                         options={languages}
                         error={errors.language}
@@ -143,27 +150,27 @@ export default function StudentForm(props) {
                     <Controls.Input
                         variant="outlined"
                         label="사진"
-                        value={values.avatar}
-                        name="Avatar"
+                        value={values.picUrl}
+                        name="picUrl"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
                         variant="outlined"
                         label="주석"
-                        value={values.comment}
-                        name="comment"
+                        value={values.notes}
+                        name="notes"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
                         label="가입날"
-                        value={values.joinDate}
-                        name="joinDate"
+                        value={values.join_date}
+                        name="join_date"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
                         label="전활성날"
-                        value={values.lastActiveDate}
-                        name="lastActiveDate"
+                        value={values.last_active_date}
+                        name="last_active_date"
                         onChange={handleInputChange}
                     />
                     <div>

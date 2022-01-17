@@ -8,28 +8,45 @@ if ($_GET['type'] == "newStudent") {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
+    $msg = "student ";
 
-    $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
-        $data->id . "\",\"" .
-        $data->name . "\",\"" .
-        $data->dob . "\",\"" .
-        $data->gender . "\",\"" .
-        $data->mobile . "\",\"" .
-        $data->email . "\",\"" .
-        $data->comment . "\",\"" .
-        $data->avatar . "\",\"" .
-        $data->language . "\",\"" .
-        $data->joinDate . "\",\"" .
-        $data->lastActiveDate . "\"," .
-        $data->isActive . ",\"" .
-        $data->guardianName . "\",\"" .
-        $data->guardianMobile . "\")";
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "update tbl_students set name = '$data->name', DOB ='$data->DOB'
+        ,sex = '$data->sex'
+        ,mobile = '$data->mobile'
+        ,email = '$data->email'
+        ,notes = '$data->notes'
+        ,picUrl ='$data->picUrl'
+        ,language_id = '$data->language_id'
+        ,join_date = '$data->join_date'
+        ,last_active_date = '$data->last_active_date'
+        ,isActive = $data->isActive
+        ,guardian_name = '$data->guardianName'
+        ,guardian_mobile ='$data->guardianMobile'
+        where id='$data->id'";
+    } else {
+        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
+            $data->id . "\",\"" .
+            $data->name . "\",\"" .
+            $data->DOB . "\",\"" .
+            $data->sex . "\",\"" .
+            $data->mobile . "\",\"" .
+            $data->email . "\",\"" .
+            $data->notes . "\",\"" .
+            $data->picUrl . "\",\"" .
+            $data->language_id . "\",\"" .
+            $data->join_date . "\",\"" .
+            $data->last_active_date . "\"," .
+            $data->isActive . ",\"" .
+            $data->guardianName . "\",\"" .
+            $data->guardianMobile . "\")";
+        $msg .= "added";
+    }
 
-    echo $sql;
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn));
-
-    print "<h1>New Student Added</h1>";
+    print $msg;
 }
 
 if ($_GET['type'] == "students") {

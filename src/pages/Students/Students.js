@@ -10,14 +10,20 @@ import Controls from '../../components/controls/Controls'
 import {Search} from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add"
 import Popup from "../../components/Popup"
+import {insertOrUpdateStudent} from "../../services/studentService";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
         margin: theme.spacing(5),
         padding: theme.spacing(3),
         '& .MuiTableCell-root': {
-            fontSize: '12px',
-            borderRight: '1px solid silver'
+            fontSize: '14px',
+            fontWeight: 400,
+            borderRight: '1px solid silver',
+            paddingTop: '8px',
+            paddingBottom: '8px'
         },
     },
     searchInput: {
@@ -26,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     oblong: {
         position: 'absolute',
         right: '10px'
+    },
+    tCells: {
+        textAlign: "center"
     }
 }))
 
@@ -45,14 +54,18 @@ const headCells = [
     {id: 'pass', label: '암호', disableSorting: true},
     {id: 'picUrl', label: '사진', disableSorting: true},
     {id: 'isActive', label: '활성'},
+    {id: 'actions', label: 'Actions', disableSorting: true}
 ]
 
 export default function Students(props) {
 
     const classes = useStyles();
+    const [recordForEdit, setRecordForEdit] = useState(null)
+    const [isEdit, setIsEdit] = useState("false")
     const [records, setRecords] = useState(null);
     const [filterFn, setFilterFn] = useState({fn: items => (items)});
     const [openPopup, setOpenPopup] = useState(false);
+    const [refreshRecords, setRefreshRecords] = useState(0)
 
     const {
         TblContainer,
@@ -72,7 +85,12 @@ export default function Students(props) {
         ))
         console.log(studs)
         setRecords(studs)
-    }, []);
+    }, [refreshRecords]);
+
+    // useEffect(async () => {
+    //     setRecords(await studentService.getAllStudents())
+    // }, [refreshRecords])
+
 
     const handleSearch = e => {
         let target = e.target
@@ -84,6 +102,22 @@ export default function Students(props) {
                     return items.filter(x => x.name.toLowerCase().includes(target.value))
             }
         })
+    }
+
+    const addOrEdit = (student, resetForm) => {
+        console.warn(student);
+        insertOrUpdateStudent(student, {isEdit}).then()
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
+        setRefreshRecords((num) => ++num)
+        setIsEdit("false")
+        console.log(refreshRecords)
+    }
+
+    const openInPopup = item => {
+        setRecordForEdit(item)
+        setOpenPopup(true)
     }
 
     return (
@@ -109,7 +143,9 @@ export default function Students(props) {
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
-                            setOpenPopup(true);
+                            setIsEdit("false")
+                            setRecordForEdit(null)
+                            setOpenPopup(true)
                         }}
                         style={{position: 'absolute', right: '10px'}}
                         // className={classes.oblong}
@@ -139,7 +175,24 @@ export default function Students(props) {
                                         <TableCell>{item.notes}</TableCell>
                                         <TableCell>{item.pass}</TableCell>
                                         <TableCell>{item.picUrl}</TableCell>
-                                        <TableCell>{item.isActive}</TableCell>
+                                        <TableCell className={classes.tCells}>{item.isActive}</TableCell>
+                                        <TableCell className={classes.tCells}>
+                                            <Controls.ActionButton
+                                                color="primary"
+                                                onClick={() => {
+                                                    setIsEdit("true")
+                                                    openInPopup(item)
+                                                }
+                                                }
+                                            >
+                                                <EditOutlinedIcon fontSize="small"/>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                color="secondary"
+                                            >
+                                                <CloseIcon fontSize="small"/>
+                                            </Controls.ActionButton>
+                                        </TableCell>
                                     </TableRow>)
                                 )
                             )
@@ -153,7 +206,10 @@ export default function Students(props) {
                 setOpenPopup={setOpenPopup}
                 title="학생 만들기 "
             >
-                <StudentForm/>
+                <StudentForm
+                    recordForEdit={recordForEdit}
+                    addOrEdit={addOrEdit}
+                />
             </Popup>
         </>
     )

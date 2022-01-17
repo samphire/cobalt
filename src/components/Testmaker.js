@@ -29,7 +29,7 @@ export default function Testmaker(props) {
             description: document.getElementById('textDesc').value,
             retain: -document.getElementById('retain').checked || 0,
             oneshot: -state.mySwitch || 0,
-            timer: (document.getElementById('fucker') === null ? 0 : document.getElementById('fucker').children[2].value)
+            // timer: (document.getElementById('mucker') === null ? 0 : document.getElementById('mucker').children[2].value)
         };
         console.log(myData);
 

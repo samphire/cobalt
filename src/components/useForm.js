@@ -39,6 +39,10 @@ export function UseForm(initialValues) {
             ...values,
             [name]: value
         })
+        console.log('in useForm handle input hange:');
+        console.log(name);
+        console.log(value);
+        console.log(values);
     }
 
     const resetForm = () => {
