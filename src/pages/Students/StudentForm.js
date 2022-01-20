@@ -22,9 +22,9 @@ const initialFieldValues = {
 }
 const languages = [
     {id: 1, title: 'English'},
-    {id: 2, title: 'Korean'},
-    {id: 3, title: 'Russian'},
-    {id: 4, title: 'Chinese'}
+    {id: 2, title: 'Russian'},
+    {id: 3, title: 'Chinese'},
+    {id: 4, title: 'Korean'}
 ];
 const genderItems = [
     {id: 'm', title: '남자'},
@@ -41,7 +41,7 @@ export default function StudentForm(props) {
         let temp = {}
         temp.name = values.name ? "" : "이름이 필수 입니다"
         temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
-        temp.mobile = (/^\d{1}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
+        temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
         temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
         setErrors({
             ...temp

@@ -1,7 +1,5 @@
 import React from 'react';
-import {AppBar, Toolbar} from "@mui/material";
-import {makeStyles} from "@mui/styles"
-import {Grid} from "@material-ui/core";
+import {AppBar, Grid, makeStyles, Toolbar} from "@material-ui/core";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
 const useStyles = makeStyles(theme => ({
@@ -9,13 +7,14 @@ const useStyles = makeStyles(theme => ({
         fontSize: '2rem',
         '&:hover': {
             cursor: 'pointer'
-        }
+        },
+        padding: 0,
+        margin: 0
     },
     Toolbar: {
-            backgroundColor: '#1976d2',
+        backgroundColor: '#1976d2',
         color: 'white'
     }
-
 }))
 
 function Header(props) {
@@ -23,7 +22,7 @@ function Header(props) {
     const logout = props.clicko
     const classes = useStyles();
     return (
-        <AppBar position="static">
+        <AppBar position="static" className={classes.fuck}>
             <Toolbar className={classes.Toolbar}>
                 <Grid>
                     <div onClick={logout} className={classes.logout}>

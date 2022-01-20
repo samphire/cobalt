@@ -2,7 +2,16 @@ import React, {useEffect, useState} from 'react';
 import StudentForm from "./StudentForm";
 import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
 import PageHeader from "../../components/PageHeader";
-import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar} from "@material-ui/core";
+import {
+    InputAdornment,
+    makeStyles,
+    Paper,
+    TableBody,
+    TableCell,
+    TableRow,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import useTable from "../../components/useTable"
 import * as studentService from "../../services/studentService"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -10,12 +19,15 @@ import Controls from '../../components/controls/Controls'
 import {Search} from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add"
 import Popup from "../../components/Popup"
-import {insertOrUpdateStudent} from "../../services/studentService";
+import {deleteStudent, insertOrUpdateStudent} from "../../services/studentService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
+import Notification from "../../components/Notification"
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
+        // fontFamily: "'Noto Serif KR', serif",
         margin: theme.spacing(5),
         padding: theme.spacing(3),
         '& .MuiTableCell-root': {
@@ -35,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     },
     tCells: {
         textAlign: "center"
+    },
+    toolbar:{
+        justifyContent: 'space-between'
     }
 }))
 
@@ -66,6 +81,8 @@ export default function Students(props) {
     const [filterFn, setFilterFn] = useState({fn: items => (items)});
     const [openPopup, setOpenPopup] = useState(false);
     const [refreshRecords, setRefreshRecords] = useState(0)
+    const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
     const {
         TblContainer,
@@ -113,7 +130,28 @@ export default function Students(props) {
         setRefreshRecords((num) => ++num)
         setIsEdit("false")
         console.log(refreshRecords)
+        setNotify({
+            isOpen: true,
+            message: 'successfully added student',
+            type: 'success'
+        })
     }
+
+    const onDelete = id => {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        deleteStudent(id).then(() => {
+            setRefreshRecords((num) => ++num)
+            setNotify({
+                isOpen: true,
+                message: 'successfully deleted student',
+                type: 'error'
+            })
+        });
+    }
+
 
     const openInPopup = item => {
         setRecordForEdit(item)
@@ -122,12 +160,12 @@ export default function Students(props) {
 
     return (
         <>
-            <PageHeader title="New Student" subTitle="Add or Update student"
-                        icon={<PeopleOutlineTwoToneIcon fontSize="xx-large"/>}
-            />
+            {/*<PageHeader title="New Student" subTitle="Add or Update student"*/}
+            {/*            icon={<PeopleOutlineTwoToneIcon fontSize="xx-large"/>}*/}
+            {/*/>*/}
             <Paper className={classes.pageContent}>
 
-                <Toolbar>
+                <Toolbar className={classes.toolbar}>
                     <Controls.Input
                         label="검색"
                         InputProps={{
@@ -137,9 +175,15 @@ export default function Students(props) {
                         }}
                         className={classes.searchInput}
                         onChange={handleSearch}
+                        placeholder={"이름"}
+                        // style={{position: 'absolute', left: '20px'}}
                     />
+                    <Typography
+                        variant="h3">
+                        학생들
+                    </Typography>
                     <Controls.Button
-                        text="Add New"
+                        text="학생 주가"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
@@ -147,8 +191,7 @@ export default function Students(props) {
                             setRecordForEdit(null)
                             setOpenPopup(true)
                         }}
-                        style={{position: 'absolute', right: '10px'}}
-                        // className={classes.oblong}
+                        // style={{position: 'absolute', right: '10px'}}
                     />
                 </Toolbar>
                 <TblContainer>
@@ -189,6 +232,16 @@ export default function Students(props) {
                                             </Controls.ActionButton>
                                             <Controls.ActionButton
                                                 color="secondary"
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure you want to delete this student?',
+                                                        subTitle: 'You cannot undo this operation',
+                                                        onConfirm: () => {
+                                                            onDelete(item.id)
+                                                        }
+                                                    })
+                                                }}
                                             >
                                                 <CloseIcon fontSize="small"/>
                                             </Controls.ActionButton>
@@ -211,6 +264,14 @@ export default function Students(props) {
                     addOrEdit={addOrEdit}
                 />
             </Popup>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
         </>
     )
 }

@@ -267,7 +267,7 @@ function progress(percent) {
     const startDate = new Date("2021-09-01");
     const endDate = new Date("2021-12-25");
     const diff = Math.ceil((endDate - startDate) / day);
-    const timeProg = Math.ceil((((now - startDate) / day) / diff) * 100);
+    const timeProg = Math.min(100, Math.ceil((((now - startDate) / day) / diff) * 100));
 
     console.log("timeprog is " + timeProg);
 

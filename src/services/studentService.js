@@ -22,6 +22,17 @@ export async function insertOrUpdateStudent(data, isEdit) {
     return response.json();
 }
 
+export async function deleteStudent(id) {
+
+    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delStud&studid=" + id, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'text/plain'
+        },
+    })
+    return response.text();
+}
+
 export async function getAllStudents() {
     const response = await fetch("https://notborder.org/cobalt/postData.php?type=students", {
         method: 'GET',
