@@ -192,7 +192,7 @@ export default function Questionmaker() {
     }
 
     return (
-        <>
+        <><h1>Set Test Questions</h1>
             <image></image>
             <img src={girl} alt='image of girl'
                  style={{position: 'absolute', width: '300px'}}/>

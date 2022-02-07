@@ -18,16 +18,23 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Header(props) {
-
     const logout = props.clicko
     const classes = useStyles();
     return (
-        <AppBar position="static" className={classes.fuck}>
+        <AppBar position="static">
             <Toolbar className={classes.Toolbar}>
-                <Grid>
-                    <div onClick={logout} className={classes.logout}>
+                <Grid container justifyContent="space-between" alignItems="center">
+                    <Grid item onClick={logout} className={classes.logout} xs={1}>
                         <EmojiPeopleIcon fontSize="large"/> Logout
-                    </div>
+                    </Grid>
+                    <Grid item xs={3}/>
+                    <Grid item xs={1}><a href="/cobalt/q">Question Maker</a></Grid>
+                    <Grid item xs={1}><a href="/cobalt/t">Test Maker</a></Grid>
+                    <Grid item xs={1}><a href="/cobalt/progress">Progress Report</a></Grid>
+                    <Grid item xs={1}><a href="/cobalt/students">Students</a></Grid>
+                    <Grid item xs={1}><a href="/cobalt/tests">Tests</a></Grid>
+                    <Grid item xs={3}/>
+
                 </Grid>
             </Toolbar>
         </AppBar>
