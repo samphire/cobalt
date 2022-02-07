@@ -53,6 +53,10 @@ if ($_GET['type'] == 'delStud') {
     header("Access-Control-Allow-Methods: DELETE");
     $sql = "delete from tbl_students where id='" . $_GET['studid'] . "'";
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting student\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    $sql = "delete from lnk_student_class where student_id='" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting student\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
     echo "deleted";
 }
 

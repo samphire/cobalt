@@ -8,11 +8,6 @@ import Students from "./pages/Students/Students";
 import Login from "./pages/Login"
 import Header from "./components/Header";
 
-//global urls
-// const globalURL = "http://localhost/cobalt";
-const globalURL = "https://notborder.org/cobalt"
-
-
 function App() {
 
     const [isLoggedin, setIsLoggedin] = useState(false);
@@ -42,6 +37,7 @@ function App() {
                         <li><a href="/cobalt/t">Test Maker</a></li>
                         <li><a href="/cobalt/progress">Progress Report</a></li>
                         <li><a href="/cobalt/students">Students</a></li>
+                        <li><a href="/cobalt/tests">Tests</a></li>
                     </ul>
                 </nav>
                 <BrowserRouter>
@@ -57,6 +53,9 @@ function App() {
                         </Route>
                         <Route path="/cobalt/students">
                             <Students/>
+                        </Route>
+                        <Route path="/cobalt/tests">
+                            <Tests/>
                         </Route>
                     </Switch>
                 </BrowserRouter>

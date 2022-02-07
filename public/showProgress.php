@@ -7,7 +7,9 @@ header('Content-Type: text/plain');
 $myConn = mysqli_connect("localhost", "root", "Fk!i=a0@:K") or die('Error making custom mysqli connection' . mysqli_connect_error());
 $sql="drop table if exists optikon.BOB";
 $result = mysqli_query($myConn, $sql) or die("1".mysqli_error($myConn));
-$sql="create temporary table optikon.BOB SELECT student_id as id, coalesce(round(cash_earned/60), 0) AS MathPerc FROM
+
+// cash earned is divided by 161, because a user who has completed all 14 stories will have earned 16100 points. This might take two semesters??
+$sql="create temporary table optikon.BOB SELECT student_id as id, coalesce(round(cash_earned/161), 0) AS MathPerc FROM
 optikon.lnk_student_class left join math.tbl_user on tbl_user.id = lnk_student_class.student_id where lnk_student_class.class_id={$_GET['classid']};";
 $result = mysqli_query($myConn, $sql) or die("2".mysqli_error($myConn));
 $sql="drop table if exists optikon.duck";
