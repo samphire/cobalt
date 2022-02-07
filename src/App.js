@@ -31,7 +31,7 @@ function App() {
         return (
             <div className="App">
                 <Header clicko={logout}/>
-                <nav>
+                <nav style={{marginBottom: '20px'}}>
                     <ul>
                         <li className={'myNav'}><a href="/cobalt/q">Question Maker</a></li>
                         <li><a href="/cobalt/t">Test Maker</a></li>
@@ -48,15 +48,15 @@ function App() {
                         <Route path="/cobalt/t">
                             <Testmaker/>
                         </Route>
-                                            <Route path="/cobalt/progress">
+                        <Route path="/cobalt/progress">
                             <ProgressReport/>
                         </Route>
                         <Route path="/cobalt/students">
                             <Students/>
                         </Route>
-                        <Route path="/cobalt/tests">
-                            <Tests/>
-                        </Route>
+                        {/*<Route path="/cobalt/tests">*/}
+                        {/*    <Tests/>*/}
+                        {/*</Route>*/}
                     </Switch>
                 </BrowserRouter>
             </div>

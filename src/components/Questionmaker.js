@@ -3,6 +3,10 @@ import './Questionmaker.css'
 import girl from '../img/girl.png'
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+import {Grid} from "@mui/material";
+// import {Grid} from "@material-ui/core";
+
+
 
 let QArr = [];
 let idx = 0;
@@ -191,151 +195,154 @@ export default function Questionmaker() {
         <>
             <image></image>
             <img src={girl} alt='image of girl'
-                 style={{float: 'left', width: '400px', position: 'absolute', left: '100px', top: '40px'}}/>
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-2">
-                        <div className="input">
-                            <label htmlFor="testid">Test ID</label>
-                            <input type="text"
-                                   value={questionData.testid}
-                                   style={{
-                                       width: 100 + '%',
-                                       paddingLeft: 20 + '%',
-                                       fontSize: 48 + 'px',
-                                       fontWeight: 'bolder'
-                                   }}
-                                   id="testid"
-                                   onChange={(e) => {
-                                       setQuestionData({...questionData, testid: e.target.value})
-                                       initialState.testid = e.target.value
-                                   }}
-                            />
-                        </div>
-                        <div className="input">
-                            <label htmlFor="qnum">Question Number</label>
-                            <input type="text"
-                                   value={questionData.qnum}
-                                   style={{
-                                       width: 100 + '%',
-                                       paddingLeft: 20 + '%',
-                                       fontSize: 48 + 'px',
-                                       fontWeight: 'bolder'
-                                   }} id="qnum"
-                                   onChange={e => setQuestionData({...questionData, qnum: parseInt(e.target.value)})}/>
-                        </div>
-                        <button onClick={setMultiGuess}>1, 2, 3, 4</button>
-                    </div>
+                 style={{position: 'absolute', width: '300px'}}/>
+            <Grid container spacing={8}>
+                <Grid item md={2}/>
+                <Grid item md={1} container direction="column" alignItems="flex-end">
 
-                    <div className="col-sm-4">
-                        <div className="form-style-8">
-                            <label htmlFor="text1">Question Text</label>
-                            <input type="text" value={questionData.text1} id="text1"
-                                   onChange={e => setQuestionData({...questionData, text1: e.target.value})}
-                            />
-                            <label htmlFor="text2">Option 1</label>
-                            <input type="text" value={questionData.text2} id="text2"
-                                   onChange={e => setQuestionData({...questionData, text2: e.target.value})}
-                            />
-                            <label htmlFor="text3">Option 2</label>
-                            <input type="text" value={questionData.text3} id="text3"
-                                   onChange={e => setQuestionData({...questionData, text3: e.target.value})}
-                            />
-                            <label htmlFor="text4">Option 3</label>
-                            <input type="text" value={questionData.text4} id="text4"
-                                   onChange={e => setQuestionData({...questionData, text4: e.target.value})}
-                            />
-                            <label htmlFor="text5">Option 4</label>
-                            <input type="text" value={questionData.text5} id="text5"
-                                   onChange={e => setQuestionData({...questionData, text5: e.target.value})}
-                            />
-                            <label htmlFor="text6">Option 5</label>
-                            <input type="text" value={questionData.text6} id="text6"
-                                   onChange={e => setQuestionData({...questionData, text6: e.target.value})}
-                            />
-                            <label htmlFor="text7">Option 6</label>
-                            <input type="text" value={questionData.text7} id="text7"
-                                   onChange={e => setQuestionData({...questionData, text7: e.target.value})}
-                            />
-                            <label htmlFor="answer">Answer</label>
-                            <input type="text" value={questionData.answer} id="answer"
-                                   onChange={e => setQuestionData({...questionData, answer: e.target.value})}
-                            />
-                        </div>
+                    <div>
+                        <label htmlFor="testid">Test ID</label>
+                        <br/>
+                        <input type="text"
+                               value={questionData.testid}
+                               style={{
+                                   width: "100px",
+                                   fontSize: 48 + 'px',
+                                   fontWeight: 'bolder'
+                               }}
+                               id="testid"
+                               onChange={(e) => {
+                                   setQuestionData({...questionData, testid: e.target.value})
+                                   initialState.testid = e.target.value
+                               }}
+                        />
                     </div>
-                    <div className="col-sm-4">
-                        <div className="form-style-8">
-                            <label>Type</label>
-                            <div style={{marginLeft: '30%', marginTop: -20 + 'px'}}>
-                                <label style={{marginRight: '8px'}}>
-                                    <input type="radio" name="type" id="1" value="1"
-                                           checked={questionData.type === 1}
-                                           onChange={setType}
-                                    />
-                                    Text Input
-                                </label><br/>
-                                <label style={{marginRight: '8px'}}>
-                                    <input type="radio" name="type" id="3" value="3"
-                                           checked={questionData.type === 3}
-                                           onChange={setType}
-                                    />
-                                    Radio Buttons
-                                </label><br/>
-                                <label style={{marginRight: '8px'}}>
-                                    <input type="radio" name="type" id="4" value="4"
-                                           checked={questionData.type === 4}
-                                           onChange={setType}
-                                    />
-                                    Audio
-                                </label><br/>
-                                <label style={{marginRight: '8px'}}>
-                                    <input type="radio" name="type" id="5" value="5"
-                                           checked={questionData.type === 5}
-                                           onChange={setType}
-                                    />
-                                    multi-select
-                                </label><br/>
-                                <label style={{marginRight: '8px'}}>
-                                    <input type="radio" name="type" id="6" value="6"
-                                           checked={questionData.type === 6}
-                                           onChange={setType}
-                                    />
-                                    Arrange Pieces
-                                </label>
-                            </div>
-                            <label htmlFor="rubrik">Rubrik</label>
-                            <input type="text" value={questionData.rubrik} id="rubrik" onChange={(e) => {
-                                setQuestionData({...questionData, rubrik: e.target.value})
-                            }}/>
-                            <label htmlFor="image">image</label>
-                            <input type="text" value={questionData.image} id="image" onChange={(e) => {
-                                setQuestionData({...questionData, image: e.target.value})
-                                initialState.image = questionData.image
-                            }}/>
-                            <label htmlFor="audio">audio</label>
-                            <input type="text" value={questionData.audio} id="audio" onChange={(e) => {
-                                setQuestionData({...questionData, audio: e.target.value})
-                            }}/>
-                            <label htmlFor="video">video</label>
-                            <input type="text" value={questionData.video} id="video" onChange={(e) => {
-                                setQuestionData({...questionData, video: e.target.value})
-                            }}/>
-                        </div>
-                        <div style={{textAlign: 'center'}}>
-                            <button onClick={goLeft} ref={left}
-                                    style={{float: 'left', marginLeft: '8%', marginTop: '-20px'}}>&#x21D0;</button>
-                            <button onClick={deleteQuestion} ref={del} style={{display: 'inline'}}>DELETE</button>
-                            <button onClick={goRight} ref={right}
-                                    style={{float: 'right', marginRight: '8%', marginTop: '-20px'}}>&#x21D2;</button>
-                        </div>
-                        <div>
-                            <button onClick={(event) => submitQuestions(event)} style={{marginTop: '50px'}}>Submit All
-                                Questions
-                            </button>
-                        </div>
+                    <br/>
+                    <div>
+                        <label htmlFor="qnum">Question Number</label>
+                        <br/>
+                        <input type="text"
+                               value={questionData.qnum}
+                               style={{
+                                   width: "100px",
+                                   fontSize: 48 + 'px',
+                                   fontWeight: 'bolder'
+                               }} id="qnum"
+                               onChange={e => setQuestionData({...questionData, qnum: parseInt(e.target.value)})}/>
                     </div>
-                </div>
-            </div>
+                    <button onClick={setMultiGuess}>1, 2, 3, 4</button>
+
+                </Grid>
+
+                <Grid item md={4}>
+                    <div className="form-style-8">
+                        <label htmlFor="rubrik">Rubrik</label>
+                        <input type="text" value={questionData.rubrik} id="rubrik" onChange={(e) => {
+                            setQuestionData({...questionData, rubrik: e.target.value})
+                        }}/>
+                        <label htmlFor="text1">Question Text</label>
+                        <input type="text" value={questionData.text1} id="text1"
+                               onChange={e => setQuestionData({...questionData, text1: e.target.value})}
+                        />
+                        <label htmlFor="text2">Option 1</label>
+                        <input type="text" value={questionData.text2} id="text2"
+                               onChange={e => setQuestionData({...questionData, text2: e.target.value})}
+                        />
+                        <label htmlFor="text3">Option 2</label>
+                        <input type="text" value={questionData.text3} id="text3"
+                               onChange={e => setQuestionData({...questionData, text3: e.target.value})}
+                        />
+                        <label htmlFor="text4">Option 3</label>
+                        <input type="text" value={questionData.text4} id="text4"
+                               onChange={e => setQuestionData({...questionData, text4: e.target.value})}
+                        />
+                        <label htmlFor="text5">Option 4</label>
+                        <input type="text" value={questionData.text5} id="text5"
+                               onChange={e => setQuestionData({...questionData, text5: e.target.value})}
+                        />
+                        <label htmlFor="text6">Option 5</label>
+                        <input type="text" value={questionData.text6} id="text6"
+                               onChange={e => setQuestionData({...questionData, text6: e.target.value})}
+                        />
+                        <label htmlFor="text7">Option 6</label>
+                        <input type="text" value={questionData.text7} id="text7"
+                               onChange={e => setQuestionData({...questionData, text7: e.target.value})}
+                        />
+                    </div>
+                </Grid>
+                <Grid item md={4}>
+                    <div className="form-style-8">
+                        <label>Type</label>
+                        <div style={{marginLeft: '30%', marginTop: -20 + 'px'}}>
+                            <label style={{marginRight: '8px'}}>
+                                <input type="radio" name="type" id="1" value="1"
+                                       checked={questionData.type === 1}
+                                       onChange={setType}
+                                />
+                                Text Input
+                            </label><br/>
+                            <label style={{marginRight: '8px'}}>
+                                <input type="radio" name="type" id="3" value="3"
+                                       checked={questionData.type === 3}
+                                       onChange={setType}
+                                />
+                                Radio Buttons
+                            </label><br/>
+                            <label style={{marginRight: '8px'}}>
+                                <input type="radio" name="type" id="4" value="4"
+                                       checked={questionData.type === 4}
+                                       onChange={setType}
+                                />
+                                Audio
+                            </label><br/>
+                            <label style={{marginRight: '8px'}}>
+                                <input type="radio" name="type" id="5" value="5"
+                                       checked={questionData.type === 5}
+                                       onChange={setType}
+                                />
+                                multi-select
+                            </label><br/>
+                            <label style={{marginRight: '8px'}}>
+                                <input type="radio" name="type" id="6" value="6"
+                                       checked={questionData.type === 6}
+                                       onChange={setType}
+                                />
+                                Arrange Pieces
+                            </label>
+                        </div>
+
+                        <label htmlFor="image">image</label>
+                        <input type="text" value={questionData.image} id="image" onChange={(e) => {
+                            setQuestionData({...questionData, image: e.target.value})
+                            initialState.image = questionData.image
+                        }}/>
+                        <label htmlFor="audio">audio</label>
+                        <input type="text" value={questionData.audio} id="audio" onChange={(e) => {
+                            setQuestionData({...questionData, audio: e.target.value})
+                        }}/>
+                        <label htmlFor="video">video</label>
+                        <input type="text" value={questionData.video} id="video" onChange={(e) => {
+                            setQuestionData({...questionData, video: e.target.value})
+                        }}/>
+                        <label htmlFor="answer">Answer</label>
+                        <input type="text" value={questionData.answer} id="answer"
+                               onChange={e => setQuestionData({...questionData, answer: e.target.value})}
+                        />
+                    </div>
+                    <div style={{textAlign: 'center'}}>
+                        <button onClick={goLeft} ref={left}
+                                style={{float: 'left', marginLeft: '8%', marginTop: '-20px'}}>&#x21D0;</button>
+                        <button onClick={deleteQuestion} ref={del} style={{display: 'inline'}}>DELETE</button>
+                        <button onClick={goRight} ref={right}
+                                style={{float: 'right', marginRight: '8%', marginTop: '-20px'}}>&#x21D2;</button>
+                    </div>
+                    <div>
+                        <button onClick={(event) => submitQuestions(event)} style={{marginTop: '50px'}}>Submit All
+                            Questions
+                        </button>
+                    </div>
+                </Grid>
+            </Grid>
             <Snackbar
                 open={questionsCreated}
                 onClose={handleClose}
