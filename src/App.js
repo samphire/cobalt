@@ -7,6 +7,7 @@ import ProgressReport from "./components/ProgressReport";
 import Students from "./pages/Students/Students";
 import Login from "./pages/Login"
 import Header from "./components/Header";
+import Questions from "./pages/Questions/Questions"
 
 function App() {
 
@@ -37,6 +38,9 @@ function App() {
                     <Switch>
                         <Route path="/cobalt/q">
                             <Questionmaker/>
+                        </Route>
+                        <Route path="/cobalt/qs">
+                            <Questions/>
                         </Route>
                         <Route path="/cobalt/t">
                             <Testmaker/>
