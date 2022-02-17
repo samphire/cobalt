@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import useTable from "../../components/useTable"
 import * as studentService from "../../services/studentService"
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckIcon from '@mui/icons-material/Check';
 import Controls from '../../components/controls/Controls'
 import {Search} from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add"
@@ -97,7 +97,7 @@ export default function Students(props) {
         const studs = students.map(x => ({
                 ...x,
                 languageName: languages[x.language_id - 1].name,
-                isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
+                isActive: x.isActive ? <CheckIcon fontSize='medium'/> : 'no'
             }
         ))
         console.log(studs)

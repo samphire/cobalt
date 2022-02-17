@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './App.css';
-import Testmaker from './components/Testmaker'
 import Questionmaker from "./components/Questionmaker";
 import ProgressReport from "./components/ProgressReport";
 import Students from "./pages/Students/Students";
@@ -42,9 +41,6 @@ function App() {
                         </Route>
                         <Route path="/cobalt/qs">
                             <Questions/>
-                        </Route>
-                        <Route path="/cobalt/t">
-                            <Testmaker/>
                         </Route>
                         <Route path="/cobalt/progress">
                             <ProgressReport/>

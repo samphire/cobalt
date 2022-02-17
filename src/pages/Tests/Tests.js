@@ -90,10 +90,10 @@ export default function Tests(props) {
         const ts = tests.map(x => ({
                 ...x,
                 // isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
-                print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='large'/> : '',
-                print_answer: x.print_answer < 0 ? <CheckIcon fontSize='large'/> : '',
-                oneshot: x.oneshot < 0 ? <CheckIcon fontSize='large'/> : '',
-                retain: x.retain < 0 ? <CheckIcon fontSize='large'/> : ''
+                print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='medium'/> : '',
+                print_answer: x.print_answer < 0 ? <CheckIcon fontSize='medium'/> : '',
+                oneshot: x.oneshot < 0 ? <CheckIcon fontSize='medium'/> : '',
+                retain: x.retain < 0 ? <CheckIcon fontSize='medium'/> : ''
             }
         ))
         console.log(ts)
@@ -196,10 +196,10 @@ export default function Tests(props) {
                                         <TableCell>{item.description ||
                                         <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
                                         <TableCell>{item.created}</TableCell>
-                                        <TableCell>{item.print_wrong}</TableCell>
-                                        <TableCell>{item.print_answer}</TableCell>
-                                        <TableCell>{item.oneshot}</TableCell>
-                                        <TableCell>{item.retain}</TableCell>
+                                        <TableCell style={{textAlign: 'center'}}>{item.print_wrong}</TableCell>
+                                        <TableCell style={{textAlign: 'center'}}>{item.print_answer}</TableCell>
+                                        <TableCell style={{textAlign: 'center'}}>{item.oneshot}</TableCell>
+                                        <TableCell style={{textAlign: 'center'}}>{item.retain}</TableCell>
                                         <TableCell>{item.timer}</TableCell>
                                         <TableCell className={classes.tCells}>
                                             <Controls.ActionButton

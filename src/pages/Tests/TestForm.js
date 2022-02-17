@@ -14,18 +14,6 @@ const initialFieldValues = {
     retain: 0,
     timer: 0
 }
-// const languages = [
-//     {id: 1, title: 'English'},
-//     {id: 2, title: 'Russian'},
-//     {id: 3, title: 'Chinese'},
-//     {id: 4, title: 'Korean'}
-// ];
-// const genderItems = [
-//     {id: 'm', title: '남자'},
-//     {id: 'f', title: '여자'},
-//     {id: 'a', title: '외개인'}
-// ]
-
 
 export default function TestForm(props) {
 

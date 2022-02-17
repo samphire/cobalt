@@ -29,7 +29,6 @@ function Header(props) {
                     </Grid>
                     <Grid item xs={3}/>
                     <Grid item xs={1}><a href="/cobalt/q">Question Maker</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/t">Test Maker</a></Grid>
                     <Grid item xs={1}><a href="/cobalt/progress">Progress Report</a></Grid>
                     <Grid item xs={1}><a href="/cobalt/students">Students</a></Grid>
                     <Grid item xs={1}><a href="/cobalt/tests">Tests</a></Grid>
