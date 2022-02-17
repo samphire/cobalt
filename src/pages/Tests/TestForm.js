@@ -5,32 +5,26 @@ import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
 
 const initialFieldValues = {
-    id: 'cjs001',
+    id: '0',
     name: '',
-    DOB: new Date("2005-07-01"),
-    sex: 'm',
-    language_id: 1,
-    email: '',
-    mobile: '',
-    guardianName: '',
-    guardianMobile: '',
-    picUrl: '',
-    notes: '',
-    join_date: new Date(),
-    last_active_date: new Date(),
-    isActive: false
+    description: '',
+    print_wrong: 0,
+    print_answer: 0,
+    oneshot: 0,
+    retain: 0,
+    timer: 0
 }
-const languages = [
-    {id: 1, title: 'English'},
-    {id: 2, title: 'Russian'},
-    {id: 3, title: 'Chinese'},
-    {id: 4, title: 'Korean'}
-];
-const genderItems = [
-    {id: 'm', title: '남자'},
-    {id: 'f', title: '여자'},
-    {id: 'a', title: '외개인'}
-]
+// const languages = [
+//     {id: 1, title: 'English'},
+//     {id: 2, title: 'Russian'},
+//     {id: 3, title: 'Chinese'},
+//     {id: 4, title: 'Korean'}
+// ];
+// const genderItems = [
+//     {id: 'm', title: '남자'},
+//     {id: 'f', title: '여자'},
+//     {id: 'a', title: '외개인'}
+// ]
 
 
 export default function TestForm(props) {
@@ -39,14 +33,11 @@ export default function TestForm(props) {
 
     const validate = () => {
         let temp = {}
-        temp.name = values.name ? "" : "이름이 필수 입니다"
-        temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
-        temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
-        temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
+        temp.name = values.name ? "" : "이름이 필수 입니다..."
+        temp.timer = (/^[0-9]*$/).test(values.timer) ? "" : "숫자 입력하세요..."
         setErrors({
             ...temp
         })
-
         return Object.values(temp).every(x => x === "")
     }
 
@@ -62,8 +53,9 @@ export default function TestForm(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        if (validate())
+        if (validate()) {
             addOrEdit(values, resetForm)
+        }
     }
 
     useEffect(() => {
@@ -80,97 +72,52 @@ export default function TestForm(props) {
                         value={values.id}
                         name="id"
                         onChange={handleInputChange}
-                        // disabled
+                        disabled
                     />
                     <Controls.Input
-                        label="성암"
+                        label="테스트 이름"
                         error={errors.name}
                         value={values.name}
                         name="name"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
-                        label="전자메일"
-                        error={errors.email}
-                        value={values.email}
-                        name="email"
+                        label="테스트 설명"
+                        value={values.description}
+                        name="description"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
-                        label="휴대폰"
-                        error={errors.mobile}
-                        value={values.mobile}
-                        name="mobile"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.DatePicker
-                        label="탄생날"
-                        value={values.DOB}
-                        name="DOB"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.RadioGroup
-                        name="sex"
-                        label="성별"
-                        value={values.sex}
-                        onChange={handleInputChange}
-                        items={genderItems}
-                    />
-                    <Controls.Checkbox
-                        label="활성?"
-                        value={values.isActive}
-                        name="isActive"
+                        label="시간제 노동자"
+                        error={errors.timer}
+                        value={values.timer}
+                        name="timer"
                         onChange={handleInputChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <Controls.Select
-                        name="language_id"
-                        label="언어"
-                        value={values.language_id}
-                        onChange={handleInputChange}
-                        options={languages}
-                        error={errors.language}
-                    />
-                    <Controls.Input
-                        variant="outlined"
-                        label="보호자 성암"
-                        value={values.guardianName}
-                        name="guardianName"
+                    <Controls.Checkbox
+                        label="틀림 보여줌"
+                        value={values.print_wrong}
+                        name="print_wrong"
                         onChange={handleInputChange}
                     />
-                    <Controls.Input
-                        variant="outlined"
-                        label="보호자 전화번호"
-                        error={errors.mobile}
-                        value={values.guardianMobile}
-                        name="guardianMobile"
+                    <Controls.Checkbox
+                        label="답변 보여줌"
+                        value={values.print_answer}
+                        name="print_answer"
                         onChange={handleInputChange}
                     />
-                    <Controls.Input
-                        variant="outlined"
-                        label="사진"
-                        value={values.picUrl}
-                        name="picUrl"
+                    <Controls.Checkbox
+                        label="완샷"
+                        value={values.oneshot}
+                        name="oneshot"
                         onChange={handleInputChange}
                     />
-                    <Controls.Input
-                        variant="outlined"
-                        label="주석"
-                        value={values.notes}
-                        name="notes"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.DatePicker
-                        label="가입날"
-                        value={values.join_date}
-                        name="join_date"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.DatePicker
-                        label="전활성날"
-                        value={values.last_active_date}
-                        name="last_active_date"
+                    <Controls.Checkbox
+                        label="유지"
+                        value={values.retain}
+                        name="retain"
                         onChange={handleInputChange}
                     />
                     <div>

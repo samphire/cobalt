@@ -4,6 +4,7 @@ include "sessionheader.inc";
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
+
 if ($_GET['type'] == "newStudent") {
 
     $request_body = file_get_contents('php://input');
@@ -71,6 +72,90 @@ if ($_GET['type'] == "students") {
     exit;
 }
 
+if ($_GET['type'] == "tests") {
+    $sql = "SELECT * FROM optikon.tbl_tests";
+    $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+
+if ($_GET['type'] == 'delTest') {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from tbl_tests where id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from tbl_testscore where test_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from tbl_testscores\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from tbl_questions where test_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from tbl_questions\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from tbl_responses where test_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from tbl_responses\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from lnk_class_test where test_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from lnk_class_test\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from lnk_class_test_archive where test_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from lnk_class_test_archive\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+
+    $sql = "delete from tbl_test_course where 
+                test1_id='{$_GET['testid']}' or 
+                test2_id='{$_GET['testid']}' or 
+                test3_id='{$_GET['testid']}' or 
+                test4_id='{$_GET['testid']}' or 
+                test5_id='{$_GET['testid']}' or 
+                test6_id='{$_GET['testid']}' or 
+                test7_id='{$_GET['testid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from tbl_test_course\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    echo "deleted";
+}
+
+if ($_GET['type'] == "newTest") {
+
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $msg = "test ";
+
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "update tbl_tests set 
+        name = '$data->name'
+        ,description ='$data->description'
+        ,print_wrong = '$data->print_wrong'
+        ,print_answer = '$data->print_answer'
+        ,oneshot = '$data->oneshot'
+        ,retain ='$data->retain'
+        ,timer = '$data->timer'
+        where id='$data->id'";
+    } else {
+        $sql = "insert into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
+            $data->name . "\",\"" .
+            $data->description . "\"," .
+            $data->print_wrong . "," .
+            $data->print_answer . "," .
+            $data->oneshot . "," .
+            $data->retain . "," .
+            $data->timer . ")";
+        $msg .= "added";
+    }
+
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+    print $msg;
+}
 
 if ($_GET['type'] == "questions") {
 

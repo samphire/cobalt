@@ -8,6 +8,7 @@ import Students from "./pages/Students/Students";
 import Login from "./pages/Login"
 import Header from "./components/Header";
 import Questions from "./pages/Questions/Questions"
+import Tests from "./pages/Tests/Tests";
 
 function App() {
 
@@ -51,9 +52,9 @@ function App() {
                         <Route path="/cobalt/students">
                             <Students/>
                         </Route>
-                        {/*<Route path="/cobalt/tests">*/}
-                        {/*    <Tests/>*/}
-                        {/*</Route>*/}
+                        <Route path="/cobalt/tests">
+                            <Tests/>
+                        </Route>
                     </Switch>
                 </BrowserRouter>
             </div>
