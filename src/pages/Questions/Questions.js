@@ -1,10 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {Search} from "@material-ui/icons";
-import {InputAdornment, makeStyles, Paper, Toolbar} from "@material-ui/core";
+
+import {
+    InputAdornment,
+    makeStyles,
+    Paper,
+    TableBody,
+    TableCell,
+    TableRow,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {deleteQuestion, insertOrUpdateQuestion} from "../../services/questionService";
 import * as questionService from "../../services/questionService";
 import useTable from "../../components/useTable"
 import Controls from "../../components/controls/Controls"
+import AddIcon from "@material-ui/icons/Add";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import CloseIcon from "@material-ui/icons/Close";
+import Popup from "../../components/Popup";
+import StudentForm from "../Students/StudentForm";
+import Notification from "../../components/Notification";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import QuestionForm from "./QuestionForm";
+import {useLocation, useParams} from "react-router-dom";
+
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -35,26 +54,24 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const headCells = [
-    {id: 'test_id', label: 'Test id'},
     {id: 'qnum', label: 'Question Number'},
-    {id: 'rubrik', label: 'Rubrik'},
-    {id: 'text1', label: 'text1'},
-    {id: 'text2', label: 'text2'},
-    {id: 'text3', label: 'text3'},
-    {id: 'text4', label: 'text4'},
-    {id: 'text5', label: 'text5'},
-    {id: 'text6', label: 'text6'},
-    {id: 'text7', label: 'text7'},
-    {id: 'answer', label: 'answer'},
-    {id: 'type', label: 'type', disableSorting: true},
-    {id: 'image', label: 'image', disableSorting: true},
+    {id: 'rubrik', label: 'Rubrik', disableSorting: true},
+    {id: 'text1', label: 'text1', disableSorting: true},
+    {id: 'text2', label: 'text2', disableSorting: true},
+    {id: 'text3', label: 'text3', disableSorting: true},
+    {id: 'text4', label: 'text4', disableSorting: true},
+    {id: 'text5', label: 'text5', disableSorting: true},
+    {id: 'text6', label: 'text6', disableSorting: true},
+    {id: 'text7', label: 'text7', disableSorting: true},
+    {id: 'answer', label: 'answer', disableSorting: true},
+    {id: 'type', label: 'type'},
+    {id: 'image', label: 'image'},
     {id: 'audio', label: 'audio'},
-    {id: 'video', label: 'video', disableSorting: true},
+    {id: 'video', label: 'video'},
     {id: 'actions', label: 'Actions', disableSorting: true}
 ]
 
 export default function Questions(props) {
-
     const classes = useStyles()
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [isEdit, setIsEdit] = useState("false")
@@ -64,6 +81,7 @@ export default function Questions(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+    const testid = parseInt(useParams().testid)
 
     const {
         TblContainer,
@@ -73,17 +91,9 @@ export default function Questions(props) {
     } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
-        const testid = 99
         let questions = await questionService.getAllQuestions(testid)
-        // const qns = questions.map(x => ({
-        //         ...x,
-        //         languageName: languages[x.language_id - 1].name,
-        //         isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
-        //     }
-        // ))
-        // console.log(qns)
-        // setRecords(qns)
         setRecords(questions)
+
     }, [refreshRecords]);
 
     const handleSearch = e => {
@@ -114,12 +124,12 @@ export default function Questions(props) {
         })
     }
 
-    const onDelete = id => {
+    const onDelete = (testid, qnum) => {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        deleteQuestion(id).then(() => {
+        deleteQuestion(testid, qnum).then(() => {
             setRefreshRecords((num) => ++num)
             setNotify({
                 isOpen: true,
@@ -137,22 +147,104 @@ export default function Questions(props) {
     return (
         <>
             <Paper className={classes.pageContent}>
+
                 <Toolbar className={classes.toolbar}>
-                    <Controls.Input
-                        label="검색"
-                        InputProps={{
-                            startAdornment: (<InputAdornment position="start">
-                                <Search/>
-                            </InputAdornment>)
+
+                    <Typography variant="h5">테스트: {testid}</Typography>
+                    <Typography
+                        variant="h3">
+                        문재들
+                    </Typography>
+                    <Controls.Button
+                        text="문재 주가"
+                        variant="outlined"
+                        startIcon={<AddIcon/>}
+                        onClick={() => {
+                            setIsEdit("false")
+                            setRecordForEdit(null)
+                            setOpenPopup(true)
                         }}
-                        className={classes.searchInput}
-                        onChange={handleSearch}
-                        placeholder={"bob"}
-                        />
+                        // style={{position: 'absolute', right: '10px'}}
+                    />
                 </Toolbar>
+                <TblContainer>
+                    <TblHead/>
+                    <TableBody>
+                        {
+                            recordsAfterPagingAndSorting() && (
+                                recordsAfterPagingAndSorting().map(item =>
+                                    (<TableRow key={item.qnum}>
+                                        <TableCell>{item.qnum}</TableCell>
+                                        <TableCell>{item.rubrik}</TableCell>
+                                        <TableCell>{item.text1}</TableCell>
+                                        <TableCell>{item.text2}</TableCell>
+                                        <TableCell>{item.text3}</TableCell>
+                                        <TableCell>{item.text4}</TableCell>
+                                        <TableCell>{item.text5}</TableCell>
+                                        <TableCell>{item.text6}</TableCell>
+                                        <TableCell>{item.text7}</TableCell>
+                                        <TableCell>{item.answer}</TableCell>
+                                        <TableCell>{item.type}</TableCell>
+                                        <TableCell>{item.image}</TableCell>
+                                        <TableCell>{item.audio}</TableCell>
+                                        <TableCell>{item.video}</TableCell>
+
+                                        <TableCell className={classes.tCells}>
+                                            <Controls.ActionButton
+                                                color="primary"
+                                                onClick={() => {
+                                                    setIsEdit("true")
+                                                    openInPopup(item)
+                                                }
+                                                }
+                                            >
+                                                <EditOutlinedIcon fontSize="small"/>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                color="secondary"
+                                                onClick={() => {
+                                                    console.log(item)
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure you want to delete this question?',
+                                                        subTitle: 'You cannot undo this operation',
+                                                        onConfirm: () => {
+                                                            onDelete(item.test_id, item.qnum)
+                                                        }
+                                                    })
+                                                }}
+                                            >
+                                                <CloseIcon fontSize="small"/>
+                                            </Controls.ActionButton>
+                                        </TableCell>
+                                    </TableRow>)
+                                )
+                            )
+                        }
+                    </TableBody>
+                </TblContainer>
+                <TblPagination/>
             </Paper>
-
-
+            <Popup
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+                title="문재 만들기 "
+            >
+                <QuestionForm
+                    recordForEdit={recordForEdit}
+                    addOrEdit={addOrEdit}
+                    id={testid}
+                    qnum={records ? records.length : 1}
+                />
+            </Popup>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
         </>
     );
 }

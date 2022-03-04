@@ -61,6 +61,14 @@ if ($_GET['type'] == 'delStud') {
     echo "deleted";
 }
 
+if ($_GET['type'] == 'delQuestion') {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from tbl_questions where test_id='{$_GET['testid']}' AND qnum='{$_GET['qnum']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting question\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+   echo "question deleted";
+}
+
 if ($_GET['type'] == "students") {
     $sql = "SELECT * FROM optikon.tbl_students";
     $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
@@ -158,19 +166,49 @@ if ($_GET['type'] == "newTest") {
 }
 
 if ($_GET['type'] == "questions") {
+    $sql = "SELECT * FROM optikon.tbl_questions where test_id={$_GET['testid']}";
+    $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+if ($_GET['type'] == "newQuestion") {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
+    $msg = "question ";
 
-    foreach ($data as $el) {
-        $sql = "insert into tbl_questions (test_id, qnum, text1, text2, text3, text4, text5, text6, text7, answer, type, rubrik, image, audio, video) values (
-    $el->testid, $el->qnum, \"$el->text1\", \"$el->text2\", \"$el->text3\", \"$el->text4\", \"$el->text5\", \"$el->text6\", \"$el->text7\", \"$el->answer\",
-    \"$el->type\", \"$el->rubrik\", \"$el->image\", \"$el->audio\", \"$el->video\")";
-//     echo $sql;
-        mysqli_query($conn, $sql) or die("hey! Cannot add question " . mysqli_error($conn));
+    $data->text1 = mysqli_real_escape_string($conn, $data->text1);
+    $data->text2 = mysqli_real_escape_string($conn, $data->text2);
+    $data->text3 = mysqli_real_escape_string($conn, $data->text3);
+    $data->text4 = mysqli_real_escape_string($conn, $data->text4);
+    $data->text5 = mysqli_real_escape_string($conn, $data->text5);
+    $data->text6 = mysqli_real_escape_string($conn, $data->text6);
+    $data->text7 = mysqli_real_escape_string($conn, $data->text7);
+    $data->rubrik = mysqli_real_escape_string($conn, $data->rubrik);
+    $data->answer = mysqli_real_escape_string($conn, $data->answer);
+
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "UPDATE tbl_questions SET qnum = {$data->qnum}, text1 = '{$data->text1}', text2 = '{$data->text2}', text3 = '{$data->text3}', text4 = '{$data->text4}', "
+            . "text5 = '{$data->text5}', text6 = '{$data->text6}', text7 = '{$data->text7}', answer = '{$data->answer}', type = '{$data->type}', rubrik = '{$data->rubrik}', "
+            . "image = '{$data->image}', audio = '{$data->audio}', video =  '{$data->video}' WHERE test_id = {$data->test_id} AND qnum = {$data->qnum}";
+    } else {
+        $msg .= "added";
+
+        $sql = "INSERT INTO tbl_questions (test_id, qnum, text1, text2, text3, text4, text5, text6, text7, answer, type, rubrik, image, audio, video) VALUES ("
+            . "{$data->test_id}, {$data->qnum}, '{$data->text1}', '{$data->text2}', '{$data->text3}', '{$data->text4}', '{$data->text5}', '{$data->text6}', "
+            . "'{$data->text7}', '{$data->answer}', '{$data->type}', '{$data->rubrik}', '{$data->image}', '{$data->audio}', '{$data->video}')";
     }
-    echo "success";
+    echo $sql;
+    mysqli_query($conn, $sql) or die("hey! Cannot add question " . mysqli_error($conn));
+    print $msg;
 }
+
 if ($_GET['type'] == "individual_test_data") {
     $sql = "
     select id, name, oneshot, score from tbl_tests join

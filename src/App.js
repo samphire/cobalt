@@ -33,13 +33,12 @@ function App() {
         return (
             <div className="App">
                 <Header clicko={logout}/>
-
                 <BrowserRouter>
                     <Switch>
                         <Route path="/cobalt/q">
                             <Questionmaker/>
                         </Route>
-                        <Route path="/cobalt/qs">
+                        <Route path="/cobalt/qs/:testid">
                             <Questions/>
                         </Route>
                         <Route path="/cobalt/progress">

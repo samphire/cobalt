@@ -13,10 +13,10 @@ export async function insertOrUpdateQuestion(data, isEdit) {
     return response.json();
 }
 
-export async function deleteQuestion(question) {
+export async function deleteQuestion(testid, qnum) {
 
     const response = await fetch("https://notborder.org/cobalt/postData.php?type=delQuestion&testid="
-        + question.testid + "&qnum=" + question.qnum, {
+        + testid + "&qnum=" + qnum, {
         method: 'DELETE',
         headers: {
             'Accept': 'text/plain'

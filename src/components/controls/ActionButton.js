@@ -20,6 +20,17 @@ const useStyles = makeStyles(theme => ({
         '& .MuiButton-label': {
             color: theme.palette.primary.main
         }
+    },
+    tertiary: {
+        backgroundColor: lighten("#EB984E", 0.7),
+        '& .MuiButton-label': {
+            color: "#EB984E",
+            width: "20px",
+            height: "20px"
+        },
+        '& .MuiButton-label:hover':{
+            color: "#EB984E"
+        }
     }
 }))
 

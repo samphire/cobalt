@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import TestForm from "./TestForm";
 import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
 import PageHeader from "../../components/PageHeader";
+import DvrIcon from '@mui/icons-material/Dvr';
 import {
     InputAdornment,
     makeStyles,
@@ -24,6 +25,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog";
+// import {testid, UseTest} from '../Questions/useTest'
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -68,6 +70,9 @@ const headCells = [
 
 export default function Tests(props) {
 
+    // const setTestId = (id) => {
+    //     UseTest(id)
+    // }
     const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [isEdit, setIsEdit] = useState("false")
@@ -226,6 +231,16 @@ export default function Tests(props) {
                                                 }}
                                             >
                                                 <CloseIcon fontSize="small"/>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                // data-testid={item.id}
+                                                color="tertiary"
+                                                onClick={() => {
+                                                    // setTestId(item.id)
+                                                    window.location = "/cobalt/qs/" + item.id;
+                                                }}
+                                            >
+                                                <DvrIcon/>
                                             </Controls.ActionButton>
                                         </TableCell>
                                     </TableRow>)

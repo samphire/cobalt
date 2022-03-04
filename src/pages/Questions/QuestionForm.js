@@ -4,9 +4,9 @@ import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
 
-const initialFieldValues = {
+let initialFieldValues = {
     test_id: '',
-    qnum: '',
+    qnum: '1',
     rubrik: '',
     text1: '',
     text2: '',
@@ -22,22 +22,32 @@ const initialFieldValues = {
     video: ''
 }
 
+const typeItems = [
+    {id: '1', title: 'text input'},
+    {id: '2', title: 'drop-down'},
+    {id: '3', title: 'radio buttons'},
+    {id: '4', title: 'file upload'},
+    {id: '5', title: 'multi select'},
+    {id: '6', title: 'draggable'}
+]
+
 export default function QuestionForm(props) {
 
-    const {addOrEdit, recordForEdit} = props;
+    const {id, qnum, addOrEdit, recordForEdit} = props;
 
-    // const validate = () => {
-    //     let temp = {}
-    //     temp.name = values.name ? "" : "이름이 필수 입니다"
-    //     temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
-    //     temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
-    //     temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
-    //     setErrors({
-    //         ...temp
-    //     })
-    //
-    //     return Object.values(temp).every(x => x === "")
-    // }
+    const validate = () => {
+        // let temp = {}
+        // temp.name = values.name ? "" : "이름이 필수 입니다"
+        // temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
+        // temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
+        // temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
+        // setErrors({
+        //     ...temp
+        // })
+        //
+        // return Object.values(temp).every(x => x === "")
+        return true
+    }
 
     const {
         values,
@@ -54,6 +64,12 @@ export default function QuestionForm(props) {
         if (validate())
             addOrEdit(values, resetForm)
     }
+
+    useEffect(()=>{
+        setValues({...values, test_id : id})
+        initialFieldValues.test_id = id
+        initialFieldValues.qnum = qnum + 1
+    }, [])
 
     useEffect(() => {
         if (recordForEdit != null)
@@ -120,6 +136,8 @@ export default function QuestionForm(props) {
                         name="text7"
                         onChange={handleInputChange}
                     />
+                </Grid>
+                <Grid xs={12} sm={6}>
                     <Controls.Input
                         label="Answer"
                         value={values.answer}
@@ -150,9 +168,14 @@ export default function QuestionForm(props) {
                         name="video"
                         onChange={handleInputChange}
                     />
+                    <Controls.RadioGroup
+                        name="type"
+                        label="type"
+                        value={values.type}
+                        onChange={handleInputChange}
+                        items={typeItems}
+                    />
                 </Grid>
-
-
                     <div>
                         <Controls.Button
                             type="submit"
@@ -166,7 +189,6 @@ export default function QuestionForm(props) {
                         />
                     </div>
                 </Grid>
-            </Grid>
         </Form>
     );
 }
