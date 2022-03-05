@@ -22,8 +22,8 @@ li {
 }
 
 ul {
-    display: flex;
-    justify-content: space-around;
+    /*display: flex;*/
+    /*justify-content: space-around;*/
     max-width: 900px;
     margin: auto;
     padding-inline-start: unset;

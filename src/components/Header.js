@@ -34,6 +34,7 @@ function Header(props) {
                     <Grid item xs={1}><a href="/cobalt/students">Students</a></Grid>
                     <Grid item xs={1}><a href="/cobalt/tests">Tests</a></Grid>
                     <Grid item xs={1}><a href="/cobalt/classes">Classes</a></Grid>
+                    <Grid item xs={1}><a href="/cobalt/testAlloc">Test Allocs</a></Grid>
                     <Grid item xs={3}/>
 
                 </Grid>

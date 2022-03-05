@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import Questions from "./pages/Questions/Questions"
 import Tests from "./pages/Tests/Tests";
 import Classes from "./pages/Classes/Classes"
+import TestAlloc from "./pages/TestAlloc/TestAlloc"
 
 function App() {
 
@@ -41,6 +42,9 @@ function App() {
                         </Route>
                         <Route path="/cobalt/qs/:testid">
                             <Questions/>
+                        </Route>
+                        <Route path="/cobalt/testAlloc">
+                            <TestAlloc/>
                         </Route>
                         <Route path="/cobalt/progress">
                             <ProgressReport/>

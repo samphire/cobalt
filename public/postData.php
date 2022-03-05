@@ -208,6 +208,51 @@ if ($_GET['type'] == 'delClass') {
     echo "deleted";
 }
 
+// ############   TESTALLOCS   ############
+if ($_GET['type'] == "testAllocs") {
+    $sql = "SELECT testid, testname, class_id as classid, name as classname, start, finish FROM 
+(SELECT tbl_tests.id as testid, tbl_tests.name as testname, lnk_class_test.class_id, lnk_class_test.start, lnk_class_test.finish
+from tbl_tests join lnk_class_test
+on tbl_tests.id = lnk_class_test.test_id) as bob join tbl_classes
+on bob.class_id = tbl_classes.id";
+    $result = mysqli_query($conn, $sql) or die("error in getting Test Allocations" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+if ($_GET['type'] == "newTestAlloc") {
+
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $msg = "test allocation ";
+
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "update lnk_class_test set start = '$data->start', finish = '$data->finish' where test_id='$data->testid' and class_id='$data->classid'";
+    } else {
+        $sql = "insert into lnk_class_test(class_id, test_id, start, finish) VALUES(\"" .
+            $data->classid . "\",\"" .
+            $data->testid . "\",\"" .
+            $data->start . "\",\"" .
+            $data->finish . "\")";
+    }
+
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+    print $msg;
+}
+
+if ($_GET['type'] == 'delTestAlloc') {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from lnk_class_test where test_id='{$_GET['testid']}' and class_id='{$_GET['classid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting class test allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    echo "test allocation deleted";
+}
+
 // ############   QUESTIONS   ############
 if ($_GET['type'] == "questions") {
     $sql = "SELECT * FROM optikon.tbl_questions where test_id={$_GET['testid']}";
