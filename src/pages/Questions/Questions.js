@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
+import {Tooltip} from "@mui/material";
 import {
     InputAdornment,
     makeStyles,
@@ -156,7 +157,7 @@ export default function Questions(props) {
                         문재들
                     </Typography>
                     <Controls.Button
-                        text="문재 주가"
+                        text="문재 추가"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
@@ -198,7 +199,9 @@ export default function Questions(props) {
                                                 }
                                                 }
                                             >
-                                                <EditOutlinedIcon fontSize="small"/>
+                                                <Tooltip title="변집" placement="top">
+                                                    <EditOutlinedIcon fontSize="small"/>
+                                                </Tooltip>
                                             </Controls.ActionButton>
                                             <Controls.ActionButton
                                                 color="secondary"
@@ -214,7 +217,9 @@ export default function Questions(props) {
                                                     })
                                                 }}
                                             >
-                                                <CloseIcon fontSize="small"/>
+                                                <Tooltip title="삭재" placement="top">
+                                                    <CloseIcon fontSize="small"/>
+                                                </Tooltip>
                                             </Controls.ActionButton>
                                         </TableCell>
                                     </TableRow>)

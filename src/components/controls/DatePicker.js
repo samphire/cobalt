@@ -23,7 +23,7 @@ function DatePicker(props) {
        <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MuiDatePicker
                 variant='dialog'
-                disableFuture
+                // disableFuture
                 autoOk
                 format='yyyy-MM-dd'
                 value={value} onChange={date => onChange(convertToDefaultEventParameter(name, date))}

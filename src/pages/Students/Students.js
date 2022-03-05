@@ -23,7 +23,8 @@ import {deleteStudent, insertOrUpdateStudent} from "../../services/studentServic
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
-import ConfirmDialog from "../../components/ConfirmDialog";
+import ConfirmDialog from "../../components/ConfirmDialog"
+import {Tooltip} from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     tCells: {
         textAlign: "center"
     },
-    toolbar:{
+    toolbar: {
         justifyContent: 'space-between'
     }
 }))
@@ -183,7 +184,7 @@ export default function Students(props) {
                         학생들
                     </Typography>
                     <Controls.Button
-                        text="학생 주가"
+                        text="학생 추가"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
@@ -228,7 +229,9 @@ export default function Students(props) {
                                                 }
                                                 }
                                             >
-                                                <EditOutlinedIcon fontSize="small"/>
+                                                <Tooltip title="변집" placement="top">
+                                                    <EditOutlinedIcon fontSize="small"/>
+                                                </Tooltip>
                                             </Controls.ActionButton>
                                             <Controls.ActionButton
                                                 color="secondary"
@@ -243,7 +246,9 @@ export default function Students(props) {
                                                     })
                                                 }}
                                             >
-                                                <CloseIcon fontSize="small"/>
+                                                <Tooltip title="삭재" placement="top">
+                                                    <CloseIcon fontSize="small"/>
+                                                </Tooltip>
                                             </Controls.ActionButton>
                                         </TableCell>
                                     </TableRow>)

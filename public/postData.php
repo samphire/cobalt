@@ -4,6 +4,17 @@ include "sessionheader.inc";
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
+// ############   STUDENTS   ############
+if ($_GET['type'] == "students") {
+    $sql = "SELECT * FROM optikon.tbl_students";
+    $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
 
 if ($_GET['type'] == "newStudent") {
 
@@ -61,25 +72,7 @@ if ($_GET['type'] == 'delStud') {
     echo "deleted";
 }
 
-if ($_GET['type'] == 'delQuestion') {
-    header("Access-Control-Allow-Methods: DELETE");
-    $sql = "delete from tbl_questions where test_id='{$_GET['testid']}' AND qnum='{$_GET['qnum']}'";
-    mysqli_query($conn, $sql) or die("oh dear! Problem deleting question\n\n" . mysqli_error($conn) . "\n\n" . $sql);
-
-   echo "question deleted";
-}
-
-if ($_GET['type'] == "students") {
-    $sql = "SELECT * FROM optikon.tbl_students";
-    $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
-    $array = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        array_push($array, $row);
-    }
-    echo json_encode($array);
-    exit;
-}
-
+// ############   TESTS   ############
 if ($_GET['type'] == "tests") {
     $sql = "SELECT * FROM optikon.tbl_tests";
     $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
@@ -91,6 +84,39 @@ if ($_GET['type'] == "tests") {
     exit;
 }
 
+if ($_GET['type'] == "newTest") {
+
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $msg = "test ";
+
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "update tbl_tests set 
+        name = '$data->name'
+        ,description ='$data->description'
+        ,print_wrong = '$data->print_wrong'
+        ,print_answer = '$data->print_answer'
+        ,oneshot = '$data->oneshot'
+        ,retain ='$data->retain'
+        ,timer = '$data->timer'
+        where id='$data->id'";
+    } else {
+        $sql = "insert into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
+            $data->name . "\",\"" .
+            $data->description . "\"," .
+            $data->print_wrong . "," .
+            $data->print_answer . "," .
+            $data->oneshot . "," .
+            $data->retain . "," .
+            $data->timer . ")";
+        $msg .= "added";
+    }
+
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+    print $msg;
+}
 
 if ($_GET['type'] == 'delTest') {
     header("Access-Control-Allow-Methods: DELETE");
@@ -131,33 +157,40 @@ if ($_GET['type'] == 'delTest') {
     echo "deleted";
 }
 
-if ($_GET['type'] == "newTest") {
+// ############   CLASSES   ############
+if ($_GET['type'] == "classes") {
+    $sql = "SELECT * FROM optikon.tbl_classes";
+    $result = mysqli_query($conn, $sql) or die("error in getting classes" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+if ($_GET['type'] == "newClass") {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
-    $msg = "test ";
+    $msg = "class ";
+
+    $data->comment = mysqli_real_escape_string($conn, $data->comment);
 
     if ($_GET['isEdit'] == 'yes') {
         $msg .= "updated";
-        $sql = "update tbl_tests set 
+        $sql = "update tbl_classes set 
         name = '$data->name'
-        ,description ='$data->description'
-        ,print_wrong = '$data->print_wrong'
-        ,print_answer = '$data->print_answer'
-        ,oneshot = '$data->oneshot'
-        ,retain ='$data->retain'
-        ,timer = '$data->timer'
+        ,comment ='$data->comment'
+        ,session_start = '$data->session_start'
+        ,session_end = '$data->session_end'
         where id='$data->id'";
     } else {
-        $sql = "insert into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
+        $sql = "insert into tbl_classes(name, comment, session_start, session_end) VALUES(\"" .
             $data->name . "\",\"" .
-            $data->description . "\"," .
-            $data->print_wrong . "," .
-            $data->print_answer . "," .
-            $data->oneshot . "," .
-            $data->retain . "," .
-            $data->timer . ")";
-        $msg .= "added";
+            $data->comment . "\",\"" .
+            $data->session_start . "\",\"" .
+            $data->session_end . "\")";
     }
 
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
@@ -165,6 +198,17 @@ if ($_GET['type'] == "newTest") {
     print $msg;
 }
 
+if ($_GET['type'] == 'delClass') {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from tbl_classes where id='{$_GET['classid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting class\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "delete from lnk_class_test where class_id='{$_GET['classid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting class from lnk_class_test\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    echo "deleted";
+}
+
+// ############   QUESTIONS   ############
 if ($_GET['type'] == "questions") {
     $sql = "SELECT * FROM optikon.tbl_questions where test_id={$_GET['testid']}";
     $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
@@ -209,6 +253,15 @@ if ($_GET['type'] == "newQuestion") {
     print $msg;
 }
 
+if ($_GET['type'] == 'delQuestion') {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from tbl_questions where test_id='{$_GET['testid']}' AND qnum='{$_GET['qnum']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting question\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    echo "question deleted";
+}
+
+// ############   MISCELLANEOUS   ############
 if ($_GET['type'] == "individual_test_data") {
     $sql = "
     select id, name, oneshot, score from tbl_tests join
@@ -231,6 +284,7 @@ if ($_GET['type'] == "individual_test_data") {
     }
     echo json_encode($array);
 }
+
 if ($_GET['type'] == "languages") {
     $sql = "SELECT * FROM optikon.tbl_language";
     $result = mysqli_query($conn, $sql);

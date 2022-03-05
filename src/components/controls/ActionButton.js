@@ -31,6 +31,17 @@ const useStyles = makeStyles(theme => ({
         '& .MuiButton-label:hover':{
             color: "#EB984E"
         }
+    },
+    quaternary: {
+        backgroundColor: lighten("#06A248", 0.7),
+        '& .MuiButton-label': {
+            color: "#06A248",
+            width: "20px",
+            height: "20px"
+        },
+        '& .MuiButton-label:hover':{
+            color: "#06A248"
+        }
     }
 }))
 

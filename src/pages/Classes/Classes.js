@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import TestForm from "./TestForm";
-import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
-import PageHeader from "../../components/PageHeader";
 import DvrIcon from '@mui/icons-material/Dvr';
+import {Tooltip} from "@mui/material";
 import {
     InputAdornment,
     makeStyles,
@@ -14,19 +12,17 @@ import {
     Typography
 } from "@material-ui/core";
 import useTable from "../../components/useTable"
-import * as testService from "../../services/testService"
-import CheckIcon from '@mui/icons-material/Check';
+import * as classService from "../../services/classService"
 import Controls from '../../components/controls/Controls'
 import {Search} from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add"
 import Popup from "../../components/Popup"
-import {deleteTest, insertOrUpdateTest} from "../../services/testService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog";
-import PeopleIcon from '@mui/icons-material/People';
-import {Tooltip} from "@mui/material";
+import ClassForm from "./ClassForm";
+import {deleteClass, insertOrUpdateClass} from "../../services/classService";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -58,22 +54,15 @@ const useStyles = makeStyles(theme => ({
 
 const headCells = [
     {id: 'id', label: 'ID'},
-    {id: 'name', label: '테스트 이름'},
-    {id: 'description', label: '테스트 설명', disableSorting: true},
-    {id: 'created', label: '테스트 만든 년월일'},
-    {id: 'print_wrong', label: '틀림 보여줌', disableSorting: true},
-    {id: 'print_answer', label: '답변 보여줌', disableSorting: true},
-    {id: 'oneshot', label: '완샷'},
-    {id: 'retain', label: '유지'},
-    {id: 'timer', label: '시간제 노동자'},
+    {id: 'name', label: '반 이름'},
+    {id: 'comment', label: '주석', disableSorting: true},
+    {id: 'session_start', label: '학기 시작날'},
+    {id: 'session_end', label: '학기 긑날'},
     {id: 'actions', label: 'Actions', disableSorting: true}
 ]
 
 export default function Tests(props) {
 
-    // const setTestId = (id) => {
-    //     UseTest(id)
-    // }
     const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [isEdit, setIsEdit] = useState("false")
@@ -92,23 +81,8 @@ export default function Tests(props) {
     } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
-        let tests = await testService.getAllTests()
-        const ts = tests.map(x => ({
-                ...x,
-                // isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
-                print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='medium'/> : '',
-                print_answer: x.print_answer < 0 ? <CheckIcon fontSize='medium'/> : '',
-                oneshot: x.oneshot < 0 ? <CheckIcon fontSize='medium'/> : '',
-                retain: x.retain < 0 ? <CheckIcon fontSize='medium'/> : ''
-            }
-        ))
-        console.log(ts)
-        setRecords(ts)
+        setRecords(await classService.getAllClasses())
     }, [refreshRecords]);
-
-    // useEffect(async () => {
-    //     setRecords(await studentService.getAllStudents())
-    // }, [refreshRecords])
 
     const handleSearch = e => {
         let target = e.target
@@ -122,9 +96,9 @@ export default function Tests(props) {
         })
     }
 
-    const addOrEdit = (test, resetForm) => {
-        console.warn(test);
-        insertOrUpdateTest(test, {isEdit}).then()
+    const addOrEdit = (ban, resetForm) => {
+        console.warn(ban);
+        insertOrUpdateClass(ban, {isEdit}).then()
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
@@ -133,7 +107,7 @@ export default function Tests(props) {
         console.log(refreshRecords)
         setNotify({
             isOpen: true,
-            message: 'successfully added test',
+            message: 'successfully added class',
             type: 'success'
         })
     }
@@ -143,22 +117,20 @@ export default function Tests(props) {
             ...confirmDialog,
             isOpen: false
         })
-        deleteTest(id).then(() => {
+        deleteClass(id).then(() => {
             setRefreshRecords((num) => ++num)
             setNotify({
                 isOpen: true,
-                message: 'successfully deleted test',
+                message: 'successfully deleted class',
                 type: 'error'
             })
         });
     }
 
-
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
     }
-
 
     return (
         <>
@@ -173,14 +145,14 @@ export default function Tests(props) {
                         }}
                         className={classes.searchInput}
                         onChange={handleSearch}
-                        placeholder={"test"}
+                        placeholder={"class"}
                     />
                     <Typography
                         variant="h3">
-                        테스트
+                        반
                     </Typography>
                     <Controls.Button
-                        text="테스트 추가"
+                        text="반 추가"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
@@ -199,14 +171,9 @@ export default function Tests(props) {
                                     (<TableRow key={item.id}>
                                         <TableCell>{item.id}</TableCell>
                                         <TableCell>{item.name}</TableCell>
-                                        <TableCell>{item.description ||
-                                        <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
-                                        <TableCell>{item.created}</TableCell>
-                                        <TableCell style={{textAlign: 'center'}}>{item.print_wrong}</TableCell>
-                                        <TableCell style={{textAlign: 'center'}}>{item.print_answer}</TableCell>
-                                        <TableCell style={{textAlign: 'center'}}>{item.oneshot}</TableCell>
-                                        <TableCell style={{textAlign: 'center'}}>{item.retain}</TableCell>
-                                        <TableCell>{item.timer}</TableCell>
+                                        <TableCell style={{width: '30%'}}>{item.comment}</TableCell>
+                                        <TableCell>{item.session_start}</TableCell>
+                                        <TableCell>{item.session_end}</TableCell>
                                         <TableCell className={classes.tCells}>
                                             <Controls.ActionButton
                                                 color="primary"
@@ -220,33 +187,12 @@ export default function Tests(props) {
                                                     <EditOutlinedIcon fontSize="small"/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
-
-                                            <Controls.ActionButton
-                                                color="tertiary"
-                                                onClick={() => {
-                                                    window.location = "/cobalt/qs/" + item.id;
-                                                }}
-                                            >
-                                                <Tooltip title="문재들 추가/변집" placement="top">
-                                                    <DvrIcon/>
-                                                </Tooltip>
-                                            </Controls.ActionButton>
-                                            <Controls.ActionButton
-                                                color="quaternary"
-                                                onClick={() => {
-                                                    window.location = "/cobalt/qs/" + item.id;
-                                                }}
-                                            >
-                                                <Tooltip title="반에 할당" placement="top">
-                                                    <PeopleIcon/>
-                                                </Tooltip>
-                                            </Controls.ActionButton>
                                             <Controls.ActionButton
                                                 color="secondary"
                                                 onClick={() => {
                                                     setConfirmDialog({
                                                         isOpen: true,
-                                                        title: 'Are you sure you want to delete this test?',
+                                                        title: 'Are you sure you want to delete this class?',
                                                         subTitle: 'You cannot undo this operation',
                                                         onConfirm: () => {
                                                             onDelete(item.id)
@@ -258,6 +204,16 @@ export default function Tests(props) {
                                                     <CloseIcon fontSize="small"/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
+                                            {/*<Controls.ActionButton*/}
+                                            {/*    // data-testid={item.id}*/}
+                                            {/*    color="tertiary"*/}
+                                            {/*    onClick={() => {*/}
+                                            {/*        // setTestId(item.id)*/}
+                                            {/*        window.location = "/cobalt/qs/" + item.id;*/}
+                                            {/*    }}*/}
+                                            {/*>*/}
+                                            {/*    <DvrIcon/>*/}
+                                            {/*</Controls.ActionButton>*/}
                                         </TableCell>
                                     </TableRow>)
                                 )
@@ -270,9 +226,9 @@ export default function Tests(props) {
             <Popup
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
-                title="테스트 만들기"
+                title="반 만들기"
             >
-                <TestForm
+                <ClassForm
                     recordForEdit={recordForEdit}
                     addOrEdit={addOrEdit}
                 />

@@ -8,6 +8,7 @@ import Login from "./pages/Login"
 import Header from "./components/Header";
 import Questions from "./pages/Questions/Questions"
 import Tests from "./pages/Tests/Tests";
+import Classes from "./pages/Classes/Classes"
 
 function App() {
 
@@ -49,6 +50,9 @@ function App() {
                         </Route>
                         <Route path="/cobalt/tests">
                             <Tests/>
+                        </Route>
+                        <Route path="/cobalt/classes">
+                            <Classes/>
                         </Route>
                     </Switch>
                 </BrowserRouter>
