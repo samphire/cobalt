@@ -77,7 +77,7 @@ export default function ClassForm(props) {
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <Controls.Select
                         name="classid"
                         label="class"

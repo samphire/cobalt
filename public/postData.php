@@ -250,7 +250,29 @@ if ($_GET['type'] == 'delTestAlloc') {
     header("Access-Control-Allow-Methods: DELETE");
     $sql = "delete from lnk_class_test where test_id='{$_GET['testid']}' and class_id='{$_GET['classid']}'";
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting class test allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "delete from tbl_testscore where test_id='{$_GET['testid']}' and student_id in "
+        . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
+        . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting from tbl_testscore for class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "delete from tbl_responses where test_id='{$_GET['testid']}' and student_id in "
+        . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
+        . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting from tbl_responses for class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    echo "tbl_testscores and tbl_responses successfully removed for the given test allocation";
     echo "test allocation deleted";
+}
+
+if($_GET['type'] == 'resetTestAlloc'){
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from tbl_testscore where test_id='{$_GET['testid']}' and student_id in "
+    . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
+    . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting from tbl_testscore for class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "delete from tbl_responses where test_id='{$_GET['testid']}' and student_id in "
+        . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
+        . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting from tbl_responses for class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    echo "tbl_testscores and tbl_responses successfully removed for the given test allocation";
 }
 
 // ############   QUESTIONS   ############

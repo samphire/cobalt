@@ -11,7 +11,7 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {deleteTestAlloc, getAllTestAllocs, insertOrUpdateTestAlloc} from "../../services/testAllocService";
+import {deleteTestAlloc, getAllTestAllocs, insertOrUpdateTestAlloc, resetTestAlloc} from "../../services/testAllocService";
 import useTable from "../../components/useTable"
 import Controls from "../../components/controls/Controls"
 import AddIcon from "@material-ui/icons/Add";
@@ -21,8 +21,10 @@ import Popup from "../../components/Popup";
 import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import TestAllocForm from "./TestAllocForm";
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {useLocation, useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
+import {AutoFixHigh} from "@mui/icons-material";
 
 
 const useStyles = makeStyles(theme => ({
@@ -143,6 +145,20 @@ export default function TestAlloc(props) {
         });
     }
 
+    const onReset = (classid, testid) =>{
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        resetTestAlloc(classid, testid).then(()=>{
+            setNotify({
+                isOpen: true,
+                message: 'successfully reset test scores and responses for test ' + testid + ' and class ' + classid,
+                type: 'error'
+            })
+        })
+    }
+
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
@@ -235,6 +251,24 @@ export default function TestAlloc(props) {
                                             >
                                                 <Tooltip title="삭재" placement="top">
                                                     <CloseIcon fontSize="small"/>
+                                                </Tooltip>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                color="tertiary"
+                                                onClick={() => {
+                                                    console.log(item)
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure you want to reset this test allocation?',
+                                                        subTitle: 'All class responses and test scores will be deleted',
+                                                        onConfirm: () => {
+                                                            onReset(item.classid, item.testid)
+                                                        }
+                                                    })
+                                                }}
+                                            >
+                                                <Tooltip title="테스트 복구" placement="top">
+                                                    <AutoFixHighIcon fontSize="small"/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
                                         </TableCell>

@@ -4,8 +4,9 @@ import {makeStyles} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     root: {
+        // maxWidth: '500px',
         '& .MuiFormControl-root': {
-            width: '80%',
+            width: '90%',
             margin: theme.spacing(1),
         },
         '& .MuiFormLabel-root, .MuiSelect-root': {

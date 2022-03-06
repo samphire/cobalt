@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Grid} from "@material-ui/core";
+import {Grid, makeStyles} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
@@ -15,7 +15,15 @@ const initialFieldValues = {
     timer: 0
 }
 
+const useStyles = makeStyles((theme) => ({
+    buttonsDiv: {
+        margin: '10px auto'
+    }
+}))
+
 export default function TestForm(props) {
+
+    const classes = useStyles()
 
     const {addOrEdit, recordForEdit} = props;
 
@@ -52,9 +60,9 @@ export default function TestForm(props) {
     }, [recordForEdit])
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form style={{width: '500px'}} onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={8}>
                     <Controls.Input
                         label="ID"
                         value={values.id}
@@ -83,7 +91,7 @@ export default function TestForm(props) {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
                     <Controls.Checkbox
                         label="틀림 보여줌"
                         value={values.print_wrong}
@@ -108,19 +116,19 @@ export default function TestForm(props) {
                         name="retain"
                         onChange={handleInputChange}
                     />
-                    <div>
-                        <Controls.Button
-                            type="submit"
-                            text="submit"
-                            startIcon={<HowToReg/>}
-                        />
-                        <Controls.Button
-                            text="reset"
-                            color="secondary"
-                            onClick={resetForm}
-                        />
-                    </div>
                 </Grid>
+                <div className={classes.buttonsDiv}>
+                    <Controls.Button
+                        type="submit"
+                        text="submit"
+                        startIcon={<HowToReg/>}
+                    />
+                    <Controls.Button
+                        text="reset"
+                        color="secondary"
+                        onClick={resetForm}
+                    />
+                </div>
             </Grid>
         </Form>
     );

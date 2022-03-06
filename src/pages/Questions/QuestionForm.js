@@ -77,7 +77,7 @@ export default function QuestionForm(props) {
     }, [recordForEdit])
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form style={{width: '800px'}} onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <Controls.Input
@@ -176,7 +176,7 @@ export default function QuestionForm(props) {
                         items={typeItems}
                     />
                 </Grid>
-                    <div>
+                    <div style={{margin: '0 auto'}}>
                         <Controls.Button
                             type="submit"
                             text="submit"

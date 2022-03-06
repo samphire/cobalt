@@ -30,6 +30,16 @@ export async function deleteTestAlloc(classid, testid) {
     return response.text();
 }
 
+export async function resetTestAlloc(classid, testid) {
+    const response = await fetch("https://notborder.org/cobalt/postData.php?type=resetTestAlloc&classid=" + classid + "&testid=" + testid, {
+        method: 'GET',
+        headers: {
+            'Accept': 'text/plain'
+        }
+    })
+    return response.text()
+}
+
 export async function getAllTestAllocs() {
     const response = await fetch("https://notborder.org/cobalt/postData.php?type=testAllocs", {
         method: 'GET',
