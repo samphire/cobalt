@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
-import {Grid} from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
+import {testid} from "./useTest";
 
 let initialFieldValues = {
     test_id: '',
@@ -16,7 +17,7 @@ let initialFieldValues = {
     text6: '',
     text7: '',
     answer: '',
-    type: 3,
+    type: '3',
     image: '',
     audio: '',
     video: ''
@@ -31,7 +32,28 @@ const typeItems = [
     {id: '6', title: 'draggable'}
 ]
 
+
 export default function QuestionForm(props) {
+
+    function makeImage() {
+        let today = new Date()
+        let str = today.toISOString().replace(/-/gm, '').substr(0, 8)
+        str += values.test_id
+        str += values.qnum.toString().padStart(3, '0') + '.png'
+        setValues({
+            ...values,
+            image: str
+        })
+    }
+
+    function setAnswer(which) {
+        if (values.type === '3') {
+            setValues({
+                ...values,
+                answer: which
+            })
+        }
+    }
 
     const {id, qnum, addOrEdit, recordForEdit} = props;
 
@@ -65,10 +87,11 @@ export default function QuestionForm(props) {
             addOrEdit(values, resetForm)
     }
 
-    useEffect(()=>{
-        setValues({...values, test_id : id})
+    useEffect(() => {
+        setValues({...values, test_id: id, qnum: qnum + 1})
         initialFieldValues.test_id = id
         initialFieldValues.qnum = qnum + 1
+
     }, [])
 
     useEffect(() => {
@@ -105,36 +128,54 @@ export default function QuestionForm(props) {
                         value={values.text2}
                         name="text2"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text2)
+                        }}
                     />
                     <Controls.Input
                         label="Text 3"
                         value={values.text3}
                         name="text3"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text3)
+                        }}
                     />
                     <Controls.Input
                         label="Text 4"
                         value={values.text4}
                         name="text4"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text4)
+                        }}
                     />
                     <Controls.Input
                         label="Text 5"
                         value={values.text5}
                         name="text5"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text5)
+                        }}
                     />
                     <Controls.Input
                         label="Text 6"
                         value={values.text6}
                         name="text6"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text6)
+                        }}
                     />
                     <Controls.Input
                         label="Text 7"
                         value={values.text7}
                         name="text7"
                         onChange={handleInputChange}
+                        onClick={() => {
+                            setAnswer(values.text7)
+                        }}
                     />
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -155,6 +196,7 @@ export default function QuestionForm(props) {
                         value={values.image}
                         name="image"
                         onChange={handleInputChange}
+                        onClick={() => makeImage()}
                     />
                     <Controls.Input
                         label="Audio"
@@ -175,20 +217,52 @@ export default function QuestionForm(props) {
                         onChange={handleInputChange}
                         items={typeItems}
                     />
+                    <Controls.Button
+                        text="1, 2, 3, 4"
+                        onClick={() => {
+                            setValues({
+                                ...values,
+                                text2: 1,
+                                text3: 2,
+                                text4: 3,
+                                text5: 4
+                            })
+                            initialFieldValues.text2 = 1
+                            initialFieldValues.text3 = 2
+                            initialFieldValues.text4 = 3
+                            initialFieldValues.text5 = 4
+                        }}
+                    />
+                    {/*<Controls.Button*/}
+                    {/*    text="set image"*/}
+                    {/*    // onClick={() => {*/}
+                    {/*    //     let today = new Date()*/}
+                    {/*    //     let str = today.toISOString().replace(/-/gm, '').substr(0, 8)*/}
+                    {/*    //     str += values.test_id*/}
+                    {/*    //     str += values.qnum.toString().padStart(3, '0') + '.png'*/}
+                    {/*    //     setValues({*/}
+                    {/*    //         ...values,*/}
+                    {/*    //         image: str*/}
+                    {/*    //     })*/}
+                    {/*    // }}*/}
+                    {/*    onClick={() => {*/}
+                    {/*        makeImage()*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                 </Grid>
-                    <div style={{margin: '0 auto'}}>
-                        <Controls.Button
-                            type="submit"
-                            text="submit"
-                            startIcon={<HowToReg/>}
-                        />
-                        <Controls.Button
-                            text="reset"
-                            color="secondary"
-                            onClick={resetForm}
-                        />
-                    </div>
-                </Grid>
+                <div style={{margin: '0 auto'}}>
+                    <Controls.Button
+                        type="submit"
+                        text="submit"
+                        startIcon={<HowToReg/>}
+                    />
+                    <Controls.Button
+                        text="reset"
+                        color="secondary"
+                        onClick={resetForm}
+                    />
+                </div>
+            </Grid>
         </Form>
     );
 }
