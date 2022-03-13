@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import DvrIcon from '@mui/icons-material/Dvr';
+import PeopleIcon from '@mui/icons-material/People';
 import {Tooltip} from "@mui/material";
 import {
     InputAdornment,
@@ -204,16 +204,16 @@ export default function Tests(props) {
                                                     <CloseIcon fontSize="small"/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
-                                            {/*<Controls.ActionButton*/}
-                                            {/*    // data-testid={item.id}*/}
-                                            {/*    color="tertiary"*/}
-                                            {/*    onClick={() => {*/}
-                                            {/*        // setTestId(item.id)*/}
-                                            {/*        window.location = "/cobalt/qs/" + item.id;*/}
-                                            {/*    }}*/}
-                                            {/*>*/}
-                                            {/*    <DvrIcon/>*/}
-                                            {/*</Controls.ActionButton>*/}
+                                            <Controls.ActionButton
+                                                color="quaternary"
+                                                onClick={() => {
+                                                    window.location = "/cobalt/testAlloc/null/" + item.id;
+                                                }}
+                                            >
+                                                <Tooltip title="해당 테스트" placement="top">
+                                                <PeopleIcon/>
+                                                </Tooltip>
+                                            </Controls.ActionButton>
                                         </TableCell>
                                     </TableRow>)
                                 )

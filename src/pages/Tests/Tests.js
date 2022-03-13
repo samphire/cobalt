@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import TestForm from "./TestForm";
 import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
 import PageHeader from "../../components/PageHeader";
 import DvrIcon from '@mui/icons-material/Dvr';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
     InputAdornment,
     makeStyles,
@@ -14,13 +15,12 @@ import {
     Typography
 } from "@material-ui/core";
 import useTable from "../../components/useTable"
-import * as testService from "../../services/testService"
 import CheckIcon from '@mui/icons-material/Check';
 import Controls from '../../components/controls/Controls'
 import {Search} from "@material-ui/icons";
 import AddIcon from "@material-ui/icons/Add"
 import Popup from "../../components/Popup"
-import {deleteTest, insertOrUpdateTest} from "../../services/testService";
+import {deleteTest, insertOrUpdateTest, checkTestImages, getAllTests} from "../../services/testService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const headCells = [
-    {id: 'id', label: 'ID'},
+    {id: 'id', label: 'ID', disableSorting: true},
     {id: 'name', label: '테스트 이름'},
     {id: 'description', label: '테스트 설명', disableSorting: true},
     {id: 'created', label: '테스트 만든 년월일'},
@@ -84,6 +84,25 @@ export default function Tests(props) {
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
+    const terry = useRef()
+
+    const uploadImages = (e) => {
+        e.preventDefault()
+        let formData = new FormData();
+        for (let i = 0; i < e.target.files.length; i++) {
+            formData.append(`files${i}`, e.target.files[i])
+            console.log(formData)
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: formData
+        }
+        fetch("https://notborder.org/cobalt/postData.php?type=imgUpload", requestOptions).then(async response=>{
+            console.log(response.status + ", " + response.statusText)
+        })
+        terry.current.style.display = "none"
+    }
+
     const {
         TblContainer,
         TblHead,
@@ -92,10 +111,9 @@ export default function Tests(props) {
     } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
-        let tests = await testService.getAllTests()
+        let tests = await getAllTests()
         const ts = tests.map(x => ({
                 ...x,
-                // isActive: x.isActive ? <CheckCircleOutlineIcon fontSize='large'/> : 'no'
                 print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='medium'/> : '',
                 print_answer: x.print_answer < 0 ? <CheckIcon fontSize='medium'/> : '',
                 oneshot: x.oneshot < 0 ? <CheckIcon fontSize='medium'/> : '',
@@ -179,6 +197,8 @@ export default function Tests(props) {
                         variant="h3">
                         테스트
                     </Typography>
+                    <input style={{display: 'none'}} type="file" name="myFiles" ref={terry} multiple
+                           onChange={uploadImages}/>
                     <Controls.Button
                         text="테스트 추가"
                         variant="outlined"
@@ -234,11 +254,51 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
-                                                    window.location = "/cobalt/testAlloc/" + item.id;
+                                                    window.location = "/cobalt/testAlloc/" + item.id + "/null";
                                                 }}
                                             >
-                                                <Tooltip title="반에 할당" placement="top">
+                                                <Tooltip title="해당 반" placement="top">
                                                     <PeopleIcon/>
+                                                </Tooltip>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                color="quinternary"
+                                                onClick={async () => {
+                                                    const images = await checkTestImages(item.id)
+                                                    if (images === "yes") {
+                                                        setConfirmDialog({
+                                                            isOpen: true,
+                                                            title: 'Are you sure you want to upload images?',
+                                                            subTitle: 'All question images already exist on the server',
+                                                            onConfirm: () => {
+                                                                console.log(terry.current.style)
+                                                                terry.current.style.display = "inline"
+                                                                setConfirmDialog({
+                                                                    ...confirmDialog,
+                                                                    isOpen: false
+                                                                })
+                                                            }
+                                                        })
+                                                    }
+                                                    if (images === "no") {
+                                                        setConfirmDialog({
+                                                            isOpen: true,
+                                                            title: 'Do you want to upload some images?',
+                                                            subTitle: 'Images for this test are not yet on the server',
+                                                            onConfirm: () => {
+                                                                console.log(terry.current.style)
+                                                                terry.current.style.display = "inline"
+                                                                setConfirmDialog({
+                                                                    ...confirmDialog,
+                                                                    isOpen: false
+                                                                })
+                                                            }
+                                                        })
+                                                    }
+                                                }}
+                                            >
+                                                <Tooltip title="Upload Images" placement="top">
+                                                    <AddPhotoAlternateIcon/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
                                             <Controls.ActionButton

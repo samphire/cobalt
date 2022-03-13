@@ -12,7 +12,7 @@ const initialFieldValues = {
     classid: '',
     classname: '',
     start: new Date(),
-    finish: new Date()
+    finish: new Date().setTime( new Date().getTime() + 1 * 86400000 )
 }
 
 export default function ClassForm(props) {

@@ -74,7 +74,7 @@ if ($_GET['type'] == 'delStud') {
 
 // ############   TESTS   ############
 if ($_GET['type'] == "tests") {
-    $sql = "SELECT * FROM optikon.tbl_tests";
+    $sql = "SELECT * FROM optikon.tbl_tests order by id desc";
     $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -92,7 +92,7 @@ if ($_GET['type'] == "newTest") {
 
     if ($_GET['isEdit'] == 'yes') {
         $msg .= "updated";
-        $sql = "update tbl_tests set 
+        $sql = "update tbl_tests set
         name = '$data->name'
         ,description ='$data->description'
         ,print_wrong = '$data->print_wrong'
@@ -144,13 +144,13 @@ if ($_GET['type'] == 'delTest') {
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from lnk_class_test_archive\n\n" . mysqli_error($conn) . "\n\n" . $sql);
 
 
-    $sql = "delete from tbl_test_course where 
-                test1_id='{$_GET['testid']}' or 
-                test2_id='{$_GET['testid']}' or 
-                test3_id='{$_GET['testid']}' or 
-                test4_id='{$_GET['testid']}' or 
-                test5_id='{$_GET['testid']}' or 
-                test6_id='{$_GET['testid']}' or 
+    $sql = "delete from tbl_test_course where
+                test1_id='{$_GET['testid']}' or
+                test2_id='{$_GET['testid']}' or
+                test3_id='{$_GET['testid']}' or
+                test4_id='{$_GET['testid']}' or
+                test5_id='{$_GET['testid']}' or
+                test6_id='{$_GET['testid']}' or
                 test7_id='{$_GET['testid']}'";
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting test from tbl_test_course\n\n" . mysqli_error($conn) . "\n\n" . $sql);
 
@@ -179,7 +179,7 @@ if ($_GET['type'] == "newClass") {
 
     if ($_GET['isEdit'] == 'yes') {
         $msg .= "updated";
-        $sql = "update tbl_classes set 
+        $sql = "update tbl_classes set
         name = '$data->name'
         ,comment ='$data->comment'
         ,session_start = '$data->session_start'
@@ -210,11 +210,11 @@ if ($_GET['type'] == 'delClass') {
 
 // ############   TESTALLOCS   ############
 if ($_GET['type'] == "testAllocs") {
-    $sql = "SELECT testid, testname, class_id as classid, name as classname, start, finish FROM 
+    $sql = "SELECT testid, testname, class_id as classid, name as classname, start, finish FROM
 (SELECT tbl_tests.id as testid, tbl_tests.name as testname, lnk_class_test.class_id, lnk_class_test.start, lnk_class_test.finish
 from tbl_tests join lnk_class_test
 on tbl_tests.id = lnk_class_test.test_id) as bob join tbl_classes
-on bob.class_id = tbl_classes.id";
+on bob.class_id = tbl_classes.id order by start desc";
     $result = mysqli_query($conn, $sql) or die("error in getting Test Allocations" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -262,11 +262,11 @@ if ($_GET['type'] == 'delTestAlloc') {
     echo "test allocation deleted";
 }
 
-if($_GET['type'] == 'resetTestAlloc'){
+if ($_GET['type'] == 'resetTestAlloc') {
     header("Access-Control-Allow-Methods: DELETE");
     $sql = "delete from tbl_testscore where test_id='{$_GET['testid']}' and student_id in "
-    . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
-    . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
+        . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
+        . "where lnk_class_test.class_id='{$_GET['classid']}' and lnk_class_test.test_id='{$_GET['testid']}')";
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting from tbl_testscore for class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
     $sql = "delete from tbl_responses where test_id='{$_GET['testid']}' and student_id in "
         . "(SELECT student_id FROM lnk_class_test join lnk_student_class on lnk_class_test.class_id = lnk_student_class.class_id "
@@ -278,12 +278,30 @@ if($_GET['type'] == 'resetTestAlloc'){
 // ############   QUESTIONS   ############
 if ($_GET['type'] == "questions") {
     $sql = "SELECT * FROM optikon.tbl_questions where test_id={$_GET['testid']}";
-    $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
+    $result = mysqli_query($conn, $sql) or die("error in getting questions" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
         array_push($array, $row);
     }
     echo json_encode($array);
+    exit;
+}
+
+if ($_GET['type'] == "imagesForTest") {
+    $path = "/var/www/html/optikon/images/";
+    $sql = "SELECT image FROM optikon.tbl_questions where test_id={$_GET['testid']}";
+    $result = mysqli_query($conn, $sql) or die("error getting images for test " . mysqli_error($conn));
+    $array = array();
+    $yes = true;
+    while ($row = mysqli_fetch_assoc($result)) {
+//        echo "\n" . $row['image'];
+//        echo "\n" . strlen($row['image']);
+//        echo "\n" . $path . $row['image'];
+        if (strlen($row['image']) > 0 && !file_exists($path . $row['image'])) {
+            $yes = false;
+        }
+    }
+    echo $yes ? "yes" : "no";
     exit;
 }
 
@@ -328,6 +346,48 @@ if ($_GET['type'] == 'delQuestion') {
     echo "question deleted";
 }
 
+// ###########   STUDALLOCS   #############
+if ($_GET['type'] == "newStudAlloc") {
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $msg = "student class allocation ";
+
+    if ($_GET['isEdit'] == 'yes') {
+        $msg .= "updated";
+        $sql = "update lnk_student_class set begin = '$data->begin', end = '$data->end' where student_id='$data->studid' and class_id='$data->classid'";
+    } else {
+        $msg .= "added";
+        $sql = "insert into lnk_student_class(student_id, class_id, begin, end) VALUES(\"" .
+            $data->studid . "\",\"" .
+            $data->classid . "\",\"" .
+            $data->begin . "\",\"" .
+            $data->end . "\")";
+    }
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+    print $msg;
+}
+if ($_GET['type'] == "studAllocs") {
+    $sql = "select bob.student_id as studid, bob.name as studName, bob.class_id as classid, tbl_classes.name as className, " .
+        "tbl_classes.comment, bob.begin, bob.end from tbl_classes join " .
+        "(SELECT lnk_student_class.*, tbl_students.name FROM optikon.lnk_student_class join tbl_students " .
+        "on lnk_student_class.student_id = tbl_students.id) as bob on tbl_classes.id = bob.class_id";
+    $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+    exit;
+}
+
+if ($_GET['type'] == "delStudAlloc") {
+    header("Access-Control-Allow-Methods: DELETE");
+    $sql = "delete from lnk_student_class where student_id='{$_GET['studid']}' and class_id='{$_GET['classid']}'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting student class allocation\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    echo "student class allocation deleted";
+}
+
 // ############   MISCELLANEOUS   ############
 if ($_GET['type'] == "individual_test_data") {
     $sql = "
@@ -360,4 +420,17 @@ if ($_GET['type'] == "languages") {
         array_push($array, $row);
     }
     echo json_encode($array);
+}
+
+if($_GET['type'] ==  'imgUpload'){
+    $target_dir = "/var/www/html/optikon/images/";
+    foreach ($_FILES as $file){
+//        echo $file['name'] . $file['type'] . $file['size'];
+        $target_file = $target_dir . basename($file['name']);
+        if(move_uploaded_file($file['tmp_name'], $target_file)){
+            echo $file['name'] . " successfully uploaded.";
+        } else{
+            echo "some problem uploading files";
+        }
+    }
 }

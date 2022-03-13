@@ -198,6 +198,11 @@ export default function QuestionForm(props) {
                         onChange={handleInputChange}
                         onClick={() => makeImage()}
                     />
+                    <Controls.FileInput
+                        name="tryImage"
+                        onChange={handleInputChange}
+                    />
+
                     <Controls.Input
                         label="Audio"
                         value={values.audio}
@@ -231,6 +236,12 @@ export default function QuestionForm(props) {
                             initialFieldValues.text3 = 2
                             initialFieldValues.text4 = 3
                             initialFieldValues.text5 = 4
+                        }}
+                    />
+                    <Controls.Button
+                        text="Set Type as Default"
+                        onClick={() => {
+                            initialFieldValues.type = values.type
                         }}
                     />
                     {/*<Controls.Button*/}

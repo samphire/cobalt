@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
             width: "20px",
             height: "20px"
         },
-        '& .MuiButton-label:hover':{
+        '& .MuiButton-label:hover': {
             color: "#EB984E"
         }
     },
@@ -39,8 +39,19 @@ const useStyles = makeStyles(theme => ({
             width: "20px",
             height: "20px"
         },
-        '& .MuiButton-label:hover':{
+        '& .MuiButton-label:hover': {
             color: "#06A248"
+        }
+    },
+    quinternary: {
+        backgroundColor: lighten("#cc00ff", 0.7),
+        '& .MuiButton-label': {
+            color: "#cc00ff",
+            width: "20px",
+            height: "20px"
+        },
+        '& .MuiButton-label:hover': {
+            color: "#cc00ff"
         }
     }
 }))

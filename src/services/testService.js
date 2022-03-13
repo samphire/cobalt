@@ -54,6 +54,17 @@ export async function getAllTests() {
     return response.json();
 }
 
+export async function checkTestImages(testid) {
+    const response = await fetch(`https://notborder.org/cobalt/postData.php?type=imagesForTest&testid=${testid}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'text/plain',
+            'Content-Type': 'text/plain'
+        }
+    })
+    return response.text()
+}
+
 function convertDateToMysql(inputDate) {
     if (inputDate.length === 10) return inputDate
     console.log(inputDate)

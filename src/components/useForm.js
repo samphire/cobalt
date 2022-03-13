@@ -40,11 +40,6 @@ export function UseForm(initialValues) {
             ...values,
             [name]: value
         })
-        console.log('in useForm handle input change for name, value and values:');
-        console.log(name);
-        console.log(value);
-        console.log(values);
-        console.log('leaving handle input change')
     }
 
     const resetForm = () => {

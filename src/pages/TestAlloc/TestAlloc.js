@@ -11,7 +11,12 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {deleteTestAlloc, getAllTestAllocs, insertOrUpdateTestAlloc, resetTestAlloc} from "../../services/testAllocService";
+import {
+    deleteTestAlloc,
+    getAllTestAllocs,
+    insertOrUpdateTestAlloc,
+    resetTestAlloc
+} from "../../services/testAllocService";
 import useTable from "../../components/useTable"
 import Controls from "../../components/controls/Controls"
 import AddIcon from "@material-ui/icons/Add";
@@ -24,7 +29,6 @@ import TestAllocForm from "./TestAllocForm";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {useLocation, useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
-import {AutoFixHigh} from "@mui/icons-material";
 
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +45,11 @@ const useStyles = makeStyles(theme => ({
         },
     },
     searchInput: {
-        width: '15%'
+        width: '50%',
+        marginRight: '5px'
+    },
+    searchInputDiv: {
+        display: "flex"
     },
     oblong: {
         position: 'absolute',
@@ -75,7 +83,13 @@ export default function TestAlloc(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
-    const testid = parseInt(useParams().testid)
+    // const testid = useParams().testid
+    // const classid = useParams().classid
+
+    const {classid, testid} = useParams();
+
+    // window.alert(classid)
+    // window.alert(testid)
 
     const {
         TblContainer,
@@ -88,9 +102,26 @@ export default function TestAlloc(props) {
         let testAllocs = await getAllTestAllocs()
         setRecords(testAllocs)
 
+        if (eval(classid)) {
+            setClassFilterTerm(classid)
+            setFilterFn({
+                fn: items => {
+                    return items.filter(x => x.classid.includes(classid))
+                }
+            })
+        }
+        if (eval(testid)) {
+            setTestFilterTerm(testid)
+            setFilterFn({
+                fn: items => {
+                    return items.filter(x => x.testid.includes(testid))
+                }
+            })
+        }
     }, [refreshRecords]);
 
     const handleTestSearch = e => {
+        setTestFilterTerm(e.target.value)
         let target = e.target
         setFilterFn({
             fn: items => {
@@ -103,6 +134,7 @@ export default function TestAlloc(props) {
     }
 
     const handleClassSearch = e => {
+        setClassFilterTerm(e.target.value)
         let target = e.target
         setFilterFn({
             fn: items => {
@@ -145,12 +177,12 @@ export default function TestAlloc(props) {
         });
     }
 
-    const onReset = (classid, testid) =>{
+    const onReset = (classid, testid) => {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        resetTestAlloc(classid, testid).then(()=>{
+        resetTestAlloc(classid, testid).then(() => {
             setNotify({
                 isOpen: true,
                 message: 'successfully reset test scores and responses for test ' + testid + ' and class ' + classid,
@@ -164,35 +196,40 @@ export default function TestAlloc(props) {
         setOpenPopup(true)
     }
 
+    const [classFilterTerm, setClassFilterTerm] = useState()
+    const [testFilterTerm, setTestFilterTerm] = useState()
+
     return (
         <>
             <Paper className={classes.pageContent}>
 
                 <Toolbar className={classes.toolbar}>
-                    <Controls.Input
-                        label="test filter"
-                        InputProps={{
-                            startAdornment: (<InputAdornment position="start">
-                                <Search/>
-                            </InputAdornment>)
-                        }}
-                        className={classes.searchInput}
-                        onChange={handleTestSearch}
-                        placeholder={"test name"}
-                        // style={{position: 'absolute', left: '20px'}}
-                    />
-                    <Controls.Input
-                        label="class filter"
-                        InputProps={{
-                            startAdornment: (<InputAdornment position="start">
-                                <Search/>
-                            </InputAdornment>)
-                        }}
-                        className={classes.searchInput}
-                        onChange={handleClassSearch}
-                        placeholder={"class name"}
-                        // style={{position: 'absolute', left: '20px'}}
-                    />
+                    <div className={classes.searchInputDiv}>
+                        <Controls.Input
+                            label="test filter"
+                            InputProps={{
+                                startAdornment: (<InputAdornment position="start">
+                                    <Search/>
+                                </InputAdornment>)
+                            }}
+                            className={classes.searchInput}
+                            onChange={handleTestSearch}
+                            placeholder={"test name"}
+                            value={testFilterTerm}
+                        />
+                        <Controls.Input
+                            label="class filter"
+                            InputProps={{
+                                startAdornment: (<InputAdornment position="start">
+                                    <Search/>
+                                </InputAdornment>)
+                            }}
+                            className={classes.searchInput}
+                            onChange={handleClassSearch}
+                            placeholder={"class name"}
+                            value={classFilterTerm}
+                        />
+                    </div>
                     <Typography
                         variant="h3">
                         Class Test Allocations

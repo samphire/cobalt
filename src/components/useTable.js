@@ -43,7 +43,7 @@ export default function UseTable(records, headCells, filterFn) {
 
     const pages = [5, 10, 25, 50, 200]
     const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(pages[0])
+    const [rowsPerPage, setRowsPerPage] = useState(pages[1])
     const [order, setOrder] = useState()
     const [orderBy, setOrderBy] = useState()
 
@@ -56,6 +56,7 @@ export default function UseTable(records, headCells, filterFn) {
     const TblHead = props => {
 
         const handleSortRequest = headid => {
+            // console.log(headid)
             const isAsc = orderBy === headid && order === "asc"
             setOrder(isAsc ? 'desc' : 'asc')
             setOrderBy(headid)
@@ -123,6 +124,10 @@ export default function UseTable(records, headCells, filterFn) {
     }
 
     function descendingComparator(a, b, orderBy) {
+        if(orderBy === 'qnum'){ // Handle the search for numbers, rather than alphabetically
+            a[orderBy] = parseInt(a[orderBy])
+            b[orderBy] = parseInt(b[orderBy])
+        }
         if (b[orderBy] < a[orderBy]) {
             return -1
         }

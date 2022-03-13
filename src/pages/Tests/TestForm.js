@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid, makeStyles} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
@@ -31,6 +31,8 @@ export default function TestForm(props) {
         let temp = {}
         temp.name = values.name ? "" : "이름이 필수 입니다..."
         temp.timer = (/^[0-9]*$/).test(values.timer) ? "" : "숫자 입력하세요..."
+        temp.oneshot = values.oneshot && values.retain ? "유지과 완샷 둘다 선택 불가능" : ""
+        temp.retain = values.oneshot && values.retain ? "유지과 완샷 둘다 선택 불가능" : ""
         setErrors({
             ...temp
         })
@@ -92,26 +94,28 @@ export default function TestForm(props) {
                     />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Controls.Checkbox
-                        label="틀림 보여줌"
-                        value={values.print_wrong}
-                        name="print_wrong"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Checkbox
-                        label="답변 보여줌"
-                        value={values.print_answer}
-                        name="print_answer"
-                        onChange={handleInputChange}
-                    />
+                    {/*<Controls.Checkbox*/}
+                    {/*    label="틀림 보여줌"*/}
+                    {/*    value={values.print_wrong}*/}
+                    {/*    name="print_wrong"*/}
+                    {/*    onChange={handleInputChange}*/}
+                    {/*/>*/}
+                    {/*<Controls.Checkbox*/}
+                    {/*    label="답변 보여줌"*/}
+                    {/*    value={values.print_answer}*/}
+                    {/*    name="print_answer"*/}
+                    {/*    onChange={handleInputChange}*/}
+                    {/*/>*/}
                     <Controls.Checkbox
                         label="완샷"
+                        error = {errors.oneshot}
                         value={values.oneshot}
                         name="oneshot"
                         onChange={handleInputChange}
                     />
                     <Controls.Checkbox
                         label="유지"
+                        error = {errors.retain}
                         value={values.retain}
                         name="retain"
                         onChange={handleInputChange}

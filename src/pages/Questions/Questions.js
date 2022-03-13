@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 
 import {Tooltip} from "@mui/material";
 import {
-    InputAdornment,
     makeStyles,
     Paper,
     TableBody,
@@ -19,7 +18,6 @@ import AddIcon from "@material-ui/icons/Add";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Popup from "../../components/Popup";
-import StudentForm from "../Students/StudentForm";
 import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import QuestionForm from "./QuestionForm";
@@ -82,7 +80,7 @@ export default function Questions(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
-    const testid = parseInt(useParams().testid)
+    const {testid} = useParams()
 
     const {
         TblContainer,
@@ -96,18 +94,6 @@ export default function Questions(props) {
         setRecords(questions)
 
     }, [refreshRecords]);
-
-    const handleSearch = e => {
-        let target = e.target
-        setFilterFn({
-            fn: items => {
-                if (target.value == "")
-                    return items;
-                else
-                    return items.filter(x => x.name.toLowerCase().includes(target.value))
-            }
-        })
-    }
 
     const addOrEdit = (question, resetForm) => {
         console.warn(question);
