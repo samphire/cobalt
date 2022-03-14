@@ -6,14 +6,20 @@ import {HowToReg} from "@material-ui/icons";
 import {getAllClasses} from "../../services/classService"
 import {getAllTests} from "../../services/testService"
 
+const bobly = () => {
+    let temp = new Date().setTime(new Date().getTime() + 1 * 86400000)
+    return new Date(temp)
+}
+
 const initialFieldValues = {
     testid: '',
     testname: '',
     classid: '',
     classname: '',
     start: new Date(),
-    finish: new Date().setTime( new Date().getTime() + 1 * 86400000 )
+    finish: bobly()
 }
+
 
 export default function ClassForm(props) {
 

@@ -35,43 +35,42 @@ function App() {
 
         return (
             <div className="App">
-                <Header clicko={logout}/>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path="/cobalt/q">
-                            <Questionmaker/>
-                        </Route>
-                        <Route path="/cobalt/qs/:testid">
-                            <Questions/>
-                        </Route>
-                        <Route path="/cobalt/studAlloc">
-                            <StudAlloc/>
-                        </Route>
-                        <Route path="/cobalt/testAlloc/:testid/:classid">
-                            <TestAlloc/>
-                        </Route>
-                        <Route path="/cobalt/testAlloc">
-                            <TestAlloc/>
-                        </Route>
-                        <Route path="/cobalt/progress">
-                            <ProgressReport/>
-                        </Route>
-                        <Route path="/cobalt/students">
-                            <Students/>
-                        </Route>
-                        <Route path="/cobalt/tests">
-                            <Tests/>
-                        </Route>
-                        <Route path="/cobalt/classes">
-                            <Classes/>
-                        </Route>
-                    </Switch>
-                </BrowserRouter>
+                    <Header clicko={logout}/>
+                    <BrowserRouter>
+                        <Switch>
+                            <Route path="/cobalt/q">
+                                <Questionmaker/>
+                            </Route>
+                            <Route path="/cobalt/qs/:testid">
+                                <Questions/>
+                            </Route>
+                            <Route path="/cobalt/studAlloc">
+                                <StudAlloc/>
+                            </Route>
+                            <Route path="/cobalt/testAlloc/:testid/:classid">
+                                <TestAlloc/>
+                            </Route>
+                            <Route path="/cobalt/testAlloc">
+                                <TestAlloc/>
+                            </Route>
+                            <Route path="/cobalt/progress">
+                                <ProgressReport/>
+                            </Route>
+                            <Route path="/cobalt/students">
+                                <Students/>
+                            </Route>
+                            <Route path="/cobalt/tests">
+                                <Tests/>
+                            </Route>
+                            <Route path="/cobalt/classes">
+                                <Classes/>
+                            </Route>
+                        </Switch>
+                    </BrowserRouter>
             </div>
         );
     } else {
         return <Login clicko={login}/>
     }
 }
-
 export default App;

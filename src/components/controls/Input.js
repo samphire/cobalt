@@ -3,7 +3,7 @@ import {TextField} from "@material-ui/core";
 import {valueOrDefault} from "chart.js/helpers";
 
 export default function Input(props) {
-    const {name, label, helperText, value, error = null, onChange, ...other} = props;
+    const {tabIndex, name, label, helperText, value, error = null, onChange, ...other} = props;
 
     return (
         <TextField
@@ -13,6 +13,7 @@ export default function Input(props) {
             value={value}
             onChange={onChange}
             {...other}
+            inputProps={{tabIndex: tabIndex}}
             {...(error && {error: true, helperText: error})}
         />
     )

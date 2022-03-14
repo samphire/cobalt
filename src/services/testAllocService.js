@@ -1,6 +1,6 @@
 export async function insertOrUpdateTestAlloc(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
-
+    console.log(temp)
     temp.start = convertDateToMysql(data.start)
     temp.finish = convertDateToMysql(data.finish)
 

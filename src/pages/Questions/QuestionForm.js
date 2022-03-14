@@ -3,7 +3,7 @@ import {Button, Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
-import {testid} from "./useTest";
+import TabIndexContent from "react-tabindex-content"
 
 let initialFieldValues = {
     test_id: '',
@@ -101,180 +101,184 @@ export default function QuestionForm(props) {
 
     return (
         <Form style={{width: '800px'}} onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs={12} sm={6}>
-                    <Controls.Input
-                        label="Test Id"
-                        value={values.test_id}
-                        name="test_id"
-                        onChange={handleInputChange}
-                        disabled
-                    />
-                    <Controls.Input
-                        label="Question Number"
-                        error={errors.qnum}
-                        value={values.qnum}
-                        name="qnum"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Input
-                        label="Text 1"
-                        value={values.text1}
-                        name="text1"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Input
-                        label="Text 2"
-                        value={values.text2}
-                        name="text2"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text2)
-                        }}
-                    />
-                    <Controls.Input
-                        label="Text 3"
-                        value={values.text3}
-                        name="text3"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text3)
-                        }}
-                    />
-                    <Controls.Input
-                        label="Text 4"
-                        value={values.text4}
-                        name="text4"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text4)
-                        }}
-                    />
-                    <Controls.Input
-                        label="Text 5"
-                        value={values.text5}
-                        name="text5"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text5)
-                        }}
-                    />
-                    <Controls.Input
-                        label="Text 6"
-                        value={values.text6}
-                        name="text6"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text6)
-                        }}
-                    />
-                    <Controls.Input
-                        label="Text 7"
-                        value={values.text7}
-                        name="text7"
-                        onChange={handleInputChange}
-                        onClick={() => {
-                            setAnswer(values.text7)
-                        }}
-                    />
-                </Grid>
-                <Grid xs={12} sm={6}>
-                    <Controls.Input
-                        label="Answer"
-                        value={values.answer}
-                        name="answer"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Input
-                        label="Rubrik"
-                        value={values.rubrik}
-                        name="rubrik"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Input
-                        label="Image"
-                        value={values.image}
-                        name="image"
-                        onChange={handleInputChange}
-                        onClick={() => makeImage()}
-                    />
-                    <Controls.FileInput
-                        name="tryImage"
-                        onChange={handleInputChange}
-                    />
+            <TabIndexContent global={true}>
+                <Grid container>
+                    <Grid item xs={12} sm={6}>
+                        <Controls.Input
+                            label="Test Id"
+                            value={values.test_id}
+                            name="test_id"
+                            onChange={handleInputChange}
+                            disabled
+                        />
+                        <Controls.Input
+                            label="Question Number"
+                            error={errors.qnum}
+                            value={values.qnum}
+                            name="qnum"
+                            onChange={handleInputChange}
+                        />
+                        <Controls.Input
+                            label="Text 1"
+                            value={values.text1}
+                            name="text1"
+                            onChange={handleInputChange}
+                            tabIndex="1"
+                        />
+                        <Controls.Input
+                            label="Text 2"
+                            value={values.text2}
+                            name="text2"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text2)
+                            }}
+                            tabIndex={values.type === "1" ? "4" : "2"}
+                        />
+                        <Controls.Input
+                            label="Text 3"
+                            value={values.text3}
+                            name="text3"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text3)
+                            }}
+                            tabIndex={values.type === "1" ? "5" : "3"}
 
-                    <Controls.Input
-                        label="Audio"
-                        value={values.audio}
-                        name="audio"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Input
-                        label="Video"
-                        value={values.video}
-                        name="video"
-                        onChange={handleInputChange}
-                    />
-                    <Controls.RadioGroup
-                        name="type"
-                        label="type"
-                        value={values.type}
-                        onChange={handleInputChange}
-                        items={typeItems}
-                    />
-                    <Controls.Button
-                        text="1, 2, 3, 4"
-                        onClick={() => {
-                            setValues({
-                                ...values,
-                                text2: 1,
-                                text3: 2,
-                                text4: 3,
-                                text5: 4
-                            })
-                            initialFieldValues.text2 = 1
-                            initialFieldValues.text3 = 2
-                            initialFieldValues.text4 = 3
-                            initialFieldValues.text5 = 4
-                        }}
-                    />
-                    <Controls.Button
-                        text="Set Type as Default"
-                        onClick={() => {
-                            initialFieldValues.type = values.type
-                        }}
-                    />
-                    {/*<Controls.Button*/}
-                    {/*    text="set image"*/}
-                    {/*    // onClick={() => {*/}
-                    {/*    //     let today = new Date()*/}
-                    {/*    //     let str = today.toISOString().replace(/-/gm, '').substr(0, 8)*/}
-                    {/*    //     str += values.test_id*/}
-                    {/*    //     str += values.qnum.toString().padStart(3, '0') + '.png'*/}
-                    {/*    //     setValues({*/}
-                    {/*    //         ...values,*/}
-                    {/*    //         image: str*/}
-                    {/*    //     })*/}
-                    {/*    // }}*/}
-                    {/*    onClick={() => {*/}
-                    {/*        makeImage()*/}
-                    {/*    }}*/}
-                    {/*/>*/}
+                        />
+                        <Controls.Input
+                            label="Text 4"
+                            value={values.text4}
+                            name="text4"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text4)
+                            }}
+                            tabIndex={values.type === "1" ? "6" : "4"}
+
+                        />
+                        <Controls.Input
+                            label="Text 5"
+                            value={values.text5}
+                            name="text5"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text5)
+                            }}
+                            tabIndex={values.type === "1" ? "7" : "5"}
+
+                        />
+                        <Controls.Input
+                            label="Text 6"
+                            value={values.text6}
+                            name="text6"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text6)
+                            }}
+                            tabIndex={values.type === "1" ? "8" : "6"}
+
+                        />
+                        <Controls.Input
+                            label="Text 7"
+                            value={values.text7}
+                            name="text7"
+                            onChange={handleInputChange}
+                            onClick={() => {
+                                setAnswer(values.text7)
+                            }}
+                            tabIndex={values.type === "1" ? "9" : "7"}
+
+                        />
+                    </Grid>
+                    <Grid xs={12} sm={6}>
+                        <Controls.Input
+                            label="Answer"
+                            value={values.answer}
+                            name="answer"
+                            onChange={handleInputChange}
+                            tabIndex={values.type === "1" ? "2" : "8"}
+
+                        />
+                        <Controls.Input
+                            label="Rubrik"
+                            value={values.rubrik}
+                            name="rubrik"
+                            onChange={handleInputChange}
+                            tabIndex={values.type === "1" ? "10" : "9"}
+
+                        />
+                        <Controls.Input
+                            label="Image"
+                            value={values.image}
+                            name="image"
+                            onChange={handleInputChange}
+                            onClick={() => makeImage()}
+                        />
+                        <Controls.FileInput
+                            name="tryImage"
+                            onChange={handleInputChange}
+                        />
+
+                        <Controls.Input
+                            label="Audio"
+                            value={values.audio}
+                            name="audio"
+                            onChange={handleInputChange}
+                        />
+                        <Controls.Input
+                            label="Video"
+                            value={values.video}
+                            name="video"
+                            onChange={handleInputChange}
+                        />
+                        <Controls.RadioGroup
+                            name="type"
+                            label="type"
+                            value={values.type}
+                            onChange={handleInputChange}
+                            items={typeItems}
+                        />
+                        <Controls.Button
+                            text="1, 2, 3, 4"
+                            onClick={() => {
+                                setValues({
+                                    ...values,
+                                    text2: 1,
+                                    text3: 2,
+                                    text4: 3,
+                                    text5: 4
+                                })
+                                initialFieldValues.text2 = 1
+                                initialFieldValues.text3 = 2
+                                initialFieldValues.text4 = 3
+                                initialFieldValues.text5 = 4
+                            }}
+                        />
+                        <Controls.Button
+                            text="Set Type as Default"
+                            onClick={() => {
+                                initialFieldValues.type = values.type
+                            }}
+                        />
+                    </Grid>
+                    <div style={{margin: '0 auto'}}>
+                        <Controls.Button
+                            type="submit"
+                            text="submit"
+                            startIcon={<HowToReg/>}
+                            tabIndex={values.type === "1" ? "3" : "10"}
+
+                        />
+                        <Controls.Button
+                            text="reset"
+                            color="secondary"
+                            onClick={resetForm}
+                        />
+                    </div>
                 </Grid>
-                <div style={{margin: '0 auto'}}>
-                    <Controls.Button
-                        type="submit"
-                        text="submit"
-                        startIcon={<HowToReg/>}
-                    />
-                    <Controls.Button
-                        text="reset"
-                        color="secondary"
-                        onClick={resetForm}
-                    />
-                </div>
-            </Grid>
+            </TabIndexContent>
         </Form>
-    );
+    )
 }
-;
+
