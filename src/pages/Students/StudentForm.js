@@ -15,6 +15,7 @@ const initialFieldValues = {
     guardianName: '',
     guardianMobile: '',
     picUrl: '',
+    pass: '',
     notes: '',
     join_date: new Date(),
     last_active_date: new Date(),
@@ -152,6 +153,13 @@ export default function StudentForm(props) {
                         label="사진"
                         value={values.picUrl}
                         name="picUrl"
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Input
+                        variant="outlined"
+                        label="암호"
+                        value={values.pass}
+                        name="pass"
                         onChange={handleInputChange}
                     />
                     <Controls.Input

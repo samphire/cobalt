@@ -29,6 +29,7 @@ if ($_GET['type'] == "newStudent") {
         ,mobile = '$data->mobile'
         ,email = '$data->email'
         ,notes = '$data->notes'
+        ,pass = '$data->pass'
         ,picUrl ='$data->picUrl'
         ,language_id = '$data->language_id'
         ,join_date = '$data->join_date'
@@ -38,7 +39,7 @@ if ($_GET['type'] == "newStudent") {
         ,guardian_mobile ='$data->guardianMobile'
         where id='$data->id'";
     } else {
-        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
+        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
             $data->id . "\",\"" .
             $data->name . "\",\"" .
             $data->DOB . "\",\"" .
@@ -46,6 +47,7 @@ if ($_GET['type'] == "newStudent") {
             $data->mobile . "\",\"" .
             $data->email . "\",\"" .
             $data->notes . "\",\"" .
+            $data->pass . "\",\"" .
             $data->picUrl . "\",\"" .
             $data->language_id . "\",\"" .
             $data->join_date . "\",\"" .
