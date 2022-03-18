@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Tooltip} from "@mui/material";
 import {
@@ -21,7 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Popup from "../../components/Popup";
 import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
 
 

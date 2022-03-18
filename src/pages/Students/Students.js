@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import StudentForm from "./StudentForm";
-import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
-import PageHeader from "../../components/PageHeader";
 import {
     InputAdornment,
     makeStyles,

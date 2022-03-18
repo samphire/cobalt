@@ -432,7 +432,20 @@ if($_GET['type'] ==  'imgUpload'){
         if(move_uploaded_file($file['tmp_name'], $target_file)){
             echo $file['name'] . " successfully uploaded.";
         } else{
-            echo "some problem uploading files";
+            echo "some problem uploading image files";
+        }
+    }
+}
+
+if($_GET['type'] ==  'audUpload'){
+    $target_dir = "/var/www/html/optikon/media/audio/";
+    foreach ($_FILES as $file){
+//        echo $file['name'] . $file['type'] . $file['size'];
+        $target_file = $target_dir . basename($file['name']);
+        if(move_uploaded_file($file['tmp_name'], $target_file)){
+            echo $file['name'] . " successfully uploaded.";
+        } else{
+            echo "some problem uploading audio files";
         }
     }
 }

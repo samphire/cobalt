@@ -21,7 +21,7 @@ import Popup from "../../components/Popup";
 import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import QuestionForm from "./QuestionForm";
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({

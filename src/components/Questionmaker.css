@@ -1,109 +1,86 @@
-
-/*@import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";*/
-/*@import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css";*/
-/*@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';*/
-
-
-html {
-    height: 100%;
-}
-
-body {
-    height: 100%;
-    background-image: url("../img/bg.jpg");
-    background-size: 100% 100%;
-}
-
-input[type='radio']{
-    margin-right: 8px;
-}
-
-.form-style-8 {
-    font-family: 'Open Sans Condensed', sans-serif;
-    /*width: 500px;*/
-    padding: 30px;
-    background: #FFFFFF;
-    /*margin: 50px auto;*/
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);
-    -moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);
-    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);
-
-}
-
-.form-style-8 h2 {
-    background: #4D4D4D;
-    text-transform: uppercase;
-    font-family: 'Open Sans Condensed', sans-serif;
-    color: #797979;
-    font-size: 18px;
-    font-weight: 100;
-    padding: 20px;
-    margin: -30px -30px 30px -30px;
-}
-
-.form-style-8 input[type="text"],
-.form-style-8 input[type="date"],
-.form-style-8 input[type="datetime"],
-.form-style-8 input[type="email"],
-.form-style-8 input[type="number"],
-.form-style-8 input[type="search"],
-.form-style-8 input[type="time"],
-.form-style-8 input[type="url"],
-.form-style-8 input[type="password"],
-.form-style-8 input[type="file"],
-.form-style-8 textarea,
-.form-style-8 select {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    outline: none;
-    display: block;
-    width: 100%;
-    padding: 7px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-    background: transparent;
-    margin-bottom: 10px;
-    font: 16px Arial, Helvetica, sans-serif;
-    height: 45px;
-}
-
-.form-style-8 input[type="radio"] {
-    transform: scale(1.3);
-    padding: 8px;
-    font: 16px Arial, Helvetica, sans-serif;
-}
-
-.form-style-8 textarea {
-    resize: none;
-    overflow: hidden;
-    transition: height 200ms ease-in;
-}
-
-
-/*button {*/
-/*    background-color: peru;*/
-/*    box-shadow: 0 3px 7px 0 grey;*/
-/*    border: 1px solid grey;*/
-/*    cursor: pointer;*/
-/*    color: #000000;*/
-/*    font-family: 'Open Sans Condensed', sans-serif;*/
-/*    font-size: 14px;*/
-/*    font-weight: bold;*/
-/*    padding: 8px 18px;*/
-/*    text-decoration: none;*/
-/*    text-transform: uppercase;*/
-/*    display: block;*/
-/*    margin: 0 auto;*/
+/*html {*/
+/*    height: 100%;*/
 /*}*/
 
-button:active {
-    position: relative;
-    top: 1px;
-    background-color: peru;
-    box-shadow: 0 2px 4px 0 grey;
-}
+/*body {*/
+/*    height: 100%;*/
+/*    background-image: url("../img/bg.jpg");*/
+/*    background-size: 100% 100%;*/
+/*}*/
 
-label {
-    font-size: 18px;
-}
+/*input[type='radio']{*/
+/*    margin-right: 8px;*/
+/*}*/
+
+/*.form-style-8 {*/
+/*    font-family: 'Open Sans Condensed', sans-serif;*/
+/*    !*width: 500px;*!*/
+/*    padding: 30px;*/
+/*    background: #FFFFFF;*/
+/*    !*margin: 50px auto;*!*/
+/*    box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);*/
+/*    -moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);*/
+/*    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.22);*/
+
+/*}*/
+
+/*.form-style-8 h2 {*/
+/*    background: #4D4D4D;*/
+/*    text-transform: uppercase;*/
+/*    font-family: 'Open Sans Condensed', sans-serif;*/
+/*    color: #797979;*/
+/*    font-size: 18px;*/
+/*    font-weight: 100;*/
+/*    padding: 20px;*/
+/*    margin: -30px -30px 30px -30px;*/
+/*}*/
+
+/*.form-style-8 input[type="text"],*/
+/*.form-style-8 input[type="date"],*/
+/*.form-style-8 input[type="datetime"],*/
+/*.form-style-8 input[type="email"],*/
+/*.form-style-8 input[type="number"],*/
+/*.form-style-8 input[type="search"],*/
+/*.form-style-8 input[type="time"],*/
+/*.form-style-8 input[type="url"],*/
+/*.form-style-8 input[type="password"],*/
+/*.form-style-8 input[type="file"],*/
+/*.form-style-8 textarea,*/
+/*.form-style-8 select {*/
+/*    box-sizing: border-box;*/
+/*    -webkit-box-sizing: border-box;*/
+/*    -moz-box-sizing: border-box;*/
+/*    outline: none;*/
+/*    display: block;*/
+/*    width: 100%;*/
+/*    padding: 7px;*/
+/*    border: none;*/
+/*    border-bottom: 1px solid #ddd;*/
+/*    background: transparent;*/
+/*    margin-bottom: 10px;*/
+/*    font: 16px Arial, Helvetica, sans-serif;*/
+/*    height: 45px;*/
+/*}*/
+
+/*.form-style-8 input[type="radio"] {*/
+/*    transform: scale(1.3);*/
+/*    padding: 8px;*/
+/*    font: 16px Arial, Helvetica, sans-serif;*/
+/*}*/
+
+/*.form-style-8 textarea {*/
+/*    resize: none;*/
+/*    overflow: hidden;*/
+/*    transition: height 200ms ease-in;*/
+/*}*/
+
+/*button:active {*/
+/*    position: relative;*/
+/*    top: 1px;*/
+/*    background-color: peru;*/
+/*    box-shadow: 0 2px 4px 0 grey;*/
+/*}*/
+
+/*label {*/
+/*    font-size: 18px;*/
+/*}*/

@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Button, Grid} from "@material-ui/core";
+import React, {useEffect, useState} from 'react';
+import {Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
@@ -25,7 +25,7 @@ let initialFieldValues = {
 
 const typeItems = [
     {id: '1', title: 'text input'},
-    {id: '2', title: 'drop-down'},
+    {id: '2', title: 'audio choice'},
     {id: '3', title: 'radio buttons'},
     {id: '4', title: 'file upload'},
     {id: '5', title: 'multi select'},
@@ -46,11 +46,30 @@ export default function QuestionForm(props) {
         })
     }
 
-    function setAnswer(which) {
+    function makeAudio() {
+        return values.test_id.toString().padStart(5, '0') + values.qnum.toString().padStart(3, '0') + '.mp3'
+    }
+
+    function setAnswer(which, input) {
         if (values.type === '3') {
             setValues({
                 ...values,
                 answer: which
+            })
+        }
+        if (values.type === '5') {
+            setValues({
+                ...values,
+                answer: (() => {
+                    let str = values.answer
+                    let myArr = str.split(",")
+                    myArr[input - 2] = "true"
+                    let bob = ""
+                    myArr.forEach((el)=> {
+                        bob = bob + el + ","
+                    })
+                    return bob.replace(/\B,/g,"") // commas following positions that are not word boundaries!
+                })()
             })
         }
     }
@@ -99,6 +118,25 @@ export default function QuestionForm(props) {
             setValues({...recordForEdit})
     }, [recordForEdit])
 
+    let [jimmy, setJimmy] = useState(0);
+
+    useEffect(() => {
+        if (values.type === '2') {
+            setValues({
+                ...values,
+                text2: '~',
+                text3: '~',
+                text4: '~',
+            })
+        }
+        if (values.type === '5') {
+            setValues({
+                ...values,
+                answer: 'false,false,false,false,false,false,'
+            })
+        }
+    }, [jimmy])
+
     return (
         <Form style={{width: '800px'}} onSubmit={handleSubmit}>
             <TabIndexContent global={true}>
@@ -131,7 +169,7 @@ export default function QuestionForm(props) {
                             name="text2"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text2)
+                                setAnswer(values.text2, 2)
                             }}
                             tabIndex={values.type === "1" ? "4" : "2"}
                         />
@@ -141,7 +179,7 @@ export default function QuestionForm(props) {
                             name="text3"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text3)
+                                setAnswer(values.text3, 3)
                             }}
                             tabIndex={values.type === "1" ? "5" : "3"}
 
@@ -152,7 +190,7 @@ export default function QuestionForm(props) {
                             name="text4"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text4)
+                                setAnswer(values.text4, 4)
                             }}
                             tabIndex={values.type === "1" ? "6" : "4"}
 
@@ -163,7 +201,7 @@ export default function QuestionForm(props) {
                             name="text5"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text5)
+                                setAnswer(values.text5, 5)
                             }}
                             tabIndex={values.type === "1" ? "7" : "5"}
 
@@ -174,7 +212,7 @@ export default function QuestionForm(props) {
                             name="text6"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text6)
+                                setAnswer(values.text6, 6)
                             }}
                             tabIndex={values.type === "1" ? "8" : "6"}
 
@@ -185,7 +223,7 @@ export default function QuestionForm(props) {
                             name="text7"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text7)
+                                setAnswer(values.text7, 7)
                             }}
                             tabIndex={values.type === "1" ? "9" : "7"}
 
@@ -215,16 +253,17 @@ export default function QuestionForm(props) {
                             onChange={handleInputChange}
                             onClick={() => makeImage()}
                         />
-                        <Controls.FileInput
-                            name="tryImage"
-                            onChange={handleInputChange}
-                        />
-
                         <Controls.Input
                             label="Audio"
                             value={values.audio}
                             name="audio"
                             onChange={handleInputChange}
+                            onClick={() => {
+                                setValues({
+                                    ...values,
+                                    audio: makeAudio()
+                                })
+                            }}
                         />
                         <Controls.Input
                             label="Video"
@@ -232,13 +271,19 @@ export default function QuestionForm(props) {
                             name="video"
                             onChange={handleInputChange}
                         />
-                        <Controls.RadioGroup
-                            name="type"
-                            label="type"
-                            value={values.type}
-                            onChange={handleInputChange}
-                            items={typeItems}
-                        />
+                        <div
+                            onClick={() => {
+                                setJimmy(jimmy + 1)
+                            }}
+                        >
+                            <Controls.RadioGroup
+                                name="type"
+                                label="type"
+                                value={values.type}
+                                onChange={handleInputChange}
+                                items={typeItems}
+                            />
+                        </div>
                         <Controls.Button
                             text="1, 2, 3, 4"
                             onClick={() => {

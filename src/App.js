@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './App.css';
-import Questionmaker from "./components/Questionmaker";
 import ProgressReport from "./components/ProgressReport";
 import Students from "./pages/Students/Students";
 import Login from "./pages/Login"
@@ -38,9 +37,9 @@ function App() {
                     <Header clicko={logout}/>
                     <BrowserRouter>
                         <Switch>
-                            <Route path="/cobalt/q">
-                                <Questionmaker/>
-                            </Route>
+                            {/*<Route path="/cobalt/q">*/}
+                            {/*    <Questionmaker/>*/}
+                            {/*</Route>*/}
                             <Route path="/cobalt/qs/:testid">
                                 <Questions/>
                             </Route>

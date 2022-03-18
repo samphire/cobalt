@@ -27,7 +27,7 @@ import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import TestAllocForm from "./TestAllocForm";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
 
 

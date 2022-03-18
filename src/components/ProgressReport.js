@@ -16,7 +16,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     makeStyles
 } from "@material-ui/core";

@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import TestForm from "./TestForm";
-import PeopleOutlineTwoToneIcon from "@mui/icons-material/PeopleOutlineTwoTone";
-import PageHeader from "../../components/PageHeader";
 import DvrIcon from '@mui/icons-material/Dvr';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
+    Grid,
     InputAdornment,
     makeStyles,
     Paper,
@@ -85,6 +84,7 @@ export default function Tests(props) {
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
     const terry = useRef()
+    const aud = useRef()
 
     const uploadImages = (e) => {
         e.preventDefault()
@@ -97,10 +97,27 @@ export default function Tests(props) {
             method: 'POST',
             body: formData
         }
-        fetch("https://notborder.org/cobalt/postData.php?type=imgUpload", requestOptions).then(async response=>{
+        fetch("https://notborder.org/cobalt/postData.php?type=imgUpload", requestOptions).then(async response => {
             console.log(response.status + ", " + response.statusText)
         })
         terry.current.style.display = "none"
+    }
+
+    const uploadAudio = (e) => {
+        e.preventDefault()
+        let formData = new FormData()
+        for (let i = 0; i < e.target.files.length; i++) {
+            formData.append(`files${i}`, e.target.files[i])
+            console.log(formData)
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: formData
+        }
+        fetch("https://notborder.org/cobalt/postData.php?type=audUpload", requestOptions).then(async response => {
+            console.log(response.status + ", " + response.statusText)
+        })
+        aud.current.style.display = "none"
     }
 
     const {
@@ -197,8 +214,29 @@ export default function Tests(props) {
                         variant="h3">
                         테스트
                     </Typography>
-                    <input style={{display: 'none'}} type="file" name="myFiles" ref={terry} multiple
-                           onChange={uploadImages}/>
+
+                    <Grid ref={terry} style={{display: 'none'}} item xs={1}>
+                        <label for="terry">Images</label>
+                        <input
+                            type="file"
+                            name="terry"
+                            id="terry"
+                            multiple
+                            onChange={uploadImages}
+                            title="choose images"
+                        />
+                    </Grid>
+                    <Grid ref={aud} style={{display: 'none'}} item xs={1}>
+                        <label for="aud">Audio</label>
+                        <input
+                            type="file"
+                            name="aud"
+                            id="aud"
+                            multiple
+                            onChange={uploadAudio}
+                            title="choose audio"
+                        />
+                    </Grid>
                     <Controls.Button
                         text="테스트 추가"
                         variant="outlined"
@@ -268,8 +306,8 @@ export default function Tests(props) {
                                                     if (images === "yes") {
                                                         setConfirmDialog({
                                                             isOpen: true,
-                                                            title: 'Are you sure you want to upload images?',
-                                                            subTitle: 'All question images already exist on the server',
+                                                            title: 'Are you sure you want to upload media?',
+                                                            subTitle: 'All images already exist on the server',
                                                             onConfirm: () => {
                                                                 console.log(terry.current.style)
                                                                 terry.current.style.display = "inline"
@@ -283,10 +321,9 @@ export default function Tests(props) {
                                                     if (images === "no") {
                                                         setConfirmDialog({
                                                             isOpen: true,
-                                                            title: 'Do you want to upload some images?',
+                                                            title: 'Do you want to upload media?',
                                                             subTitle: 'Images for this test are not yet on the server',
                                                             onConfirm: () => {
-                                                                console.log(terry.current.style)
                                                                 terry.current.style.display = "inline"
                                                                 setConfirmDialog({
                                                                     ...confirmDialog,
@@ -295,9 +332,10 @@ export default function Tests(props) {
                                                             }
                                                         })
                                                     }
+                                                aud.current.style.display="inline"
                                                 }}
                                             >
-                                                <Tooltip title="Upload Images" placement="top">
+                                                <Tooltip title="Upload Media" placement="top">
                                                     <AddPhotoAlternateIcon/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
