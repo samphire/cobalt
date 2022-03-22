@@ -12,8 +12,8 @@ const initialFieldValues = {
     language_id: 1,
     email: '',
     mobile: '',
-    guardianName: '',
-    guardianMobile: '',
+    guardian_name: '',
+    guardian_mobile: '',
     picUrl: '',
     pass: '',
     notes: '',
@@ -39,10 +39,14 @@ export default function StudentForm(props) {
     const {addOrEdit, recordForEdit} = props;
 
     const validate = () => {
+        console.log((/^null$|^$|.+@.+..+/).test(values.email))
+        console.log((/^null$|^$|^\d{11}$/).test(values.mobile))
+        console.log((/^null$|^$|^\d{11}$/).test(values.guardian_mobile))
         let temp = {}
         temp.name = values.name ? "" : "이름이 필수 입니다"
-        temp.email = (/^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
-        temp.mobile = (/^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
+        temp.email = (/^null$|^$|.+@.+..+/).test(values.email) ? "" : "이메일이 유효하지 않습니다"
+        temp.mobile = (/^null$|^$|^\d{11}$/).test(values.mobile) ? "" : "휴대폰 번호는 11자리여야 합니다."
+        temp.guardian_mobile = (/^null$|^$|^\d{11}$/).test(values.guardian_mobile) ? "" : "보호자의 휴대폰 번호는 11자리여야 합니다."
         temp.language_id = values.language_id ? "" : "언어가 필수 입니다"
         setErrors({
             ...temp
@@ -123,8 +127,6 @@ export default function StudentForm(props) {
                         name="isActive"
                         onChange={handleInputChange}
                     />
-                </Grid>
-                <Grid item xs={12} sm={6}>
                     <Controls.Select
                         name="language_id"
                         label="언어"
@@ -133,6 +135,8 @@ export default function StudentForm(props) {
                         options={languages}
                         error={errors.language}
                     />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                     <Controls.Input
                         variant="outlined"
                         label="보호자 성암"
@@ -143,7 +147,7 @@ export default function StudentForm(props) {
                     <Controls.Input
                         variant="outlined"
                         label="보호자 전화번호"
-                        error={errors.mobile}
+                        error={errors.guardianMobile}
                         value={values.guardianMobile}
                         name="guardianMobile"
                         onChange={handleInputChange}
@@ -166,6 +170,8 @@ export default function StudentForm(props) {
                         variant="outlined"
                         label="주석"
                         value={values.notes}
+                        multiline
+                        rows={4}
                         name="notes"
                         onChange={handleInputChange}
                     />
