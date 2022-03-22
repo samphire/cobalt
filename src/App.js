@@ -11,6 +11,8 @@ import Classes from "./pages/Classes/Classes"
 import TestAlloc from "./pages/TestAlloc/TestAlloc"
 import StudAlloc from "./pages/StudAlloc/StudAlloc"
 
+const myDir = process.env.REACT_APP_DIR
+
 function App() {
 
     const [isLoggedin, setIsLoggedin] = useState(false);
@@ -40,28 +42,28 @@ function App() {
                             {/*<Route path="/cobalt/q">*/}
                             {/*    <Questionmaker/>*/}
                             {/*</Route>*/}
-                            <Route path="/cobalt/qs/:testid">
+                            <Route path={myDir + "/qs/:testid"}>
                                 <Questions/>
                             </Route>
-                            <Route path="/cobalt/studAlloc">
+                            <Route path={myDir + "/studAlloc"}>
                                 <StudAlloc/>
                             </Route>
-                            <Route path="/cobalt/testAlloc/:testid/:classid">
+                            <Route path={myDir + "/testAlloc/:testid/:classid"}>
                                 <TestAlloc/>
                             </Route>
-                            <Route path="/cobalt/testAlloc">
+                            <Route path={myDir + "/testAlloc"}>
                                 <TestAlloc/>
                             </Route>
-                            <Route path="/cobalt/progress">
+                            <Route path={myDir + "/progress"}>
                                 <ProgressReport/>
                             </Route>
-                            <Route path="/cobalt/students">
+                            <Route path={myDir + "/students"}>
                                 <Students/>
                             </Route>
-                            <Route path="/cobalt/tests">
+                            <Route path={myDir + "/tests"}>
                                 <Tests/>
                             </Route>
-                            <Route path="/cobalt/classes">
+                            <Route path={myDir + "/classes"}>
                                 <Classes/>
                             </Route>
                         </Switch>

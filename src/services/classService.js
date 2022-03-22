@@ -1,3 +1,5 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateClass(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     temp.session_start = convertDateToMysql(data.session_start)
@@ -9,7 +11,7 @@ export async function insertOrUpdateClass(data, isEdit) {
 
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newClass&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newClass&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -22,7 +24,7 @@ export async function insertOrUpdateClass(data, isEdit) {
 
 export async function deleteClass(id) {
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delClass&classid=" + id, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=delClass&classid=" + id, {
         method: 'DELETE',
         headers: {
             'Accept': 'text/plain'
@@ -32,7 +34,7 @@ export async function deleteClass(id) {
 }
 
 export async function getAllClasses() {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=classes", {
+    const response = await fetch(SERVER_URL + "/postData.php?type=classes", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

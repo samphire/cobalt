@@ -93,6 +93,8 @@ export default function Students(props) {
     useEffect(async () => {
         let students = await studentService.getAllStudents()
         let languages = await studentService.getLanguages()
+        setLangosh(languages)
+        console.log(langosh)
         const studs = students.map(x => ({
                 ...x,
                 languageName: languages[x.language_id - 1].name,
@@ -151,6 +153,7 @@ export default function Students(props) {
         });
     }
 
+    const [langosh, setLangosh] = useState({id: 1, name: 'glass'});
 
     const openInPopup = item => {
         setRecordForEdit(item)
@@ -265,6 +268,7 @@ export default function Students(props) {
                 <StudentForm
                     recordForEdit={recordForEdit}
                     addOrEdit={addOrEdit}
+                    langosh = {langosh}
                 />
             </Popup>
             <Notification

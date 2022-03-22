@@ -2,6 +2,8 @@ import React from 'react';
 import {AppBar, Grid, makeStyles, Toolbar} from "@material-ui/core";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
+const myDir = process.env.REACT_APP_DIR
+
 const useStyles = makeStyles(theme => ({
     logout: {
         fontSize: '2rem',
@@ -28,14 +30,12 @@ function Header(props) {
                         <EmojiPeopleIcon fontSize="large"/> Logout
                     </Grid>
                     <Grid item xs={3}/>
-                    {/*<Grid item xs={1}><a href="/cobalt/q">Question Maker</a></Grid>*/}
-                    {/*<Grid item xs={1}><a href="/cobalt/qs/:testid">Questions</a></Grid>*/}
-                    <Grid item xs={1}><a href="/cobalt/progress">Progress Report</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/students">Students</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/tests">Tests</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/testAlloc">Test Allocs</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/classes">Classes</a></Grid>
-                    <Grid item xs={1}><a href="/cobalt/studAlloc">Class Allocs</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/progress"}>Progress Report</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/students"}>Students</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/tests"}>Tests</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/testAlloc"}>Test Allocs</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/classes"}>Classes</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/studAlloc"}>Class Allocs</a></Grid>
                     <Grid item xs={3}/>
                 </Grid>
             </Toolbar>

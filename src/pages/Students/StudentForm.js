@@ -3,6 +3,7 @@ import {Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
+import {getLanguages} from "../../services/studentService";
 
 const initialFieldValues = {
     id: 'cjs001',
@@ -21,12 +22,15 @@ const initialFieldValues = {
     last_active_date: new Date(),
     isActive: false
 }
-const languages = [
-    {id: 1, title: 'English'},
-    {id: 2, title: 'Russian'},
-    {id: 3, title: 'Chinese'},
-    {id: 4, title: 'Korean'}
+let languages = [
+    {id: 1, name: 'English'},
+    {id: 2, name: 'Russian'},
+    {id: 3, name: 'Chinese'},
+    {id: 4, name: 'Korean'}
 ];
+
+
+
 const genderItems = [
     {id: 'm', title: '남자'},
     {id: 'f', title: '여자'},
@@ -36,8 +40,9 @@ const genderItems = [
 
 export default function StudentForm(props) {
 
-    const {addOrEdit, recordForEdit} = props;
-
+    const {langosh, addOrEdit, recordForEdit} = props;
+    console.log('these are the languages:')
+console.log(langosh)
     const validate = () => {
         console.log((/^null$|^$|.+@.+..+/).test(values.email))
         console.log((/^null$|^$|^\d{11}$/).test(values.mobile))
@@ -132,7 +137,7 @@ export default function StudentForm(props) {
                         label="언어"
                         value={values.language_id}
                         onChange={handleInputChange}
-                        options={languages}
+                        options={langosh}
                         error={errors.language}
                     />
                 </Grid>

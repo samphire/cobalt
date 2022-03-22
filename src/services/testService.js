@@ -1,3 +1,5 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateTest(data, isEdit) {
     // let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     // temp.DOB = convertDateToMysql(data.DOB)
@@ -21,7 +23,7 @@ export async function insertOrUpdateTest(data, isEdit) {
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
 
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newTest&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newTest&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -34,7 +36,7 @@ export async function insertOrUpdateTest(data, isEdit) {
 
 export async function deleteTest(id) {
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delTest&testid=" + id, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=delTest&testid=" + id, {
         method: 'DELETE',
         headers: {
             'Accept': 'text/plain'
@@ -44,7 +46,7 @@ export async function deleteTest(id) {
 }
 
 export async function getAllTests() {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=tests", {
+    const response = await fetch(SERVER_URL + "/postData.php?type=tests", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -55,7 +57,7 @@ export async function getAllTests() {
 }
 
 export async function checkTestImages(testid) {
-    const response = await fetch(`https://notborder.org/cobalt/postData.php?type=imagesForTest&testid=${testid}`, {
+    const response = await fetch(SERVER_URL + `/postData.php?type=imagesForTest&testid=${testid}`, {
         method: 'GET',
         headers: {
             'Accept': 'text/plain',

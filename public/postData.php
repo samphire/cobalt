@@ -6,7 +6,7 @@ header("Access-Control-Allow-Headers: *");
 
 // ############   STUDENTS   ############
 if ($_GET['type'] == "students") {
-    $sql = "SELECT * FROM optikon.tbl_students";
+    $sql = "SELECT * FROM tbl_students";
     $result = mysqli_query($conn, $sql) or die("error in getting students" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -76,7 +76,7 @@ if ($_GET['type'] == 'delStud') {
 
 // ############   TESTS   ############
 if ($_GET['type'] == "tests") {
-    $sql = "SELECT * FROM optikon.tbl_tests order by id desc";
+    $sql = "SELECT * FROM tbl_tests order by id desc";
     $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -161,7 +161,7 @@ if ($_GET['type'] == 'delTest') {
 
 // ############   CLASSES   ############
 if ($_GET['type'] == "classes") {
-    $sql = "SELECT * FROM optikon.tbl_classes";
+    $sql = "SELECT * FROM tbl_classes";
     $result = mysqli_query($conn, $sql) or die("error in getting classes" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -279,7 +279,7 @@ if ($_GET['type'] == 'resetTestAlloc') {
 
 // ############   QUESTIONS   ############
 if ($_GET['type'] == "questions") {
-    $sql = "SELECT * FROM optikon.tbl_questions where test_id={$_GET['testid']}";
+    $sql = "SELECT * FROM tbl_questions where test_id={$_GET['testid']}";
     $result = mysqli_query($conn, $sql) or die("error in getting questions" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -290,8 +290,8 @@ if ($_GET['type'] == "questions") {
 }
 
 if ($_GET['type'] == "imagesForTest") {
-    $path = "/var/www/html/optikon/images/";
-    $sql = "SELECT image FROM optikon.tbl_questions where test_id={$_GET['testid']}";
+    $path = "/var/www/html/$dir/images/";
+    $sql = "SELECT image FROM tbl_questions where test_id={$_GET['testid']}";
     $result = mysqli_query($conn, $sql) or die("error getting images for test " . mysqli_error($conn));
     $array = array();
     $yes = true;
@@ -371,7 +371,7 @@ if ($_GET['type'] == "newStudAlloc") {
 if ($_GET['type'] == "studAllocs") {
     $sql = "select bob.student_id as studid, bob.name as studName, bob.class_id as classid, tbl_classes.name as className, " .
         "tbl_classes.comment, bob.begin, bob.end from tbl_classes join " .
-        "(SELECT lnk_student_class.*, tbl_students.name FROM optikon.lnk_student_class join tbl_students " .
+        "(SELECT lnk_student_class.*, tbl_students.name FROM lnk_student_class join tbl_students " .
         "on lnk_student_class.student_id = tbl_students.id) as bob on tbl_classes.id = bob.class_id";
     $result = mysqli_query($conn, $sql) or die("error in getting tests" . mysqli_error($conn));
     $array = array();
@@ -415,7 +415,7 @@ if ($_GET['type'] == "individual_test_data") {
 }
 
 if ($_GET['type'] == "languages") {
-    $sql = "SELECT * FROM optikon.tbl_language";
+    $sql = "SELECT * FROM tbl_language";
     $result = mysqli_query($conn, $sql);
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -425,7 +425,7 @@ if ($_GET['type'] == "languages") {
 }
 
 if($_GET['type'] ==  'imgUpload'){
-    $target_dir = "/var/www/html/optikon/images/";
+    $target_dir = "/var/www/html/$dir/images/";
     foreach ($_FILES as $file){
 //        echo $file['name'] . $file['type'] . $file['size'];
         $target_file = $target_dir . basename($file['name']);
@@ -438,7 +438,7 @@ if($_GET['type'] ==  'imgUpload'){
 }
 
 if($_GET['type'] ==  'audUpload'){
-    $target_dir = "/var/www/html/optikon/media/audio/";
+    $target_dir = "/var/www/html/$dir/media/audio/";
     foreach ($_FILES as $file){
 //        echo $file['name'] . $file['type'] . $file['size'];
         $target_file = $target_dir . basename($file['name']);

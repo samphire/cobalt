@@ -1,3 +1,5 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateTestAlloc(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     console.log(temp)
@@ -8,7 +10,7 @@ export async function insertOrUpdateTestAlloc(data, isEdit) {
 
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newTestAlloc&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newTestAlloc&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -21,7 +23,7 @@ export async function insertOrUpdateTestAlloc(data, isEdit) {
 
 export async function deleteTestAlloc(classid, testid) {
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delTestAlloc&classid=" + classid + "&testid=" + testid, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=delTestAlloc&classid=" + classid + "&testid=" + testid, {
         method: 'DELETE',
         headers: {
             'Accept': 'text/plain'
@@ -31,7 +33,7 @@ export async function deleteTestAlloc(classid, testid) {
 }
 
 export async function resetTestAlloc(classid, testid) {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=resetTestAlloc&classid=" + classid + "&testid=" + testid, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=resetTestAlloc&classid=" + classid + "&testid=" + testid, {
         method: 'GET',
         headers: {
             'Accept': 'text/plain'
@@ -41,7 +43,7 @@ export async function resetTestAlloc(classid, testid) {
 }
 
 export async function getAllTestAllocs() {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=testAllocs", {
+    const response = await fetch(SERVER_URL + "/postData.php?type=testAllocs", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

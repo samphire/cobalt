@@ -1,3 +1,5 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateStudent(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     temp.DOB = convertDateToMysql(data.DOB)
@@ -11,7 +13,7 @@ export async function insertOrUpdateStudent(data, isEdit) {
 
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newStudent&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newStudent&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -24,7 +26,7 @@ export async function insertOrUpdateStudent(data, isEdit) {
 
 export async function deleteStudent(id) {
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delStud&studid=" + id, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=delStud&studid=" + id, {
         method: 'DELETE',
         headers: {
             'Accept': 'text/plain'
@@ -34,7 +36,7 @@ export async function deleteStudent(id) {
 }
 
 export async function getAllStudents() {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=students", {
+    const response = await fetch(SERVER_URL + "/postData.php?type=students", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -45,7 +47,7 @@ export async function getAllStudents() {
 }
 
 export async function getLanguages() {
-    const response = await fetch('https://notborder.org/cobalt/postData.php?type=languages', {
+    const response = await fetch(SERVER_URL + "/postData.php?type=languages", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

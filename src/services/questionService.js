@@ -1,8 +1,10 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateQuestion(data, isEdit) {
     const dataToUpload = JSON.stringify(data)
     console.log(dataToUpload)
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newQuestion&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newQuestion&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -15,7 +17,7 @@ export async function insertOrUpdateQuestion(data, isEdit) {
 
 export async function deleteQuestion(testid, qnum) {
 
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delQuestion&testid="
+    const response = await fetch(SERVER_URL + "/postData.php?type=delQuestion&testid="
         + testid + "&qnum=" + qnum, {
         method: 'DELETE',
         headers: {
@@ -26,7 +28,7 @@ export async function deleteQuestion(testid, qnum) {
 }
 
 export async function getAllQuestions(testid) {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=questions&testid=" + testid, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=questions&testid=" + testid, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

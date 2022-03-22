@@ -1,3 +1,5 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function insertOrUpdateStudAlloc(data, isEdit) {
 
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
@@ -10,7 +12,7 @@ export async function insertOrUpdateStudAlloc(data, isEdit) {
     const dataToUpload = JSON.stringify(temp)
     console.log(dataToUpload)
     const type = isEdit.isEdit === "true" ? 'yes' : 'no';
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=newStudAlloc&isEdit=" + type, {
+    const response = await fetch(SERVER_URL + "/postData.php?type=newStudAlloc&isEdit=" + type, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -22,7 +24,7 @@ export async function insertOrUpdateStudAlloc(data, isEdit) {
 }
 
 export async function deleteStudAlloc(studid, classid) {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=delStudAlloc&studid=" + studid + "&classid="
+    const response = await fetch(SERVER_URL + "/postData.php?type=delStudAlloc&studid=" + studid + "&classid="
         + classid, {
         method: 'DELETE',
         headers: {
@@ -33,7 +35,7 @@ export async function deleteStudAlloc(studid, classid) {
 }
 
 export async function getStudAllocs() {
-    const response = await fetch("https://notborder.org/cobalt/postData.php?type=studAllocs", {
+    const response = await fetch(SERVER_URL + "/postData.php?type=studAllocs", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

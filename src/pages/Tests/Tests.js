@@ -27,6 +27,8 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import PeopleIcon from '@mui/icons-material/People';
 import {Tooltip} from "@mui/material";
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 const useStyles = makeStyles(theme => ({
     pageContent: {
         // fontFamily: "'Noto Serif KR', serif",
@@ -97,7 +99,7 @@ export default function Tests(props) {
             method: 'POST',
             body: formData
         }
-        fetch("https://notborder.org/cobalt/postData.php?type=imgUpload", requestOptions).then(async response => {
+        fetch(SERVER_URL + "/postData.php?type=imgUpload", requestOptions).then(async response => {
             console.log(response.status + ", " + response.statusText)
         })
         terry.current.style.display = "none"
@@ -114,7 +116,7 @@ export default function Tests(props) {
             method: 'POST',
             body: formData
         }
-        fetch("https://notborder.org/cobalt/postData.php?type=audUpload", requestOptions).then(async response => {
+        fetch(SERVER_URL + "/postData.php?type=audUpload", requestOptions).then(async response => {
             console.log(response.status + ", " + response.statusText)
         })
         aud.current.style.display = "none"

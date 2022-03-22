@@ -24,7 +24,7 @@ function Select(props) {
                 {
                     options.map(
                         el => (
-                            <MenuItem key={el.id} value={el.id}>{el.title}</MenuItem>
+                            <MenuItem key={el.id} value={el.id}>{el.title||el.name}</MenuItem>
                         )
                     )
                 }
