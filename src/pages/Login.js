@@ -49,6 +49,8 @@ export default function Login(props) {
     const classes = useStyles();
     const [values, setValues] = useState({user: '', pass: ''})
     const [remember, setRemember] = useState(false)
+    const showReg = props.showReg
+    const disp = props.disp
 
     const handleChange = (e, type) => {
         if (type === 'user') {
@@ -95,7 +97,7 @@ export default function Login(props) {
     }
 
     return (
-        <Grid className={classes.gridStyle}>
+        <Grid className={classes.gridStyle} style={{display: (disp === 99 ? 'none' : 'flex')}}>
             <Paper elevation={10} className={classes.paperStyle}>
                 <Grid align='center'>
                     <Avatar className={classes.avatarStyle}>
@@ -140,8 +142,8 @@ export default function Login(props) {
                         onClick={login}
                 >Sign in</Button>
                 <Typography>
-                    <Link href="#">
-                        Forgot Password?
+                    <Link href="#" onClick={() => showReg()}>
+                        Not Registered?
                     </Link>
                 </Typography>
             </Paper>

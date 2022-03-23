@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './App.css';
 import ProgressReport from "./components/ProgressReport";
@@ -17,11 +17,6 @@ const myDir = process.env.REACT_APP_DIR
 function App() {
 
     const [isLoggedin, setIsLoggedin] = useState(false);
-    useEffect(() => {
-        return () => {
-            alert('login status changed')
-        };
-    }, [isLoggedin]);
 
     const login = () => {
         setIsLoggedin(true);
@@ -32,7 +27,12 @@ function App() {
         setIsLoggedin(false)
         localStorage.clear()
         sessionStorage.clear()
+    }
 
+    const [cunt, setCunt] = useState(0)
+
+    const showReg = () => {
+        setCunt(cunt === 99 ? 10 : 99)
     }
 
     if (isLoggedin || sessionStorage.getItem("login") === "true") {
@@ -40,7 +40,7 @@ function App() {
         return (
             <div className="App">
                 <Header clicko={logout}/>
-                {/*<Register/>*/}
+
                 <BrowserRouter>
                     <Switch>
                         <Route path={myDir + "/qs/:testid"}>
@@ -72,7 +72,15 @@ function App() {
             </div>
         );
     } else {
-        return <Login clicko={login}/>
+        return (
+            <>
+                <Login clicko={login} showReg={showReg} disp={cunt}/>
+                <Register
+                    showReg={showReg}
+                    disp={cunt}
+                />
+            </>
+        )
     }
 }
 

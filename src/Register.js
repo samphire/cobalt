@@ -81,6 +81,9 @@ export default function Register(props) {
 
     const classes = useStyles()
 
+    const disp = props.disp
+    const showReg = props.showReg
+
     const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
     const PWD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[-_!@#$%]).{6,24}$/
 
@@ -128,12 +131,17 @@ export default function Register(props) {
     }
 
     return (
-        <>
+        <div style={(disp === 99 ? {
+            display: 'flex',
+            position: 'relative',
+            height: '100vh',
+            alignItems: 'center'
+        } : {display: 'none', position: 'absolute'})}>
             {success ? (
                 <section className={classes.section}>
                     <h1>Success!</h1>
                     <p style={{textAlign: 'center'}}>
-                        <a href="#">Sign In</a>
+                        <a href="#" onClick={() => showReg()}>Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -233,11 +241,11 @@ export default function Register(props) {
                         Already registered?<br/>
                         <span className={classes.sally}>
                 {/*    put router link here  */}
-                            <a href="#">Sign In</a>
+                            <a href="#" onClick={() => showReg()}>Sign In</a>
                 </span>
                     </p>
                 </section>)
             }
-        </>
+        </div>
     )
 }
