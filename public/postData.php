@@ -424,28 +424,51 @@ if ($_GET['type'] == "languages") {
     echo json_encode($array);
 }
 
-if($_GET['type'] ==  'imgUpload'){
+if ($_GET['type'] == 'imgUpload') {
     $target_dir = "/var/www/html/$dir/images/";
-    foreach ($_FILES as $file){
+    foreach ($_FILES as $file) {
 //        echo $file['name'] . $file['type'] . $file['size'];
         $target_file = $target_dir . basename($file['name']);
-        if(move_uploaded_file($file['tmp_name'], $target_file)){
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
             echo $file['name'] . " successfully uploaded.";
-        } else{
+        } else {
             echo "some problem uploading image files";
         }
     }
 }
 
-if($_GET['type'] ==  'audUpload'){
+if ($_GET['type'] == 'audUpload') {
     $target_dir = "/var/www/html/$dir/media/audio/";
-    foreach ($_FILES as $file){
+    foreach ($_FILES as $file) {
 //        echo $file['name'] . $file['type'] . $file['size'];
         $target_file = $target_dir . basename($file['name']);
-        if(move_uploaded_file($file['tmp_name'], $target_file)){
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
             echo $file['name'] . " successfully uploaded.";
-        } else{
+        } else {
             echo "some problem uploading audio files";
         }
+    }
+}
+
+if ($_GET['type'] == 'newUser') {
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $sql = "INSERT INTO users(username, password) values('$data[0]','$data[1]')";
+    mysqli_query($conn, $sql) or die("oh dear! Problem adding new user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    if (mysqli_affected_rows($conn) > 0) {
+        echo json_encode("success");
+    } else {
+        echo json_encode("fail");
+    }
+}
+if ($_GET['type'] == 'validateUser') {
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+    $sql = "SELECT * FROM users where username = '$data[0]' and password = '$data[1]'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem validating user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    if (mysqli_affected_rows($conn) > 0) {
+        echo json_encode("success");
+    } else {
+        echo json_encode("fail");
     }
 }

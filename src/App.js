@@ -10,6 +10,7 @@ import Tests from "./pages/Tests/Tests";
 import Classes from "./pages/Classes/Classes"
 import TestAlloc from "./pages/TestAlloc/TestAlloc"
 import StudAlloc from "./pages/StudAlloc/StudAlloc"
+import Register from "./Register"
 
 const myDir = process.env.REACT_APP_DIR
 
@@ -28,50 +29,51 @@ function App() {
 
     function logout() {
         window.confirm("Are you sure you want to logout and remove all local storage?");
-        setIsLoggedin(false);
-        localStorage.clear();
+        setIsLoggedin(false)
+        localStorage.clear()
+        sessionStorage.clear()
+
     }
 
-    if (isLoggedin || (localStorage.getItem('user') === 'matt' && localStorage.getItem('pass') === 'rahab123')) {
+    if (isLoggedin || sessionStorage.getItem("login") === "true") {
 
         return (
             <div className="App">
-                    <Header clicko={logout}/>
-                    <BrowserRouter>
-                        <Switch>
-                            {/*<Route path="/cobalt/q">*/}
-                            {/*    <Questionmaker/>*/}
-                            {/*</Route>*/}
-                            <Route path={myDir + "/qs/:testid"}>
-                                <Questions/>
-                            </Route>
-                            <Route path={myDir + "/studAlloc"}>
-                                <StudAlloc/>
-                            </Route>
-                            <Route path={myDir + "/testAlloc/:testid/:classid"}>
-                                <TestAlloc/>
-                            </Route>
-                            <Route path={myDir + "/testAlloc"}>
-                                <TestAlloc/>
-                            </Route>
-                            <Route path={myDir + "/progress"}>
-                                <ProgressReport/>
-                            </Route>
-                            <Route path={myDir + "/students"}>
-                                <Students/>
-                            </Route>
-                            <Route path={myDir + "/tests"}>
-                                <Tests/>
-                            </Route>
-                            <Route path={myDir + "/classes"}>
-                                <Classes/>
-                            </Route>
-                        </Switch>
-                    </BrowserRouter>
+                <Header clicko={logout}/>
+                {/*<Register/>*/}
+                <BrowserRouter>
+                    <Switch>
+                        <Route path={myDir + "/qs/:testid"}>
+                            <Questions/>
+                        </Route>
+                        <Route path={myDir + "/studAlloc"}>
+                            <StudAlloc/>
+                        </Route>
+                        <Route path={myDir + "/testAlloc/:testid/:classid"}>
+                            <TestAlloc/>
+                        </Route>
+                        <Route path={myDir + "/testAlloc"}>
+                            <TestAlloc/>
+                        </Route>
+                        <Route path={myDir + "/progress"}>
+                            <ProgressReport/>
+                        </Route>
+                        <Route path={myDir + "/students"}>
+                            <Students/>
+                        </Route>
+                        <Route path={myDir + "/tests"}>
+                            <Tests/>
+                        </Route>
+                        <Route path={myDir + "/classes"}>
+                            <Classes/>
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
             </div>
         );
     } else {
         return <Login clicko={login}/>
     }
 }
+
 export default App;
