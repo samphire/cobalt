@@ -461,14 +461,45 @@ if ($_GET['type'] == 'newUser') {
         echo json_encode("fail");
     }
 }
+//if ($_GET['type'] == 'validateUser') {
+//    $request_body = file_get_contents('php://input');
+//    $data = json_decode($request_body);
+//    $sql = "SELECT * FROM users where username = '$data[0]' and password = '$data[1]'";
+//    $result = mysqli_query($conn, $sql) or die("oh dear! Problem validating user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+//    $msg = '';
+//    if (mysqli_affected_rows($conn) > 0) {
+//        $row = mysqli_fetch_assoc($result);
+//        if ($row['active']) {
+//            $msg = "success";
+//        } else {
+//            $msg = "user pending approval";
+//        }
+//    } else {
+//        $msg = "user/password incorrect";
+//    }
+//    echo json_encode($msg);
+//}
+
+
 if ($_GET['type'] == 'validateUser') {
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
-    $sql = "SELECT * FROM users where username = '$data[0]' and password = '$data[1]'";
-    mysqli_query($conn, $sql) or die("oh dear! Problem validating user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "SELECT * FROM users where username = '$data[0]'";
+    $result = mysqli_query($conn, $sql) or die("oh dear! Problem validating user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $msg = '';
     if (mysqli_affected_rows($conn) > 0) {
-        echo json_encode("success");
+        $valid = false;
+        $active = false;
+        while ($row = $result->fetch_assoc()) {
+            if ($row['password'] == $data[1]) {
+                $valid = true;
+                $active = (bool)$row['active'];
+            }
+        }
+        $msg = $valid ? ($active ? "success" : "user pending approval") : "incorrect password";
+
     } else {
-        echo json_encode("fail");
+        $msg = "no such user";
     }
+    echo json_encode($msg);
 }

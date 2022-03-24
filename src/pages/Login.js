@@ -86,7 +86,7 @@ export default function Login(props) {
             window.sessionStorage.setItem("login", "true")
             loginFn(true)
         } else {
-            window.alert("username or password is incorrect!")
+            window.alert(result)
             return
         }
         //
