@@ -237,6 +237,7 @@ export default function Tests(props) {
                             multiple
                             onChange={uploadImages}
                             title="choose images"
+                            accept = "image/*"
                         />
                     </Grid>
                     <Grid ref={aud} style={{display: 'none'}} item xs={1}>
@@ -248,6 +249,7 @@ export default function Tests(props) {
                             multiple
                             onChange={uploadAudio}
                             title="choose audio"
+                            accept="audio/*"
                         />
                     </Grid>
                     <Controls.Button
@@ -271,7 +273,7 @@ export default function Tests(props) {
                                         <TableCell>{item.id}</TableCell>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.description ||
-                                        <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
+                                            <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
                                         <TableCell>{item.created}</TableCell>
                                         <TableCell style={{textAlign: 'center'}}>{item.print_wrong}</TableCell>
                                         <TableCell style={{textAlign: 'center'}}>{item.print_answer}</TableCell>

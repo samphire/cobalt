@@ -35,10 +35,10 @@ export function UseForm(initialValues) {
     const [errors, setErrors] = useState({})
 
     const handleInputChange = e => {
-        const {name, value} = e.target
+        const {name, value} = e.target  // this is why radio buttons and checkboxes have to have their relevant values converted to the attribute 'value', rather than 'checked' and so on...
         setValues({
             ...values,
-            [name]: value
+            [name]: value // the squ brackets evaluate the variable name to the value it holds
         })
     }
 

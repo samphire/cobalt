@@ -4,6 +4,7 @@ import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
 import TabIndexContent from "react-tabindex-content"
+import {Divider} from "@mui/material";
 
 let initialFieldValues = {
     test_id: '',
@@ -25,9 +26,8 @@ let initialFieldValues = {
 
 const typeItems = [
     {id: '1', title: 'text input'},
-    {id: '2', title: 'audio choice'},
     {id: '3', title: 'radio buttons'},
-    {id: '4', title: 'file upload'},
+    // {id: '4', title: 'file upload'},
     {id: '5', title: 'multi select'},
     {id: '6', title: 'draggable'}
 ]
@@ -51,7 +51,7 @@ export default function QuestionForm(props) {
     }
 
     function setAnswer(which, input) {
-        if (values.type === '3') {
+        if (values.type === '3' || values.type === '2') {
             setValues({
                 ...values,
                 answer: which
@@ -65,10 +65,10 @@ export default function QuestionForm(props) {
                     let myArr = str.split(",")
                     myArr[input - 2] = "true"
                     let bob = ""
-                    myArr.forEach((el)=> {
+                    myArr.forEach((el) => {
                         bob = bob + el + ","
                     })
-                    return bob.replace(/\B,/g,"") // commas following positions that are not word boundaries!
+                    return bob.replace(/\B,/g, "") // commas following positions that are not word boundaries!
                 })()
             })
         }
@@ -283,30 +283,40 @@ export default function QuestionForm(props) {
                                 onChange={handleInputChange}
                                 items={typeItems}
                             />
+
                         </div>
-                        <Controls.Button
-                            text="1, 2, 3, 4"
-                            onClick={() => {
-                                setValues({
-                                    ...values,
-                                    text2: 1,
-                                    text3: 2,
-                                    text4: 3,
-                                    text5: 4
-                                })
-                                initialFieldValues.text2 = 1
-                                initialFieldValues.text3 = 2
-                                initialFieldValues.text4 = 3
-                                initialFieldValues.text5 = 4
-                            }}
-                        />
-                        <Controls.Button
-                            text="Set Type as Default"
-                            onClick={() => {
-                                initialFieldValues.type = values.type
-                            }}
-                        />
+                        <Divider light/>
+                        <br/>
+                        <Grid container direction="row" justifyContent="space-evenly">
+                            <Grid item>
+                                <Controls.Button
+                                    text="1, 2, 3, 4"
+                                    onClick={() => {
+                                        setValues({
+                                            ...values,
+                                            text2: 1,
+                                            text3: 2,
+                                            text4: 3,
+                                            text5: 4
+                                        })
+                                        initialFieldValues.text2 = 1
+                                        initialFieldValues.text3 = 2
+                                        initialFieldValues.text4 = 3
+                                        initialFieldValues.text5 = 4
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Controls.Button
+                                    text="Set Type as Default"
+                                    onClick={() => {
+                                        initialFieldValues.type = values.type
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
+
                     <div style={{margin: '0 auto'}}>
                         <Controls.Button
                             type="submit"

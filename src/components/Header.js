@@ -18,7 +18,11 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#1976d2',
         color: 'white',
         '& a':{
-            color: 'white'
+            color: 'white',
+            padding: '30px'
+        },
+        '& a:hover':{
+            color: 'orange'
         }
     }
 }))
@@ -34,12 +38,12 @@ function Header(props) {
                         <EmojiPeopleIcon fontSize="large"/> Logout
                     </Grid>
                     <Grid item xs={3}/>
-                    <Grid item xs={1}><a href={myDir + "/progress"}>Progress Report</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/students"}>Students</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/tests"}>Tests</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/testAlloc"}>Test Allocs</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/classes"}>Classes</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/tests"}>Tests</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/studAlloc"}>Class Allocs</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/testAlloc"}>Test Allocs</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/progress"}>Progress Report</a></Grid>
                     <Grid item xs={3}/>
                 </Grid>
             </Toolbar>

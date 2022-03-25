@@ -101,7 +101,7 @@ export default function Students(props) {
         const studs = students.map(x => ({
                 ...x,
                 languageName: languages[x.language_id - 1].name,
-                isActive: x.isActive ? <CheckIcon fontSize='medium'/> : 'no'
+                isActive: x.isActive === '1' ? <CheckIcon fontSize='medium'/> : 'no'
             }
         ))
         console.log(studs)

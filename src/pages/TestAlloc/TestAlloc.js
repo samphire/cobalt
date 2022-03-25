@@ -250,9 +250,11 @@ export default function TestAlloc(props) {
                                 recordsAfterPagingAndSorting().map(item =>
                                     (<TableRow key={item.classid + item.testid}>
                                         <TableCell>{item.testid}</TableCell>
-                                        <TableCell onClick={() => {
-                                            window.location = `${myDir}/tests/` + item.testid;
-                                        }}>{item.testname}</TableCell>
+                                        <Tooltip title="테스트 보기" placement="top-start">
+                                            <TableCell onClick={() => {
+                                                window.location = `${myDir}/tests/` + item.testid;
+                                            }}>{item.testname}</TableCell>
+                                        </Tooltip>
                                         <TableCell>{item.classid}</TableCell>
                                         <TableCell>{item.classname}</TableCell>
                                         <TableCell>{item.start}</TableCell>

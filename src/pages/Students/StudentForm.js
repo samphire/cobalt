@@ -157,6 +157,7 @@ export default function StudentForm(props) {
                         value={values.isActive}
                         name="isActive"
                         onChange={handleInputChange}
+                        checked = "false"
                     />
                     <Controls.Select
                         name="language_id"
