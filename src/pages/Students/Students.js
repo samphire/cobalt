@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import StudentForm from "./StudentForm";
 import {
+    Avatar,
     InputAdornment,
     makeStyles,
     Paper,
@@ -23,6 +24,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog"
 import {Tooltip} from '@mui/material'
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -219,7 +222,11 @@ export default function Students(props) {
                                         <TableCell>{item.last_active_date}</TableCell>
                                         <TableCell>{item.notes}</TableCell>
                                         <TableCell>{item.pass}</TableCell>
-                                        <TableCell>{item.picUrl}</TableCell>
+                                        <TableCell>
+                                            <Avatar
+                                                src={SERVER_URL + '/userPics/' + item.picUrl}
+                                            />
+                                        </TableCell>
                                         <TableCell className={classes.tCells}>{item.isActive}</TableCell>
                                         <TableCell className={classes.tCells}>
                                             <Controls.ActionButton
@@ -268,7 +275,7 @@ export default function Students(props) {
                 <StudentForm
                     recordForEdit={recordForEdit}
                     addOrEdit={addOrEdit}
-                    langosh = {langosh}
+                    langosh={langosh}
                 />
             </Popup>
             <Notification
