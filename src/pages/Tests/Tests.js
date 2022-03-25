@@ -26,6 +26,7 @@ import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog";
 import PeopleIcon from '@mui/icons-material/People';
 import {Tooltip} from "@mui/material";
+import {useParams} from "react-router-dom";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -72,10 +73,7 @@ const headCells = [
 
 export default function Tests(props) {
 
-    // const setTestId = (id) => {
-    //     UseTest(id)
-    // }
-    const classes = useStyles();
+    const classes = useStyles()
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [isEdit, setIsEdit] = useState("false")
     const [records, setRecords] = useState(null);
@@ -84,6 +82,7 @@ export default function Tests(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+    const {testid} = useParams()
 
     const terry = useRef()
     const aud = useRef()
@@ -130,28 +129,39 @@ export default function Tests(props) {
     } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
-        let tests = await getAllTests()
-        const ts = tests.map(x => ({
-                ...x,
-                print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='medium'/> : '',
-                print_answer: x.print_answer < 0 ? <CheckIcon fontSize='medium'/> : '',
-                oneshot: x.oneshot < 0 ? <CheckIcon fontSize='medium'/> : '',
-                retain: x.retain < 0 ? <CheckIcon fontSize='medium'/> : ''
+            let tests = await getAllTests()
+            console.log(testid)
+            if (eval(testid)) {
+                console.log('eval testid returned true')
+                console.log('setting filter function')
+                setFilterFn({
+                        fn: items => {
+                            return items.filter(x => x.id === testid)
+                        }
+                    }
+                )
             }
-        ))
-        console.log(ts)
-        setRecords(ts)
-    }, [refreshRecords]);
-
-    // useEffect(async () => {
-    //     setRecords(await studentService.getAllStudents())
-    // }, [refreshRecords])
+            const ts = tests.map(x => ({
+                    ...x,
+                    print_wrong: x.print_wrong < 0 ? <CheckIcon fontSize='medium'/> : '',
+                    print_answer: x.print_answer < 0 ? <CheckIcon fontSize='medium'/> : '',
+                    oneshot: x.oneshot < 0 ? <CheckIcon fontSize='medium'/> : '',
+                    retain: x.retain < 0 ? <CheckIcon fontSize='medium'/> : ''
+                }
+            ))
+            console.log(ts)
+            setRecords(ts)
+        }
+        ,
+        [refreshRecords]
+    )
+    ;
 
     const handleSearch = e => {
         let target = e.target
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (target.value === "")
                     return items;
                 else
                     return items.filter(x => x.name.toLowerCase().includes(target.value))
@@ -218,7 +228,7 @@ export default function Tests(props) {
                     </Typography>
 
                     <Grid ref={terry} style={{display: 'none'}} item xs={1}>
-                        <label for="terry">Images</label>
+                        <label htmlFor="terry">Images</label>
                         <input
                             type="file"
                             name="terry"
@@ -229,7 +239,7 @@ export default function Tests(props) {
                         />
                     </Grid>
                     <Grid ref={aud} style={{display: 'none'}} item xs={1}>
-                        <label for="aud">Audio</label>
+                        <label htmlFor="aud">Audio</label>
                         <input
                             type="file"
                             name="aud"
@@ -334,7 +344,7 @@ export default function Tests(props) {
                                                             }
                                                         })
                                                     }
-                                                aud.current.style.display="inline"
+                                                    aud.current.style.display = "inline"
                                                 }}
                                             >
                                                 <Tooltip title="Upload Media" placement="top">

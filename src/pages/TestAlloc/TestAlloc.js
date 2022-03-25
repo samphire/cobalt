@@ -83,13 +83,9 @@ export default function TestAlloc(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
-    // const testid = useParams().testid
-    // const classid = useParams().classid
+    const myDir = process.env.REACT_APP_DIR
 
     const {classid, testid} = useParams();
-
-    // window.alert(classid)
-    // window.alert(testid)
 
     const {
         TblContainer,
@@ -254,7 +250,9 @@ export default function TestAlloc(props) {
                                 recordsAfterPagingAndSorting().map(item =>
                                     (<TableRow key={item.classid + item.testid}>
                                         <TableCell>{item.testid}</TableCell>
-                                        <TableCell>{item.testname}</TableCell>
+                                        <TableCell onClick={() => {
+                                            window.location = `${myDir}/tests/` + item.testid;
+                                        }}>{item.testname}</TableCell>
                                         <TableCell>{item.classid}</TableCell>
                                         <TableCell>{item.classname}</TableCell>
                                         <TableCell>{item.start}</TableCell>

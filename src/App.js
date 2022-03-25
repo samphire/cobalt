@@ -23,7 +23,7 @@ function App() {
     }
 
     function logout() {
-        window.confirm("Are you sure you want to logout and remove all local storage?");
+        // window.confirm("Are you sure you want to logout and remove all local storage?");
         setIsLoggedin(false)
         localStorage.clear()
         sessionStorage.clear()
@@ -51,6 +51,9 @@ function App() {
                         </Route>
                         <Route path={myDir + "/testAlloc/:testid/:classid"}>
                             <TestAlloc/>
+                        </Route>
+                        <Route path={myDir + "/tests/:testid"}>
+                            <Tests/>
                         </Route>
                         <Route path={myDir + "/testAlloc"}>
                             <TestAlloc/>

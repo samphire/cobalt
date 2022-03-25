@@ -121,6 +121,12 @@ export default function Login(props) {
                     type='password'
                     value={values.pass}
                     onChange={(e) => handleChange(e, 'pass')}
+                    onKeyPress={(e)=>{
+                        if(e.key === 'Enter'){
+                            e.preventDefault(); // Ensure it is only this code that runs
+                            login().then()
+                        }
+                    }}
                 />
                 {/*<FormControlLabel*/}
                 {/*    control={*/}

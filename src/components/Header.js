@@ -14,8 +14,12 @@ const useStyles = makeStyles(theme => ({
         margin: 0
     },
     Toolbar: {
+        fontFamily: 'Nunito, sans-serif',
         backgroundColor: '#1976d2',
-        color: 'white'
+        color: 'white',
+        '& a':{
+            color: 'white'
+        }
     }
 }))
 

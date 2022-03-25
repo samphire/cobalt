@@ -72,6 +72,7 @@ export default function Tests(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+    const myDir = process.env.REACT_APP_DIR
 
     const {
         TblContainer,
@@ -207,7 +208,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
-                                                    window.location = "/cobalt/testAlloc/null/" + item.id;
+                                                    window.location = `${myDir}/testAlloc/null/` + item.id;
                                                 }}
                                             >
                                                 <Tooltip title="해당 테스트" placement="top">
