@@ -22,9 +22,13 @@ if ($_GET['type'] == "newStudent") {
     $data = json_decode($request_body);
     $msg = "student ";
 
+    $data->DOB = $data->DOB ?: 'null';
+    $data->join_date = $data->join_date ?: 'null';
+    $data->last_active_date = $data->last_active_date ?: 'null';
+
     if ($_GET['isEdit'] == 'yes') {
         $msg .= "updated";
-        $sql = "update tbl_students set name = '$data->name', DOB ='$data->DOB'
+        $sql = "update tbl_students set name = '$data->name', DOB =NULLIF('$data->DOB', 'NULL')
         ,sex = '$data->sex'
         ,mobile = '$data->mobile'
         ,email = '$data->email'
@@ -32,29 +36,17 @@ if ($_GET['type'] == "newStudent") {
         ,pass = '$data->pass'
         ,picUrl ='$data->picUrl'
         ,language_id = '$data->language_id'
-        ,join_date = '$data->join_date'
-        ,last_active_date = '$data->last_active_date'
+        ,join_date = NULLIF('$data->join_date', 'NULL')
+        ,last_active_date =NULLIF('$data->last_active_date', 'NULL')
         ,isActive = $data->isActive
         ,guardian_name = '$data->guardianName'
         ,guardian_mobile ='$data->guardianMobile'
         where id='$data->id'";
     } else {
-        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(\"" .
-            $data->id . "\",\"" .
-            $data->name . "\",\"" .
-            $data->DOB . "\",\"" .
-            $data->sex . "\",\"" .
-            $data->mobile . "\",\"" .
-            $data->email . "\",\"" .
-            $data->notes . "\",\"" .
-            $data->pass . "\",\"" .
-            $data->picUrl . "\",\"" .
-            $data->language_id . "\",\"" .
-            $data->join_date . "\",\"" .
-            $data->last_active_date . "\"," .
-            $data->isActive . ",\"" .
-            $data->guardianName . "\",\"" .
-            $data->guardianMobile . "\")";
+        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES('" .
+            "$data->id', '$data->name', NULLIF('$data->DOB', 'NULL'), '$data->sex', '$data->mobile', '$data->email', '$data->notes', '$data->pass', '$data->picUrl'," .
+            "$data->language_id, NULLIF('$data->join_date', 'NULL'), NULLIF('$data->last_active_date', 'NULL'), $data->isActive, '$data->guardianName', '$data->guardianMobile')";
+        echo $sql;
         $msg .= "added";
     }
 
@@ -437,6 +429,19 @@ if ($_GET['type'] == 'imgUpload') {
     }
 }
 
+if ($_GET['type'] == 'studPicUpload') {
+    $target_dir = "/var/www/html/$cloneDir/userPics/";
+    foreach ($_FILES as $file) {
+//        echo $file['name'] . $file['type'] . $file['size'];
+        $target_file = $target_dir . basename($file['name']);
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
+            echo $file['name'] . " successfully uploaded.";
+        } else {
+            echo "some problem uploading image files";
+        }
+    }
+}
+
 if ($_GET['type'] == 'audUpload') {
     $target_dir = "/var/www/html/$dir/media/audio/";
     foreach ($_FILES as $file) {
@@ -461,25 +466,6 @@ if ($_GET['type'] == 'newUser') {
         echo json_encode("fail");
     }
 }
-//if ($_GET['type'] == 'validateUser') {
-//    $request_body = file_get_contents('php://input');
-//    $data = json_decode($request_body);
-//    $sql = "SELECT * FROM users where username = '$data[0]' and password = '$data[1]'";
-//    $result = mysqli_query($conn, $sql) or die("oh dear! Problem validating user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
-//    $msg = '';
-//    if (mysqli_affected_rows($conn) > 0) {
-//        $row = mysqli_fetch_assoc($result);
-//        if ($row['active']) {
-//            $msg = "success";
-//        } else {
-//            $msg = "user pending approval";
-//        }
-//    } else {
-//        $msg = "user/password incorrect";
-//    }
-//    echo json_encode($msg);
-//}
-
 
 if ($_GET['type'] == 'validateUser') {
     $request_body = file_get_contents('php://input');

@@ -58,6 +58,8 @@ export async function getLanguages() {
 }
 
 function convertDateToMysql(inputDate) {
+    if (!inputDate)
+        return ''
     if (inputDate.length === 10) return inputDate
     console.log(inputDate)
     const result = inputDate.toJSON().slice(0, 10);

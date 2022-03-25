@@ -83,6 +83,7 @@ export default function Tests(props) {
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
     const {testid} = useParams()
+    const myDir = process.env.REACT_APP_DIR
 
     const terry = useRef()
     const aud = useRef()
@@ -294,7 +295,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="tertiary"
                                                 onClick={() => {
-                                                    window.location = "/cobalt/qs/" + item.id;
+                                                    window.location = `${myDir}/qs/` + item.id;
                                                 }}
                                             >
                                                 <Tooltip title="문재들 추가/변집" placement="top">
@@ -304,7 +305,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
-                                                    window.location = "/cobalt/testAlloc/" + item.id + "/null";
+                                                    window.location = `${myDir}/testAlloc/` + item.id + "/null";
                                                 }}
                                             >
                                                 <Tooltip title="해당 반" placement="top">

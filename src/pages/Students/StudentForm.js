@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
-import {Grid} from "@material-ui/core";
+import {Card, CardContent, CardMedia, Grid, makeStyles, Typography} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
-import {getLanguages} from "../../services/studentService";
+// import {getLanguages} from "../../services/studentService";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const initialFieldValues = {
     id: 'cjs001',
     name: '',
-    DOB: new Date("2005-07-01"),
+    DOB: null,
     sex: 'm',
     language_id: 1,
     email: '',
@@ -18,17 +19,16 @@ const initialFieldValues = {
     picUrl: '',
     pass: '',
     notes: '',
-    join_date: new Date(),
-    last_active_date: new Date(),
+    join_date: null,
+    last_active_date: null,
     isActive: false
 }
-let languages = [
-    {id: 1, name: 'English'},
-    {id: 2, name: 'Russian'},
-    {id: 3, name: 'Chinese'},
-    {id: 4, name: 'Korean'}
-];
-
+// let languages = [
+//     {id: 1, name: 'English'},
+//     {id: 2, name: 'Russian'},
+//     {id: 3, name: 'Chinese'},
+//     {id: 4, name: 'Korean'}
+// ];
 
 
 const genderItems = [
@@ -37,12 +37,38 @@ const genderItems = [
     {id: 'a', title: '외개인'}
 ]
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        margin: '8px'
+    }
+}))
+
 
 export default function StudentForm(props) {
 
+    const uploadImages = (e) => {
+        e.preventDefault()
+        console.log(e.target.files[0].name)
+        let formData = new FormData();
+        setValues({
+            ...values,
+            picUrl: e.target.files[0].name
+        })
+        for (let i = 0; i < e.target.files.length; i++) {
+            formData.append(`files${i}`, e.target.files[i])
+            console.log(formData)
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: formData
+        }
+        fetch(SERVER_URL + "/postData.php?type=studPicUpload", requestOptions).then(async response => {
+            console.log(response.status + ", " + response.statusText)
+        })
+    }
+
+    const classes = useStyles()
     const {langosh, addOrEdit, recordForEdit} = props;
-    console.log('these are the languages:')
-console.log(langosh)
     const validate = () => {
         console.log((/^null$|^$|.+@.+..+/).test(values.email))
         console.log((/^null$|^$|^\d{11}$/).test(values.mobile))
@@ -84,7 +110,7 @@ console.log(langosh)
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
                     <Controls.Input
                         label="ID"
                         value={values.id}
@@ -141,7 +167,7 @@ console.log(langosh)
                         error={errors.language}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
                     <Controls.Input
                         variant="outlined"
                         label="보호자 성암"
@@ -204,6 +230,22 @@ console.log(langosh)
                             onClick={resetForm}
                         />
                     </div>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <Card className={classes.root}>
+                        <CardMedia
+                            component="img"
+                            height="220"
+                            image= {SERVER_URL + "/userPics/" + values.picUrl}
+                            alt="picture of user"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {values.name}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                    <input type="file" name="picURL" id="picURL" accept="image/*" onChange={uploadImages}/>
                 </Grid>
             </Grid>
         </Form>

@@ -12,4 +12,5 @@ session_cache_limiter('private_no_expire, must-revalidate');
 $_SESSION['global_url'] = "http://www.notborder.org/cobalt";
 //$_SESSION['global_url'] = "http://www.notborder.org/suleman";
 $dir="optikon";
+$cloneDir = "cobalt";
 //$dir="suleman";
