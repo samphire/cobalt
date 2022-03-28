@@ -251,7 +251,7 @@ export default function TestAlloc(props) {
                                         <TableCell>{item.testid}</TableCell>
                                         <Tooltip title="테스트 보기" placement="top-start">
                                             <TableCell onClick={() => {
-                                                window.location = `${myDir}/tests/` + item.testid;
+                                                window.location = `${myDir}/tests/${item.testid}`;
                                             }}>{item.testname}</TableCell>
                                         </Tooltip>
                                         <TableCell>{item.classid}</TableCell>
@@ -277,8 +277,8 @@ export default function TestAlloc(props) {
                                                     console.log(item)
                                                     setConfirmDialog({
                                                         isOpen: true,
-                                                        title: 'Are you sure you want to delete this test allocation?',
-                                                        subTitle: 'You cannot undo this operation',
+                                                        title: '이 테스트 할당을 삭제하시겠습니까?',
+                                                        subTitle: '이 작업을 복원할 수 없습니다.',
                                                         onConfirm: () => {
                                                             onDelete(item.classid, item.testid)
                                                         }
@@ -295,8 +295,8 @@ export default function TestAlloc(props) {
                                                     console.log(item)
                                                     setConfirmDialog({
                                                         isOpen: true,
-                                                        title: 'Are you sure you want to reset this test allocation?',
-                                                        subTitle: 'All class responses and test scores will be deleted',
+                                                        title: '이 테스트를 복원하시겠습니까?',
+                                                        subTitle: '선택한 반의 모든 응답 및 점수가 삭제됩니다.',
                                                         onConfirm: () => {
                                                             onReset(item.classid, item.testid)
                                                         }

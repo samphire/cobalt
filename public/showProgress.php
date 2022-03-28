@@ -76,8 +76,8 @@ $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, p
  mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
  $sql="create temporary table optikon.dolly select sid.*, coalesce(testscores.avgscore, 0) as avgscore from sid join testscores on sid.id = testscores.id";
  mysqli_query($myConn, $sql) or die("13 ".mysqli_error($myConn));
- $sql="create temporary table dodo select dolly.*, round((least(wordscore, 1000))/10) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum * 10, 50) + least(numLearning, 50)) AS activity,
- round(((avgscore +  round((least(wordscore, 1000))/10) + (least(MathPerc, 100)) + round(least(avgrepnum * 10, 50) + least(numLearning, 50)))/ 4)) AS total from dolly";
+ $sql="create temporary table dodo select dolly.*, round((least(wordscore, 2000))/20) as word, (least(MathPerc, 100)) AS math, round(least(avgrepnum * 10, 50) + least(numLearning, 50)) AS activity,
+ round(((avgscore +  round((least(wordscore, 2000))/20) + (least(MathPerc, 100)) + round(least(avgrepnum * 10, 50) + least(numLearning, 50)))/ 4)) AS total from dolly";
 
  $result = mysqli_query($myConn, $sql) or die("14 ".mysqli_error($myConn));
 

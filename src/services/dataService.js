@@ -1,5 +1,7 @@
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export async function getBreakdown(studid, classid) {
-    let responseObj = await fetch(`postData.php?studid=${studid}&classid=${classid}&type=individual_test_data`,
+    let responseObj = await fetch(`${SERVER_URL}/postData.php?studid=${studid}&classid=${classid}&type=individual_test_data`,
         {
             method: 'GET',
             headers: {

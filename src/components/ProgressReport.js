@@ -22,6 +22,9 @@ import {
 import {Paper, Typography, Box, CircularProgress} from '@mui/material';
 import {getBreakdown} from "../services/dataService";
 import './ProgressReport.css';
+import {getAllClasses} from '../services/classService'
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const useStyles = makeStyles(theme => ({
     select: {
@@ -49,9 +52,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function ProgressReport() {
     const [data, setData] = useState([]);
-    const [myClass, setClass] = useState(14);
+    const [myClass, setClass] = useState(
+        {classid: '1', name: 'high class 1', start: '2021-09-01', end: '2021-12-20'}
+    );
     const [open, setOpen] = useState(false);
     const [testData, setTestData] = useState([]);
+    const [classList, setClassList] = useState([{
+        id: 16,
+        name: '고등반',
+        start: '2022-03-14',
+        end: '2022-06-18'
+    }])
 
     const classes = useStyles();
 
@@ -60,13 +71,22 @@ export default function ProgressReport() {
     }
 
     useEffect(async () => {
+        const classInfo = await getAllClasses()
+        console.log('class info: ')
+        console.log(classInfo)
+        setClassList(classInfo)
+        setClass(classInfo[3])
         const result = await bob(myClass);
         setData(result);
     }, [])
 
     const handleChange = async (e) => {
-        setClass(e.target.value);
-        const result = await bob(e.target.value);
+        const classStuff = JSON.parse(e.target.value)
+        console.log('classStuff: ')
+        console.log(classStuff)
+        setClass(classStuff);
+        console.log(classStuff.classid)
+        const result = await bob(classStuff);
         setData(result);
     };
 
@@ -94,12 +114,22 @@ export default function ProgressReport() {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Age"
-                        value={myClass}
+                        value={myClass.classname}
                         onChange={handleChange}
                         className={classes.select}
                     >
-                        <MenuItem value={14}>중등반</MenuItem>
-                        <MenuItem value={16}>고등반</MenuItem>
+                        {classList.map((el) => {
+                            return (
+                                <MenuItem value={JSON.stringify({
+                                    classid: el.id,
+                                    classname: el.name,
+                                    start: el.session_start,
+                                    end: el.session_end
+                                })}>{el.name}</MenuItem>
+                            )
+                        })}
+
+                        {/*<MenuItem value={16}>고등반</MenuItem>*/}
 
                     </Select>
                 </FormControl>
@@ -110,7 +140,7 @@ export default function ProgressReport() {
                 onclose={handleClose}
                 aria-labelledby="alert-dialog-title">
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
-                    Individual Test Results
+                    개인 테스트 점수
                 </DialogTitle>
                 <DialogContent sx={{fontSize: '14px'}}>
                     {console.log("printing item")}
@@ -141,12 +171,12 @@ export default function ProgressReport() {
                         <TableRow sx={{color: "white"}} onClick={() => {
                             console.log('hello from click handler on row')
                         }}>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Tests</TableCell>
+                            <TableCell>학생</TableCell>
+                            <TableCell>테스트</TableCell>
                             <TableCell>구구단</TableCell>
-                            <TableCell>Words</TableCell>
-                            <TableCell>WordTests</TableCell>
-                            <TableCell>TOTAL</TableCell>
+                            <TableCell>어휘</TableCell>
+                            <TableCell>연습</TableCell>
+                            <TableCell>총</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -221,7 +251,11 @@ export default function ProgressReport() {
 }
 
 async function bob(myClass) {
-    let responseObj = await fetch('showProgress.php?classid=' + myClass, {
+
+    console.log('bobs myClass: ')
+    console.log(myClass)
+
+    let responseObj = await fetch(`${SERVER_URL}/showProgress.php?classid=${myClass.classid}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'text/plain'
@@ -254,17 +288,25 @@ async function bob(myClass) {
     const classAvg = classTotal / myArr.length;
     console.log("class average is " + classAvg);
     console.log(myArr);
-    progress(classAvg);
+    console.log('myclass')
+    console.log(myClass)
+    console.log(myClass.start + ', ' + myClass.end)
+    progress(classAvg, myClass.start, myClass.end);
+    console.log(myClass)
     return myArr;
 }
 
-function progress(percent) {
+function progress(percent, start, end) {
+
+    console.log(start + ', ' + typeof start)
+
     let col;
     // Date value
     const day = 1000 * 60 * 60 * 24;
     const now = new Date();
-    const startDate = new Date("2022-03-01");
-    const endDate = new Date("2022-06-30");
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
     const diff = Math.ceil((endDate - startDate) / day);
     const timeProg = Math.min(100, Math.ceil((((now - startDate) / day) / diff) * 100));
 

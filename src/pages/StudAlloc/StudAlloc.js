@@ -23,6 +23,7 @@ import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import {useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
+const myDir = process.env.REACT_APP_DIR
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,8 +43,8 @@ const useStyles = makeStyles(theme => ({
         width: '50%',
         marginRight: '5px'
     },
-    searchInputDiv:{
-      display: "flex"
+    searchInputDiv: {
+        display: "flex"
     },
     oblong: {
         position: 'absolute',
@@ -217,7 +218,13 @@ export default function StudAlloc(props) {
                                 recordsAfterPagingAndSorting().map(item =>
                                     (<TableRow key={item.studid + item.classid}>
                                         <TableCell>{item.studid}</TableCell>
-                                        <TableCell>{item.studName}</TableCell>
+
+
+                                        <Tooltip title="학생 보기" placement="top-start">
+                                            <TableCell onClick={() => {
+                                                window.location = `${myDir}/students/${item.studid}`;
+                                            }}>{item.studName}</TableCell>
+                                        </Tooltip>
                                         <TableCell>{item.classid}</TableCell>
                                         <TableCell>{item.className}</TableCell>
                                         <TableCell>{item.comment}</TableCell>

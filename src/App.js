@@ -61,6 +61,9 @@ function App() {
                         <Route path={myDir + "/progress"}>
                             <ProgressReport/>
                         </Route>
+                        <Route path={myDir + "/students/:barley"}>
+                            <Students/>
+                        </Route>
                         <Route path={myDir + "/students"}>
                             <Students/>
                         </Route>

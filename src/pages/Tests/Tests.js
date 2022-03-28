@@ -131,10 +131,7 @@ export default function Tests(props) {
 
     useEffect(async () => {
             let tests = await getAllTests()
-            console.log(testid)
             if (eval(testid)) {
-                console.log('eval testid returned true')
-                console.log('setting filter function')
                 setFilterFn({
                         fn: items => {
                             return items.filter(x => x.id === testid)
@@ -150,7 +147,6 @@ export default function Tests(props) {
                     retain: x.retain < 0 ? <CheckIcon fontSize='medium'/> : ''
                 }
             ))
-            console.log(ts)
             setRecords(ts)
         }
         ,
@@ -171,14 +167,12 @@ export default function Tests(props) {
     }
 
     const addOrEdit = (test, resetForm) => {
-        console.warn(test);
         insertOrUpdateTest(test, {isEdit}).then()
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
         setRefreshRecords((num) => ++num)
         setIsEdit("false")
-        console.log(refreshRecords)
         setNotify({
             isOpen: true,
             message: 'successfully added test',
@@ -201,12 +195,10 @@ export default function Tests(props) {
         });
     }
 
-
     const openInPopup = item => {
         setRecordForEdit(item)
         setOpenPopup(true)
     }
-
 
     return (
         <>

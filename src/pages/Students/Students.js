@@ -24,6 +24,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog"
 import {Tooltip} from '@mui/material'
+import {useParams} from "react-router-dom";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -85,6 +86,7 @@ export default function Students(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+    const {barley} = useParams()
 
     const {
         TblContainer,
@@ -96,22 +98,26 @@ export default function Students(props) {
     useEffect(async () => {
         let students = await studentService.getAllStudents()
         let languages = await studentService.getLanguages()
+        if (barley) {
+            setFilterFn({
+                    fn: items => {
+                        return items.filter(x => x.id === barley)
+                    }
+                }
+            )
+        }
         setLangosh(languages)
-        console.log(langosh)
         const studs = students.map(x => ({
                 ...x,
                 languageName: languages[x.language_id - 1].name,
                 isActive: x.isActive === '1' ? <CheckIcon fontSize='medium'/> : 'no'
             }
         ))
-        console.log(studs)
         setRecords(studs)
+
+
+
     }, [refreshRecords]);
-
-    // useEffect(async () => {
-    //     setRecords(await studentService.getAllStudents())
-    // }, [refreshRecords])
-
 
     const handleSearch = e => {
         let target = e.target
