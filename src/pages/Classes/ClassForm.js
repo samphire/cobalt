@@ -76,13 +76,13 @@ export default function ClassForm(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Controls.DatePicker
-                        label="session start"
+                        label="학기 시작"
                         value={values.session_start}
                         name="session_start"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="session end"
+                        label="학기 마감"
                         value={values.session_end}
                         name="session_end"
                         onChange={handleInputChange}

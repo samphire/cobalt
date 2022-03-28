@@ -75,27 +75,27 @@ export default function ClassForm(props) {
                 <Grid item xs={12}>
                     <Controls.Select
                         name="classid"
-                        label="class"
+                        label="반"
                         value={values.classid}
                         onChange={handleInputChange}
                         options={classes}
                     />
                     <Controls.Select
                         name="studid"
-                        label="student"
+                        label="학생"
                         value={values.studid}
                         onChange={handleInputChange}
                         options={students}
                     />
                     <Controls.DatePicker
-                        label="begin"
+                        label="시작날"
                         value={values.begin}
                         name="begin"
                         onChange={handleInputChange}
                         disableFuture
                     />
                     <Controls.DatePicker
-                        label="end"
+                        label="마감날"
                         value={values.end}
                         name="end"
                         onChange={handleInputChange}

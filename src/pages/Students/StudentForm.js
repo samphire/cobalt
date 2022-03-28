@@ -49,6 +49,12 @@ export default function StudentForm(props) {
     const uploadImages = (e) => {
         e.preventDefault()
         console.log(e.target.files[0].name)
+        console.log(e.target.files[0].name.indexOf(' '))
+        if(e.target.files[0].name.indexOf(' ')>-1){
+            console.log('filename has a space in it')
+            window.alert("Do not try to upload images where the filename contains spaces")
+            return
+        }
         let formData = new FormData();
         setValues({
             ...values,

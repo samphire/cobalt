@@ -146,7 +146,7 @@ export default function Tests(props) {
                         }}
                         className={classes.searchInput}
                         onChange={handleSearch}
-                        placeholder={"class"}
+                        placeholder={"반"}
                     />
                     <Typography
                         variant="h3">

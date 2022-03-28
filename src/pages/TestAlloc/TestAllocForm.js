@@ -86,7 +86,7 @@ export default function ClassForm(props) {
                 <Grid item xs={12}>
                     <Controls.Select
                         name="classid"
-                        label="class"
+                        label="반"
                         value={values.classid}
                         onChange={handleInputChange}
                         options={classes}
@@ -94,20 +94,20 @@ export default function ClassForm(props) {
 
                     <Controls.Select
                         name="testid"
-                        label="test"
+                        label="테스트"
                         value={values.testid}
                         onChange={handleInputChange}
                         options={tests}
                     />
 
                     <Controls.DatePicker
-                        label="start"
+                        label="시작"
                         value={values.start}
                         name="start"
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="finish"
+                        label="바감"
                         value={values.finish}
                         name="finish"
                         onChange={handleInputChange}

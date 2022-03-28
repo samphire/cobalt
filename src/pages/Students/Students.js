@@ -185,7 +185,7 @@ export default function Students(props) {
                     />
                     <Typography
                         variant="h3">
-                        학생들
+                        학생
                     </Typography>
                     <Controls.Button
                         text="학생 추가"
@@ -224,7 +224,7 @@ export default function Students(props) {
                                         <TableCell>{item.pass}</TableCell>
                                         <TableCell>
                                             <Avatar
-                                                src={SERVER_URL + '/userPics/' + item.picUrl}
+                                                src={`${SERVER_URL}/userPics/${item.picUrl}`}
                                             />
                                         </TableCell>
                                         <TableCell className={classes.tCells}>{item.isActive}</TableCell>

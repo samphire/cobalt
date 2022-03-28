@@ -38,12 +38,12 @@ function Header(props) {
                         <EmojiPeopleIcon fontSize="large"/> Logout
                     </Grid>
                     <Grid item xs={3}/>
-                    <Grid item xs={1}><a href={myDir + "/students"}>Students</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/classes"}>Classes</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/tests"}>Tests</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/studAlloc"}>Class Allocs</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/testAlloc"}>Test Allocs</a></Grid>
-                    <Grid item xs={1}><a href={myDir + "/progress"}>Progress Report</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/students"}>학생</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/classes"}>반</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/tests"}>테스트</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/studAlloc"}>반 할당</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/testAlloc"}>테스트 할당</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/progress"}>성능</a></Grid>
                     <Grid item xs={3}/>
                 </Grid>
             </Toolbar>

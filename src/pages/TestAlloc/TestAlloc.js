@@ -64,12 +64,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const headCells = [
-    {id: 'testid', label: 'Test Id'},
-    {id: 'testname', label: 'Test Name'},
-    {id: 'classid', label: 'Class Id'},
-    {id: 'classname', label: 'Class Name'},
-    {id: 'start', label: 'Start'},
-    {id: 'finish', label: 'Finish'},
+    {id: 'testid', label: '테스트 ID'},
+    {id: 'testname', label: '테스트 이름'},
+    {id: 'classid', label: '반 ID'},
+    {id: 'classname', label: '반 이름'},
+    {id: 'start', label: '시작'},
+    {id: 'finish', label: '마감'},
     {id: 'actions', label: 'Actions', disableSorting: true}
 ]
 
@@ -167,7 +167,7 @@ export default function TestAlloc(props) {
             setRefreshRecords((num) => ++num)
             setNotify({
                 isOpen: true,
-                message: 'successfully deleted test allocation',
+                message: '테스트 할당을 성공적으로 삭제되었습니다',
                 type: 'error'
             })
         });
@@ -181,7 +181,7 @@ export default function TestAlloc(props) {
         resetTestAlloc(classid, testid).then(() => {
             setNotify({
                 isOpen: true,
-                message: 'successfully reset test scores and responses for test ' + testid + ' and class ' + classid,
+                message: `테스트 ${testid} 반 ${classid} 점수 및 응답을 성공적으로 재설정되었습니다`,
                 type: 'error'
             })
         })
@@ -202,7 +202,7 @@ export default function TestAlloc(props) {
                 <Toolbar className={classes.toolbar}>
                     <div className={classes.searchInputDiv}>
                         <Controls.Input
-                            label="test filter"
+                            label="테스트 필터"
                             InputProps={{
                                 startAdornment: (<InputAdornment position="start">
                                     <Search/>
@@ -210,11 +210,11 @@ export default function TestAlloc(props) {
                             }}
                             className={classes.searchInput}
                             onChange={handleTestSearch}
-                            placeholder={"test name"}
+                            placeholder={"테스트 이름"}
                             value={testFilterTerm}
                         />
                         <Controls.Input
-                            label="class filter"
+                            label="반 필터"
                             InputProps={{
                                 startAdornment: (<InputAdornment position="start">
                                     <Search/>
@@ -222,16 +222,16 @@ export default function TestAlloc(props) {
                             }}
                             className={classes.searchInput}
                             onChange={handleClassSearch}
-                            placeholder={"class name"}
+                            placeholder={"반 이름"}
                             value={classFilterTerm}
                         />
                     </div>
                     <Typography
                         variant="h3">
-                        Class Test Allocations
+                        테스트 할당
                     </Typography>
                     <Controls.Button
-                        text="test allocation 추가"
+                        text="테스트 할당하기"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {
@@ -239,7 +239,6 @@ export default function TestAlloc(props) {
                             setRecordForEdit(null)
                             setOpenPopup(true)
                         }}
-                        // style={{position: 'absolute', right: '10px'}}
                     />
                 </Toolbar>
                 <TblContainer>
@@ -320,7 +319,7 @@ export default function TestAlloc(props) {
             <Popup
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
-                title="test allocation 만들기 "
+                title="테스트 할당하기"
             >
                 <TestAllocForm
                     recordForEdit={recordForEdit}

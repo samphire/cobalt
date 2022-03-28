@@ -58,13 +58,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const headCells = [
-    {id: 'studid', label: 'Student ID'},
-    {id: 'studName', label: 'Student Name', disableSorting: true},
-    {id: 'classid', label: 'Class ID', disableSorting: true},
-    {id: 'className', label: 'Class Name', disableSorting: true},
-    {id: 'comment', label: 'Comment', disableSorting: true},
-    {id: 'begin', label: 'Begin'},
-    {id: 'end', label: 'End'},
+    {id: 'studid', label: '학생 ID'},
+    {id: 'studName', label: '학생 이름', disableSorting: true},
+    {id: 'classid', label: '반 ID', disableSorting: true},
+    {id: 'className', label: '반 이름', disableSorting: true},
+    {id: 'comment', label: '주석', disableSorting: true},
+    {id: 'begin', label: '시작'},
+    {id: 'end', label: '마감'},
     {id: 'actions', label: 'Actions', disableSorting: true}
 ]
 
@@ -167,7 +167,7 @@ export default function StudAlloc(props) {
                 <Toolbar className={classes.toolbar}>
                     <div className={classes.searchInputDiv}>
                         <Controls.Input
-                            label="student filter"
+                            label="학생 필터"
                             InputProps={{
                                 startAdornment: (<InputAdornment position="start">
                                     <Search/>
@@ -175,12 +175,12 @@ export default function StudAlloc(props) {
                             }}
                             className={classes.searchInput}
                             onChange={handleStudentSearch}
-                            placeholder={"student name"}
+                            placeholder={"학생 이름"}
                             value={studFilterTerm}
                             // style={{position: 'absolute', left: '20px'}}
                         />
                         <Controls.Input
-                            label="class filter"
+                            label="반 필터"
                             InputProps={{
                                 startAdornment: (<InputAdornment position="start">
                                     <Search/>
@@ -188,14 +188,14 @@ export default function StudAlloc(props) {
                             }}
                             className={classes.searchInput}
                             onChange={handleClassSearch}
-                            placeholder={"class name"}
+                            placeholder={"반 이름"}
                             value={classFilterTerm}
                             // style={{position: 'absolute', left: '20px'}}
                         />
                     </div>
                     <Typography
                         variant="h3">
-                        Student Class Allocations
+                        학생 반에 할당
                     </Typography>
                     <Controls.Button
                         text="학생을 반에 추가"

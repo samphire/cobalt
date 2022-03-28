@@ -221,7 +221,7 @@ export default function Tests(props) {
                         }}
                         className={classes.searchInput}
                         onChange={handleSearch}
-                        placeholder={"test"}
+                        placeholder={"테스트"}
                     />
                     <Typography
                         variant="h3">
@@ -229,26 +229,26 @@ export default function Tests(props) {
                     </Typography>
 
                     <Grid ref={terry} style={{display: 'none'}} item xs={1}>
-                        <label htmlFor="terry">Images</label>
+                        <label htmlFor="terry">그림</label>
                         <input
                             type="file"
                             name="terry"
                             id="terry"
                             multiple
                             onChange={uploadImages}
-                            title="choose images"
+                            title="그림 선택"
                             accept = "image/*"
                         />
                     </Grid>
                     <Grid ref={aud} style={{display: 'none'}} item xs={1}>
-                        <label htmlFor="aud">Audio</label>
+                        <label htmlFor="aud">오디오</label>
                         <input
                             type="file"
                             name="aud"
                             id="aud"
                             multiple
                             onChange={uploadAudio}
-                            title="choose audio"
+                            title="오디오 선택"
                             accept="audio/*"
                         />
                     </Grid>
@@ -321,8 +321,8 @@ export default function Tests(props) {
                                                     if (images === "yes") {
                                                         setConfirmDialog({
                                                             isOpen: true,
-                                                            title: 'Are you sure you want to upload media?',
-                                                            subTitle: 'All images already exist on the server',
+                                                            title: '미디어를 업로드하시겠습니까?',
+                                                            subTitle: '업로드 해야 할 이미지가 없습니다.',
                                                             onConfirm: () => {
                                                                 console.log(terry.current.style)
                                                                 terry.current.style.display = "inline"
@@ -334,23 +334,23 @@ export default function Tests(props) {
                                                         })
                                                     }
                                                     if (images === "no") {
-                                                        setConfirmDialog({
-                                                            isOpen: true,
-                                                            title: 'Do you want to upload media?',
-                                                            subTitle: 'Images for this test are not yet on the server',
-                                                            onConfirm: () => {
+                                                        // setConfirmDialog({
+                                                        //     isOpen: true,
+                                                        //     title: 'Do you want to upload media?',
+                                                        //     subTitle: 'Images for this test are not yet on the server',
+                                                        //     onConfirm: () => {
                                                                 terry.current.style.display = "inline"
-                                                                setConfirmDialog({
-                                                                    ...confirmDialog,
-                                                                    isOpen: false
-                                                                })
-                                                            }
-                                                        })
+                                                                // setConfirmDialog({
+                                                                //     ...confirmDialog,
+                                                                //     isOpen: false
+                                                                // })
+                                                            // }
+                                                        // })
                                                     }
                                                     aud.current.style.display = "inline"
                                                 }}
                                             >
-                                                <Tooltip title="Upload Media" placement="top">
+                                                <Tooltip title="그림/오디오 업로드" placement="top">
                                                     <AddPhotoAlternateIcon/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
@@ -359,8 +359,8 @@ export default function Tests(props) {
                                                 onClick={() => {
                                                     setConfirmDialog({
                                                         isOpen: true,
-                                                        title: 'Are you sure you want to delete this test?',
-                                                        subTitle: 'You cannot undo this operation',
+                                                        title: '이 테스트를 삭제하시겠습니까?',
+                                                        subTitle: '앞으로 이 테스트를 복원할 수 없습니다.',
                                                         onConfirm: () => {
                                                             onDelete(item.id)
                                                         }
