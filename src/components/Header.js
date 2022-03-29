@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         color: 'white',
         '& a':{
             color: 'white',
-            padding: '30px'
+            padding: '20px'
         },
         '& a:hover':{
             color: 'orange'
@@ -34,17 +34,17 @@ function Header(props) {
         <AppBar position="static">
             <Toolbar className={classes.Toolbar}>
                 <Grid container justifyContent="space-between" alignItems="center">
-                    <Grid item onClick={logout} className={classes.logout} xs={1}>
+                    <Grid item onClick={logout} className={classes.logout} xs={2}>
                         <EmojiPeopleIcon fontSize="large"/> Logout
                     </Grid>
-                    <Grid item xs={3}/>
+                    <Grid item xs={2}/>
                     <Grid item xs={1}><a href={myDir + "/students"}>학생</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/classes"}>반</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/tests"}>테스트</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/studAlloc"}>반 할당</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/testAlloc"}>테스트 할당</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/progress"}>성능</a></Grid>
-                    <Grid item xs={3}/>
+                    <Grid item xs={2}/>
                 </Grid>
             </Toolbar>
         </AppBar>
