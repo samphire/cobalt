@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import {Tooltip} from "@mui/material";
 import {
     InputAdornment,
@@ -23,6 +22,7 @@ import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import {useParams} from "react-router-dom";
 import {Search} from "@material-ui/icons";
+
 const myDir = process.env.REACT_APP_DIR
 
 
@@ -80,6 +80,7 @@ export default function StudAlloc(props) {
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
     const studid = parseInt(useParams().studid)
+    const classid = useParams().classid
 
     const {
         TblContainer,
@@ -91,8 +92,13 @@ export default function StudAlloc(props) {
     useEffect(async () => {
         let studAllocs = await getStudAllocs()
         setRecords(studAllocs)
-
-    }, [refreshRecords]);
+        if (classid) {
+            setClassFilterTerm(classid)
+            setFilterFn({
+                fn: items => items.filter(x => x.className.toLowerCase().includes(classid)) // no brackets coz 1line return
+            })
+        }
+    }, [refreshRecords])
 
     const handleStudentSearch = e => {
         setClassFilterTerm("")
@@ -110,6 +116,7 @@ export default function StudAlloc(props) {
 
     const handleClassSearch = e => {
         setStudFilterTerm("")
+
         setClassFilterTerm(e.target.value)
         let target = e.target
         setFilterFn({

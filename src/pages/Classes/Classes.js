@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PeopleIcon from '@mui/icons-material/People';
 import {Tooltip} from "@mui/material";
+import SchoolIcon from '@mui/icons-material/School';
 import {
     InputAdornment,
     makeStyles,
@@ -208,11 +209,21 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
+                                                    window.location = `${myDir}/studAlloc/` + item.name;
+                                                }}
+                                            >
+                                                <Tooltip title="해당들" placement="top">
+                                                    <PeopleIcon/>
+                                                </Tooltip>
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                color="quinternary"
+                                                onClick={() => {
                                                     window.location = `${myDir}/testAlloc/null/` + item.id;
                                                 }}
                                             >
-                                                <Tooltip title="해당 테스트" placement="top">
-                                                <PeopleIcon/>
+                                                <Tooltip title="테스트들" placement="top">
+                                                <SchoolIcon/>
                                                 </Tooltip>
                                             </Controls.ActionButton>
                                         </TableCell>

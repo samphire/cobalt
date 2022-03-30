@@ -15,8 +15,8 @@ import Register from "./Register"
 const myDir = process.env.REACT_APP_DIR
 
 function App() {
-
-    const [isLoggedin, setIsLoggedin] = useState(false);
+    let temp = window.localStorage.getItem("user") === "matt" ? true : false;
+    const [isLoggedin, setIsLoggedin] = useState(temp);
 
     const login = () => {
         setIsLoggedin(true);
@@ -29,10 +29,10 @@ function App() {
         sessionStorage.clear()
     }
 
-    const [cunt, setCunt] = useState(0)
+    const [reggie, setReggie] = useState(0)
 
     const showReg = () => {
-        setCunt(cunt === 99 ? 10 : 99)
+        setReggie(reggie === 99 ? 10 : 99)
     }
 
     if (isLoggedin || sessionStorage.getItem("login") === "true") {
@@ -45,6 +45,9 @@ function App() {
                     <Switch>
                         <Route path={myDir + "/qs/:testid"}>
                             <Questions/>
+                        </Route>
+                        <Route path={myDir + "/studAlloc/:classid"}>
+                            <StudAlloc/>
                         </Route>
                         <Route path={myDir + "/studAlloc"}>
                             <StudAlloc/>
@@ -80,10 +83,10 @@ function App() {
     } else {
         return (
             <>
-                <Login clicko={login} showReg={showReg} disp={cunt}/>
+                <Login clicko={login} showReg={showReg} disp={reggie}/>
                 <Register
                     showReg={showReg}
-                    disp={cunt}
+                    disp={reggie}
                 />
             </>
         )

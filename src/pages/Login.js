@@ -80,8 +80,9 @@ export default function Login(props) {
         //     alert('username or password is incorrect!')
         //     return
         // }
-
+// TODO: this is very insecure... fix it in production!
         if (result === "success") {
+            window.localStorage.setItem("user", values.user)
             window.sessionStorage.setItem("user", values.user)
             window.sessionStorage.setItem("login", "true")
             loginFn(true)

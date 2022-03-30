@@ -60,6 +60,13 @@ const useStyles = makeStyles(theme => ({
     },
     toolbar: {
         justifyContent: 'space-between'
+    },
+    tableRow_current: {
+        color: 'darkgreen',
+        textDecoration: 'underline'
+    },
+    tableRow_nonCurrent: {
+        color: 'gray'
     }
 }))
 
@@ -95,7 +102,16 @@ export default function TestAlloc(props) {
     } = useTable(records, headCells, filterFn);
 
     useEffect(async () => {
-        let testAllocs = await getAllTestAllocs()
+        let temp = await getAllTestAllocs()
+        const today = new Date()
+        let testAllocs = temp.map((el) => {
+            // console.log(`${el.start}  today greater than start?  ${today >= new Date(el.start)}`)
+            // console.log(`${el.finish}  today less than finish? ${today <= new Date(el.finish)}`)
+            // console.log(`current: ${(today >= new Date(el.start)) && (today <= new Date(el.finish))}`)
+            el.current = (today >= new Date(el.start)) && (today <= new Date(el.finish))
+            return el
+        })
+        // console.log(testAllocs)
         setRecords(testAllocs)
 
         if (eval(classid)) {
@@ -117,27 +133,26 @@ export default function TestAlloc(props) {
     }, [refreshRecords]);
 
     const handleTestSearch = e => {
-        setTestFilterTerm(e.target.value)
-        let target = e.target
+        const myTerm = e.target.value.toLowerCase()
+        setTestFilterTerm(myTerm)
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (myTerm == "")
                     return items;
                 else
-                    return items.filter(x => x.testname.toLowerCase().includes(target.value))
+                    return items.filter(x => x.testname.toLowerCase().includes(myTerm))
             }
         })
     }
-
     const handleClassSearch = e => {
-        setClassFilterTerm(e.target.value)
-        let target = e.target
+        const myTerm = e.target.value.toLowerCase()
+        setClassFilterTerm(myTerm)
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (myTerm == "")
                     return items;
                 else
-                    return items.filter(x => x.classname.toLowerCase().includes(target.value))
+                    return items.filter(x => x.classname.toLowerCase().includes(myTerm))
             }
         })
     }
@@ -250,9 +265,12 @@ export default function TestAlloc(props) {
                                     (<TableRow key={item.classid + item.testid}>
                                         <TableCell>{item.testid}</TableCell>
                                         <Tooltip title="테스트 보기" placement="top-start">
-                                            <TableCell onClick={() => {
-                                                window.location = `${myDir}/tests/${item.testid}`;
-                                            }}>{item.testname}</TableCell>
+                                            <TableCell
+                                                onClick={() => {
+                                                    window.location = `${myDir}/tests/${item.testid}`;
+                                                }}
+                                                className={item.current ? classes.tableRow_current : classes.tableRow_nonCurrent}>{item.testname}
+                                            </TableCell>
                                         </Tooltip>
                                         <TableCell>{item.classid}</TableCell>
                                         <TableCell>{item.classname}</TableCell>

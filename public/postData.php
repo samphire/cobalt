@@ -208,7 +208,7 @@ if ($_GET['type'] == "testAllocs") {
 (SELECT tbl_tests.id as testid, tbl_tests.name as testname, lnk_class_test.class_id, lnk_class_test.start, lnk_class_test.finish
 from tbl_tests join lnk_class_test
 on tbl_tests.id = lnk_class_test.test_id) as bob join tbl_classes
-on bob.class_id = tbl_classes.id order by start desc";
+on bob.class_id = tbl_classes.id order by start asc";
     $result = mysqli_query($conn, $sql) or die("error in getting Test Allocations" . mysqli_error($conn));
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {
