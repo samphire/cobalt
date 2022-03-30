@@ -393,7 +393,7 @@ if ($_GET['type'] == "individual_test_data") {
     join
     (select student_id, begin, end from lnk_student_class where student_id='" . $_GET['studid'] . "' and class_id=" . $_GET['classid'] . ")
     as studentDates
-    where start > begin and start < end) as valid_tests
+    where start >= begin and start <= end) as valid_tests
     on tbl_testscore.student_id = valid_tests.student_id and tbl_testscore.test_id = valid_tests.test_id)
     AS scores_for_student
     on tbl_tests.id = scores_for_student.test_id

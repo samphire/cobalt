@@ -45,7 +45,6 @@ mysqli_query($myConn, $sql) or die("7c ".mysqli_error($myConn));
 
  $sql="drop table if exists optikon.sid";
  mysqli_query($myConn, $sql) or die("8 ".mysqli_error($myConn));
-//$sql="SELECT tommy.*, class_id AS classid from
  $sql="create temporary table optikon.sid SELECT tommy.*, class_id AS classid from
 (select  user_email AS id, name, numLearned, numLearning, avgRepnum, MathPerc, numLearned + round(numLearning * avgRepnum * 0.1) as wordscore from
 optikon.carvery left join (SELECT BOB.*, duck.goalwords  from optikon.BOB left join optikon.duck on BOB.id = duck.user_email) as wowbob on carvery.user_email = wowbob.id) as tommy
@@ -63,14 +62,9 @@ mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
 
 $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, primary key(`id`))";
 
-//  $sql="create temporary table `optikon`.`testscores` select id, round(avg(score)) AS avgscore from
-// `optikon`.`tbl_students` left join `optikon`.`tbl_testscore` on `tbl_testscore`.student_id=`tbl_students`.id group by id";
-// //  print ("\n\n$sql\n\n");
-
  mysqli_query($myConn, $sql) or die("11 ".mysqli_error($myConn));
 
  mysqli_query($myConn, "CALL curdemo({$_GET['classid']})");
-
 
  $sql="drop table if exists optikon.dolly";
  mysqli_query($myConn, $sql) or die("12 ".mysqli_error($myConn));
