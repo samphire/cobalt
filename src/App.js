@@ -43,7 +43,7 @@ function App() {
 
                 <BrowserRouter>
                     <Switch>
-                        <Route path={myDir + "/qs/:testid"}>
+                        <Route path={myDir + "/qs/:testid/:testname"}>
                             <Questions/>
                         </Route>
                         <Route path={myDir + "/studAlloc/:classid"}>

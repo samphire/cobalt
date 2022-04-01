@@ -289,7 +289,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="tertiary"
                                                 onClick={() => {
-                                                    window.location = `${myDir}/qs/` + item.id;
+                                                    window.location = `${myDir}/qs/${item.id}/${item.name}`
                                                 }}
                                             >
                                                 <Tooltip title="문재들 추가/변집" placement="top">

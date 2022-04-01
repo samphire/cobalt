@@ -278,21 +278,14 @@ async function bob(myClass) {
         item.math = item.math === null ? 0 : parseInt(item.math);
         item.activity = item.activity === null ? 0 : parseInt(item.activity);
         item.total = item.total === null ? 0 : parseInt(item.total);
-        item.total = item.total > 0 ? item.total : Math.round((item.avgscore + item.word + item.math + item.activity) / 4)
+        item.total = item.total > 0 ? item.total : Math.round((item.avgscore + item.word + item.math + item.activity) / 4) // if total was null
     });
 
     //TODO don't need to calculate total in the php file, offload this to clients.
 
-    const classTotal = myArr.reduce((acc, el) => acc + el.total, 0);
-    console.log("class total is " + classTotal);
-    const classAvg = classTotal / myArr.length;
-    console.log("class average is " + classAvg);
-    console.log(myArr);
-    console.log('myclass')
-    console.log(myClass)
-    console.log(myClass.start + ', ' + myClass.end)
-    progress(classAvg, myClass.start, myClass.end);
-    console.log(myClass)
+    const classTotal = myArr.reduce((acc, el) => acc + el.total, 0); // adds together everybody's total
+    const classAvg = classTotal / myArr.length;  // takes the average
+    progress(classAvg, myClass.start, myClass.end);  // sets the width and color of the two progress bars
     return myArr;
 }
 
@@ -308,9 +301,7 @@ function progress(percent, start, end) {
     const endDate = new Date(end);
 
     const diff = Math.ceil((endDate - startDate) / day);
-    const timeProg = Math.min(100, Math.ceil((((now - startDate) / day) / diff) * 100));
-
-    console.log("timeprog is " + timeProg);
+    const timeProg = Math.min(100, Math.ceil((((now - startDate) / day) / diff) * 100));  // Math.ceil to prevent the bar overflowing to the right at the end of the session
 
     // Colors
     let percGood = percent / timeProg;

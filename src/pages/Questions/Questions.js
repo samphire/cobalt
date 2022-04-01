@@ -80,7 +80,7 @@ export default function Questions(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
-    const {testid} = useParams()
+    const {testid, testname} = useParams()
 
     const {
         TblContainer,
@@ -137,7 +137,7 @@ export default function Questions(props) {
 
                 <Toolbar className={classes.toolbar}>
 
-                    <Typography variant="h5">테스트: {testid}</Typography>
+                    <Typography variant="h5">{testname} <span style={{color: 'gray'}}>(id: {testid})</span></Typography>
                     <Typography
                         variant="h3">
                         문재들
