@@ -314,6 +314,20 @@ export default function QuestionForm(props) {
                                     }}
                                 />
                             </Grid>
+                            <Grid item>
+                                <Controls.Button
+                                    text="Set Values as Default"
+
+                                    onClick={() => {
+                                        initialFieldValues.text2 = values.text2
+                                        initialFieldValues.text3 = values.text3
+                                        initialFieldValues.text4 = values.text4
+                                        initialFieldValues.text5 = values.text5
+                                        initialFieldValues.text6 = values.text6
+                                        initialFieldValues.text7 = values.text7
+                                    }}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
 

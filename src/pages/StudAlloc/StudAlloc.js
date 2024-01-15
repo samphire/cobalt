@@ -102,29 +102,28 @@ export default function StudAlloc(props) {
 
     const handleStudentSearch = e => {
         setClassFilterTerm("")
-        setStudFilterTerm(e.target.value)
+        setStudFilterTerm(e.target.value.toLowerCase());
         let target = e.target
         setFilterFn({
             fn: items => {
                 if (target.value == "")
                     return items;
                 else
-                    return items.filter(x => x.studName.toLowerCase().includes(target.value))
+                    return items.filter(x => x.studName.toLowerCase().includes(target.value.toLowerCase()))
             }
         })
     }
 
     const handleClassSearch = e => {
         setStudFilterTerm("")
-
-        setClassFilterTerm(e.target.value)
-        let target = e.target
+        setClassFilterTerm(e.target.value.toLowerCase());
+        let target = e.target;
         setFilterFn({
             fn: items => {
                 if (target.value == "")
                     return items;
                 else
-                    return items.filter(x => x.className.toLowerCase().includes(target.value))
+                    return items.filter(x => x.className.toLowerCase().includes(target.value.toLowerCase()))
             }
         })
     }
