@@ -20,15 +20,16 @@ if ($_GET['type'] == "newStudent") {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
-    $msg = "student ";
+    $msg = "student " . $data->name;
 
     $data->DOB = $data->DOB ?: 'null';
     $data->join_date = $data->join_date ?: 'null';
     $data->last_active_date = $data->last_active_date ?: 'null';
 
     if ($_GET['isEdit'] == 'yes') {
-        $msg .= "updated";
-        $sql = "update tbl_students set name = '$data->name', DOB =NULLIF('$data->DOB', 'NULL')
+        $msg .= " updated";
+        $sql = "update tbl_students set name = '$data->name'
+        ,DOB =NULLIF('$data->DOB', 'NULL')
         ,sex = '$data->sex'
         ,mobile = '$data->mobile'
         ,email = '$data->email'
@@ -42,28 +43,105 @@ if ($_GET['type'] == "newStudent") {
         ,guardian_name = '$data->guardianName'
         ,guardian_mobile ='$data->guardianMobile'
         where id='$data->id'";
+
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
     } else {
-        $sql = "insert into tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES('" .
-            "$data->id', '$data->name', NULLIF('$data->DOB', 'NULL'), '$data->sex', '$data->mobile', '$data->email', '$data->notes', '$data->pass', '$data->picUrl'," .
+//optikon
+        $sql = "INSERT IGNORE INTO tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(" .
+            "'$data->id', '$data->name', NULLIF('$data->DOB', 'NULL'), '$data->sex', '$data->mobile', '$data->email', '$data->notes', '$data->pass', '$data->picUrl'," .
             "$data->language_id, NULLIF('$data->join_date', 'NULL'), NULLIF('$data->last_active_date', 'NULL'), $data->isActive, '$data->guardianName', '$data->guardianMobile')";
-        echo $sql;
-        $msg .= "added";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+//math 1
+        $sql = "INSERT IGNORE INTO `math`.`tbl_user`"
+                ." (`id`, `name`, `nickname`, `email`)"
+                ." VALUES ('$data->id', '$data->name', '$data->name', '$data->email')";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+//math 2
+        $sql = "INSERT IGNORE INTO `math`.`tbl_user_has_tbl_story` (`tbl_user_id`, `tbl_story_id`, `avatar_lvl`, `perfects`, `tbl_avatars_id`)"
+                ." VALUES ('$data->id', '4', '1', '0', '1')";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+//math 3
+        $sql = "SELECT * from `math`.`tbl_scores` WHERE `user`='$data->id'";
+        if(mysqli_num_rows(mysqli_query($conn, $sql)) < 1){
+            $newStoryId = mysqli_query($conn, "SELECT `tbl_story_id` AS story FROM `math`.`tbl_user_has_tbl_story` WHERE `tbl_user_id` ='$data->id'")->fetch_object()->story;
+            $sql = "SELECT * FROM `math`.`tbl_story_has_tbl_exercise` WHERE `tbl_story_id`=$newStoryId";
+            $result = mysqli_query($conn, $sql);
+            while(list(,$exercise) = mysqli_fetch_row($result)){
+                $sql="INSERT INTO `math`.`tbl_scores` (`user`, `tbl_story_has_tbl_exercise_tbl_story_id`, `tbl_story_has_tbl_exercise_tbl_exercise_id`, `iterations_done`)"
+                ." VALUES ('$data->id', '" . $newStoryId . "', '" . $exercise . "', '0')";
+                mysqli_query($conn, $sql) or die("Error creating exercises for new user in optikon math tbl_scores " . mysqli_error($conn) . "\n\n" . $sql);
+            }
+        }
+
+qq//reader3 1
+        $sql = "INSERT IGNORE INTO `reader3`.`users`"
+                ."(`user_email`,`user_name`,`pass_word`)"
+                ." VALUES('$data->id', '$data->name', md5('$data->pass'))";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+//reader3 2
+        $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
+        $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
+        ." (`users_user_id`, `groups_group_id`)"
+        ." VALUES($genID, 4)";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+        $msg .= " added";
     }
-
-    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
-
     print $msg;
 }
 
 if ($_GET['type'] == 'delStud') {
     header("Access-Control-Allow-Methods: DELETE");
-    $sql = "delete from tbl_students where id='" . $_GET['studid'] . "'";
-    mysqli_query($conn, $sql) or die("oh dear! Problem deleting student\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $msg = "STUDENT " . $_GET['studid'] . " deleted";
+//math
+    $sql = "delete from `math`.`tbl_user` where `id`='" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting math.user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `math`.`tbl_scores` WHERE `user` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting math.tbl_scores\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `math`.`tbl_user_has_tbl_story` WHERE `tbl_user_id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting math.tbl_user_has_tbl_story\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `math`.`user_tt_times` WHERE `user_id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting math.user_tt_times\n\n" . mysqli_error($conn) . "\n\n" . $sql);
 
-    $sql = "delete from lnk_student_class where student_id='" . $_GET['studid'] . "'";
-    mysqli_query($conn, $sql) or die("oh dear! Problem deleting student\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+//optikon
+    $sql = "DELETE FROM `optikon`.`lnk_student_class` WHERE `student_id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting lnk_student_class\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `optikon`.`tbl_responses` WHERE `student_id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting tbl_responses\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `optikon`.`tbl_students` WHERE `id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting tbl_students\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `optikon`.`tbl_testscore` WHERE `student_id` = '" . $_GET['studid'] . "'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting tbl_testscore\n\n" . mysqli_error($conn) . "\n\n" . $sql);
 
-    echo "deleted";
+//reader
+    $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '" . $_GET['studid'] . "'")->fetch_object()->user_id;
+    $sql = "DELETE FROM `reader3`.`activity_log` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting activity_log\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`chron_data` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting chron_data\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`goals` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting goals\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`journal` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting journal\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`learned` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting learned\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`learninglist` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting learninglist\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`users` WHERE `user_id` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting users\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`users_has_groups` WHERE `users_user_id` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting users_has_groups\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`usertext` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting usertext\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+    $sql = "DELETE FROM `reader3`.`voca_test_activity` WHERE `userid` = '$genID'";
+    mysqli_query($conn, $sql) or die("oh dear! Problem deleting voca_test_activity\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+    echo $msg;
 }
 
 // ############   TESTS   ############
@@ -96,7 +174,7 @@ if ($_GET['type'] == "newTest") {
         ,timer = '$data->timer'
         where id='$data->id'";
     } else {
-        $sql = "insert into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
+        $sql = "INSERT IGNORE into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
             $data->name . "\",\"" .
             $data->description . "\"," .
             $data->print_wrong . "," .
@@ -180,7 +258,7 @@ if ($_GET['type'] == "newClass") {
         ,session_end = '$data->session_end'
         where id='$data->id'";
     } else {
-        $sql = "insert into tbl_classes(name, comment, session_start, session_end) VALUES(\"" .
+        $sql = "INSERT IGNORE into tbl_classes(name, comment, session_start, session_end) VALUES(\"" .
             $data->name . "\",\"" .
             $data->comment . "\",\"" .
             $data->session_start . "\",\"" .
@@ -228,7 +306,7 @@ if ($_GET['type'] == "newTestAlloc") {
         $msg .= "updated";
         $sql = "update lnk_class_test set start = '$data->start', finish = '$data->finish' where test_id='$data->testid' and class_id='$data->classid'";
     } else {
-        $sql = "insert into lnk_class_test(class_id, test_id, start, finish) VALUES(\"" .
+        $sql = "INSERT IGNORE into lnk_class_test(class_id, test_id, start, finish) VALUES(\"" .
             $data->classid . "\",\"" .
             $data->testid . "\",\"" .
             $data->start . "\",\"" .
@@ -323,7 +401,7 @@ if ($_GET['type'] == "newQuestion") {
     } else {
         $msg .= "added";
 
-        $sql = "INSERT INTO tbl_questions (test_id, qnum, text1, text2, text3, text4, text5, text6, text7, answer, type, rubrik, image, audio, video) VALUES ("
+        $sql = "INSERT IGNORE INTO tbl_questions (test_id, qnum, text1, text2, text3, text4, text5, text6, text7, answer, type, rubrik, image, audio, video) VALUES ("
             . "{$data->test_id}, {$data->qnum}, '{$data->text1}', '{$data->text2}', '{$data->text3}', '{$data->text4}', '{$data->text5}', '{$data->text6}', "
             . "'{$data->text7}', '{$data->answer}', '{$data->type}', '{$data->rubrik}', '{$data->image}', '{$data->audio}', '{$data->video}')";
     }
@@ -351,7 +429,7 @@ if ($_GET['type'] == "newStudAlloc") {
         $sql = "update lnk_student_class set begin = '$data->begin', end = '$data->end' where student_id='$data->studid' and class_id='$data->classid'";
     } else {
         $msg .= "added";
-        $sql = "insert into lnk_student_class(student_id, class_id, begin, end) VALUES(\"" .
+        $sql = "INSERT IGNORE into lnk_student_class(student_id, class_id, begin, end) VALUES(\"" .
             $data->studid . "\",\"" .
             $data->classid . "\",\"" .
             $data->begin . "\",\"" .
@@ -458,7 +536,7 @@ if ($_GET['type'] == 'audUpload') {
 if ($_GET['type'] == 'newUser') {
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
-    $sql = "INSERT INTO users(username, password) values('$data[0]','$data[1]')";
+    $sql = "INSERT IGNORE INTO users(username, password) values('$data[0]','$data[1]')";
     mysqli_query($conn, $sql) or die("oh dear! Problem adding new user\n\n" . mysqli_error($conn) . "\n\n" . $sql);
     if (mysqli_affected_rows($conn) > 0) {
         echo json_encode("success");
