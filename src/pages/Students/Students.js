@@ -82,6 +82,7 @@ export default function Students(props) {
     const [isEdit, setIsEdit] = useState("false")
     const [records, setRecords] = useState(null);
     const [filterFn, setFilterFn] = useState({fn: items => (items)});
+    const [studentFilterTerm, setStudentFilterTerm] = useState(null)
     const [openPopup, setOpenPopup] = useState(false);
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
@@ -113,20 +114,21 @@ export default function Students(props) {
                 isActive: x.isActive === '1' ? <CheckIcon fontSize='medium'/> : 'no'
             }
         ))
+        console.log(studs);
         setRecords(studs)
-
 
 
     }, [refreshRecords]);
 
     const handleSearch = e => {
         let target = e.target
+        setStudentFilterTerm(e.target.value.toLowerCase())
         setFilterFn({
             fn: items => {
                 if (target.value == "")
                     return items;
                 else
-                    return items.filter(x => x.name.toLowerCase().includes(target.value))
+                    return items.filter(x => x.name.toLowerCase().includes(target.value.toLowerCase()))
             }
         })
     }
@@ -186,6 +188,7 @@ export default function Students(props) {
                         }}
                         className={classes.searchInput}
                         onChange={handleSearch}
+                        value={studentFilterTerm}
                         placeholder={"이름"}
                         // style={{position: 'absolute', left: '20px'}}
                     />
@@ -215,12 +218,12 @@ export default function Students(props) {
                                         <TableCell>{item.id}</TableCell>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.DOB ||
-                                        <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
+                                            <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
                                         <TableCell>{item.sex}</TableCell>
                                         <TableCell>{item.mobile ||
-                                        <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
+                                            <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
                                         <TableCell>{item.email ||
-                                        <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
+                                            <span style={{color: '#999'}}>{'\u03c6'}</span>}</TableCell>
                                         <TableCell>{item.languageName}</TableCell>
                                         <TableCell>{item.guardian_name}</TableCell>
                                         <TableCell>{item.guardian_mobile}</TableCell>

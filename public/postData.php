@@ -77,7 +77,7 @@ if ($_GET['type'] == "newStudent") {
             }
         }
 
-qq//reader3 1
+//reader3 1
         $sql = "INSERT IGNORE INTO `reader3`.`users`"
                 ."(`user_email`,`user_name`,`pass_word`)"
                 ." VALUES('$data->id', '$data->name', md5('$data->pass'))";

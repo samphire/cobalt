@@ -13,8 +13,6 @@ const useStyles = makeStyles(theme => ({
 function Checkbox(props) {
 
     const {name, label, helperText, value, error = null, onChange} = props
-    console.log('in checkbox')
-    console.log(value)
     const classes = useStyles()
     const convertToDefaultEventParameter = (name, value) => ({ // originally, the value property does not have anything of value
         target: {    // all controls are checked for 'name' and 'value'. So, for this checkbox, we assign the value of 'checked' to the attribute 'value'
