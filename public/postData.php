@@ -510,10 +510,10 @@ if ($_GET['type'] == 'imgUpload') {
 if ($_GET['type'] == 'studPicUpload') {
     $target_dir = "/var/www/html/$cloneDir/userPics/";
     foreach ($_FILES as $file) {
-//        echo $file['name'] . $file['type'] . $file['size'];
-        $target_file = $target_dir . basename($file['name']);
+//        $target_file = $target_dir . pathinfo($file['name'], PATHINFO_FILENAME) . "." . strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $target_file = $target_dir . $_POST['studid'] . "." . strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (move_uploaded_file($file['tmp_name'], $target_file)) {
-            echo $file['name'] . " successfully uploaded.";
+            echo $target_file . " successfully uploaded.";
         } else {
             echo "some problem uploading image files";
         }
