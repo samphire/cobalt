@@ -28,23 +28,23 @@ if ($_GET['type'] == "newStudent") {
 
     if ($_GET['isEdit'] == 'yes') {
         $msg .= " updated";
-        $sql = "update tbl_students set name = '$data->name'
-        ,DOB =NULLIF('$data->DOB', 'NULL')
-        ,sex = '$data->sex'
-        ,mobile = '$data->mobile'
-        ,email = '$data->email'
-        ,notes = '$data->notes'
-        ,pass = '$data->pass'
-        ,picUrl ='$data->picUrl'
-        ,language_id = '$data->language_id'
-        ,join_date = NULLIF('$data->join_date', 'NULL')
-        ,last_active_date =NULLIF('$data->last_active_date', 'NULL')
-        ,isActive = $data->isActive
-        ,guardian_name = '$data->guardianName'
-        ,guardian_mobile ='$data->guardianMobile'
-        where id='$data->id'";
 
+        //  Optikon
+        $sql = "UPDATE `optikon`.`tbl_students` SET `pass` = '$data->pass', `name` = '$data->name', `DOB` = NULLIF('$data->DOB', 'NULL'), `sex` = '$data->sex',"
+        . " `mobile` = '$data->mobile', `email` = '$data->email', `notes` = '$data->notes', `picUrl` = '$data->picUrl', `language_id` = '$data->language_id',"
+        . " `join_date` = NULLIF('$data->join_date', 'NULL'), `last_active_date` = NULLIF('$data->last_active_date', 'NULL'), `isActive` = $data->isActive,"
+        . " `guardian_name` = '$data->guardianName', `guardian_mobile` = '$data->guardianMobile' WHERE `id` = '$data->id'";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+        //  Math
+        $sql = "UPDATE `math`.`tbl_user` SET `name` = '$data->name', `email` = '$data->email' WHERE `id` = '$data->id'";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+        //  Reader3
+        $sql = "UPDATE `reader3`.`users` SET `user_name` = '$data->name', `pass_word` = md5('$data->pass') WHERE `user_email` = '$data->id'";
+        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+       // TODO: IMPLEMENT CHOOSING GROUP FOR STUDENT IN COBALT
 
     } else {
 //optikon

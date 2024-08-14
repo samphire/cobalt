@@ -117,6 +117,8 @@ export default function Students(props) {
         console.log(studs);
         setRecords(studs)
 
+        console.log("type of langosh is: " + typeof langosh);
+        console.log(langosh);
 
     }, [refreshRecords]);
 
@@ -234,6 +236,7 @@ export default function Students(props) {
                                         <TableCell>
                                             <Avatar
                                                 src={`${SERVER_URL}/userPics/${item.picUrl}`}
+                                                key={Date.now()}
                                             />
                                         </TableCell>
                                         <TableCell className={classes.tCells}>{item.isActive}</TableCell>

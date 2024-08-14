@@ -8,6 +8,9 @@ function Select(props) {
     const {name, value, label, error = null, onChange, options} = props
     const classes = useStyles()
 
+    console.log("in select.js " + typeof options);
+    console.log(options);
+    console.log(Object.prototype.toString.call(options)); // check to see if this is an array
     return (
         <FormControl
 

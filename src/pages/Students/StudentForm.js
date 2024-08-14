@@ -84,6 +84,9 @@ export default function StudentForm(props) {
 
     const classes = useStyles()
     const {langosh, addOrEdit, recordForEdit} = props;
+
+    console.log("in studentform.js: " + typeof langosh);
+
     const validate = () => {
         console.log((/^null$|^$|.+@.+..+/).test(values.email))
         console.log((/^null$|^$|^\d{11}$/).test(values.mobile))
