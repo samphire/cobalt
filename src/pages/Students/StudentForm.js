@@ -23,13 +23,6 @@ const initialFieldValues = {
     last_active_date: null,
     isActive: false
 }
-// let languages = [
-//     {id: 1, name: 'English'},
-//     {id: 2, name: 'Russian'},
-//     {id: 3, name: 'Chinese'},
-//     {id: 4, name: 'Korean'}
-// ];
-
 
 const genderItems = [
     {id: 'm', title: '남자'},
@@ -42,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         margin: '8px'
     }
 }))
-
 
 export default function StudentForm(props) {
 
@@ -85,7 +77,7 @@ export default function StudentForm(props) {
     const classes = useStyles()
     const {langosh, addOrEdit, recordForEdit} = props;
 
-    console.log("in studentform.js: " + typeof langosh);
+    console.log("in studentform.js");
 
     const validate = () => {
         console.log((/^null$|^$|.+@.+..+/).test(values.email))
@@ -190,16 +182,16 @@ export default function StudentForm(props) {
                     <Controls.Input
                         variant="outlined"
                         label="보호자 성암"
-                        value={values.guardianName}
-                        name="guardianName"
+                        value={values.guardian_name}
+                        name="guardian_name"
                         onChange={handleInputChange}
                     />
                     <Controls.Input
                         variant="outlined"
                         label="보호자 전화번호"
-                        error={errors.guardianMobile}
-                        value={values.guardianMobile}
-                        name="guardianMobile"
+                        error={errors.guardian_mobile}
+                        value={values.guardian_mobile}
+                        name="guardian_mobile"
                         onChange={handleInputChange}
                     />
                     <Controls.Input

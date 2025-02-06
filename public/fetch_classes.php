@@ -2,6 +2,8 @@
 include "att_header.inc";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
+mysqli_query($conn, "SET NAMES utf8");
+mysqli_query($conn, "SET CHARACTER SET utf8");
 
 if ($conn->connect_error) {
     die(json_encode(['error' => 'Database connection failed']));

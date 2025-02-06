@@ -282,7 +282,7 @@ export default function Students(props) {
             <Popup
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
-                title="학생 만들기 "
+                title="학생 만들기 / 편집"
             >
                 <StudentForm
                     recordForEdit={recordForEdit}

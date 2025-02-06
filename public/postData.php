@@ -31,9 +31,9 @@ if ($_GET['type'] == "newStudent") {
 
         //  Optikon
         $sql = "UPDATE `optikon`.`tbl_students` SET `pass` = '$data->pass', `name` = '$data->name', `DOB` = NULLIF('$data->DOB', 'NULL'), `sex` = '$data->sex',"
-        . " `mobile` = '$data->mobile', `email` = '$data->email', `notes` = '$data->notes', `picUrl` = '$data->picUrl', `language_id` = '$data->language_id',"
+        . " `mobile` = '$data->mobile', `email` = '$data->email', `notes` = \"" . $data->notes . "\", `picUrl` = '$data->picUrl', `language_id` = '$data->language_id',"
         . " `join_date` = NULLIF('$data->join_date', 'NULL'), `last_active_date` = NULLIF('$data->last_active_date', 'NULL'), `isActive` = $data->isActive,"
-        . " `guardian_name` = '$data->guardianName', `guardian_mobile` = '$data->guardianMobile' WHERE `id` = '$data->id'";
+        . " `guardian_name` = '$data->guardian_name', `guardian_mobile` = '$data->guardian_mobile' WHERE `id` = '$data->id'";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
         //  Math
