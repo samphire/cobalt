@@ -39,8 +39,7 @@ const useStyles = makeStyles(theme => ({
             fontSize: '14px',
             fontWeight: 400,
             borderRight: '1px solid silver',
-            paddingTop: '8px',
-            paddingBottom: '8px'
+            padding: '8px 10px'
         },
     },
     searchInput: {

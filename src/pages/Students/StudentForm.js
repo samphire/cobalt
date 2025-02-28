@@ -38,40 +38,43 @@ const useStyles = makeStyles((theme) => ({
 
 export default function StudentForm(props) {
 
-    const uploadImages = (e) => {
+    const uploadImages = async (e) => {
         e.preventDefault()
-        alert("filesize is " + (e.target.files[0].size / 1024 / 1024).toFixed(2) + "Mb");
-        if (e.target.files[0].size > 640000) {
+        const file = e.target.files[0];
+        if (!file) return;
+        alert("filesize is " + (file.size / 1024 / 1024).toFixed(2) + "Mb");
+        if (file.size > 640000) {
             alert("File is too large. Cannot exceed 640kB");
             return;
         }
-        console.log(values.id);
-        console.log(e.target.files[0].name)
-        console.log(e.target.files[0].name.indexOf(' '))
-        if (e.target.files[0].name.indexOf(' ') > -1) {
-            console.log('filename has a space in it')
-            window.alert("Do not try to upload images where the filename contains spaces")
-            return
+        if (file.name.includes(' ')) {
+            alert("Do not try to upload images where the filename contains spaces");
+            return;
         }
         let formData = new FormData();
-        let pop = (e.target.files[0].name.split('.').pop()).toLowerCase();
-        let shift = e.target.files[0].name.split('.').shift();
-        setValues({
-            ...values,
-            picUrl: values.id + "." + pop
-        })
-        for (let i = 0; i < e.target.files.length; i++) {
-            formData.append(`files${i}`, e.target.files[i])
-            formData.append('studid', values.id)
-            console.log(formData)
+
+        let fileExtension = file.name.split('.').pop().toLowerCase();
+        let newFileName = values.id + "." + fileExtension;
+
+        formData.append('file', file);
+        formData.append('studid', values.id);
+        try {
+            const response = await fetch(SERVER_URL + "/postData.php?type=studPicUpload", {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                console.log("Upload failed: " + response.statusText);
+                return;
+            }
+            console.log("Image uploaded successfully.");
+            setValues(prev=>({
+                ...prev,
+                picUrl: newFileName + "?t=" + new Date().getTime()
+            }));
+        } catch (error) {
+            console.log("Error uploading image: " + error);
         }
-        const requestOptions = {
-            method: 'POST',
-            body: formData
-        }
-        fetch(SERVER_URL + "/postData.php?type=studPicUpload", requestOptions).then(async response => {
-            console.log(response.status + ", " + response.statusText)
-        })
     }
 
     const classes = useStyles()
@@ -247,7 +250,8 @@ export default function StudentForm(props) {
                         <CardMedia
                             component="img"
                             height="220"
-                            image={SERVER_URL + "/userPics/" + values.picUrl}
+                            // image={SERVER_URL + "/userPics/" + values.picUrl}
+                            image={values.picUrl ? `${SERVER_URL}/userPics/${values.picUrl}?t=${new Date().getTime()}` : "/defaultImage.jpg"}
                             alt="picture of user"
                         />
                         <CardContent>
