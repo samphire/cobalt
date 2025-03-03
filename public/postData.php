@@ -567,3 +567,40 @@ if ($_GET['type'] == 'validateUser') {
     }
     echo json_encode($msg);
 }
+if($_GET['type'] == 'allocateText'){
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body, true);
+    if(isset($data['userid']) && isset($data['textid'])) {
+        $userid = intval($data['userid']); // Ensure it's an integer
+        $textid = intval($data['textid']); // Ensure it's an integer
+
+        $sql = "INSERT INTO `reader3`.`usertext` (`userid`, `textid`) VALUES ($userid, $textid)";
+        $result = mysqli_query($conn, $sql) or die("oh dear! Problem allocating texts\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+        $msg = (mysqli_affected_rows($conn) > 0) ? "success" : "no records created";
+    } else {
+        $msg = "Invalid input data";
+    }
+    echo json_encode($msg);
+}
+
+if($_GET['type'] == 'getReaders'){
+    $sql = "SELECT `id`, `name`, `description`, `wordcount` FROM `reader3`.`text`";
+        $result = mysqli_query($conn, $sql);
+        $array = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($array, $row);
+        }
+        echo json_encode($array);
+}
+
+if($_GET['type'] == 'getStudentsForClass'){
+    $sql = "SELECT u.user_id, u.user_email, u.user_name FROM optikon.lnk_student_class l"
+    . " JOIN reader3.users u ON l.student_id = u.user_email WHERE l.class_id = " . $_GET['classid'];
+    $result = mysqli_query($conn, $sql);
+    $array = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($array, $row);
+    }
+    echo json_encode($array);
+}

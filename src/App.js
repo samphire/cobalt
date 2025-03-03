@@ -11,6 +11,7 @@ import Classes from "./pages/Classes/Classes"
 import TestAlloc from "./pages/TestAlloc/TestAlloc"
 import StudAlloc from "./pages/StudAlloc/StudAlloc"
 import Register from "./Register"
+import ReaderAllocationPage from "./pages/Readers/ReaderAllocationPage";
 
 const myDir = process.env.REACT_APP_DIR
 
@@ -75,6 +76,9 @@ function App() {
                         </Route>
                         <Route path={myDir + "/classes"}>
                             <Classes/>
+                        </Route>
+                        <Route path={myDir + "/ReaderAlloc"}>
+                            <ReaderAllocationPage/>
                         </Route>
                     </Switch>
                 </BrowserRouter>

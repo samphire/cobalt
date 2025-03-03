@@ -46,6 +46,22 @@ export async function getAllStudents() {
     return response.json();
 }
 
+export async function getStudentsForClass(classId) {
+    const response = await fetch(SERVER_URL + "/postData.php?type=getStudentsForClass&classid=" + classId, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    return response.json();
+}
+
+
+
+
+
 export async function getLanguages() {
     const response = await fetch(SERVER_URL + "/postData.php?type=languages", {
         method: 'GET',

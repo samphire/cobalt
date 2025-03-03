@@ -44,6 +44,7 @@ function Header(props) {
                     <Grid item xs={1}><a href={myDir + "/studAlloc"}>반 할당</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/testAlloc"}>테스트 할당</a></Grid>
                     <Grid item xs={1}><a href={myDir + "/progress"}>성능</a></Grid>
+                    <Grid item xs={1}><a href={myDir + "/ReaderAlloc"}>리더 할당</a></Grid>
                     <Grid item xs={2}/>
                 </Grid>
             </Toolbar>
