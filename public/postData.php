@@ -603,7 +603,7 @@ if($_GET['type'] == 'allocateWordgroup'){
 }
 
 if($_GET['type'] == 'getReaders'){
-    $sql = "SELECT `id`, `name`, `description`, `wordcount` FROM `reader3`.`text`";
+    $sql = "SELECT `id`, `name`, `description`, `wordcount` FROM `reader3`.`text` ORDER BY `id` DESC";
         $result = mysqli_query($conn, $sql);
         $array = array();
         while ($row = mysqli_fetch_assoc($result)) {

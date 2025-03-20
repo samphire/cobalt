@@ -92,6 +92,8 @@ export default function AllocationForm(props) {
                 alert("Error allocating reader. Check console for details");
             }
             setValues({...values, textid: ''});
+
+
         } else {
             try {
                 // Post an allocation record for each selected student
