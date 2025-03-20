@@ -21,6 +21,21 @@ export async function allocateText(allocationData) {
     return response.json();
 }
 
+export async function allocateWordgroup(allocationData) {
+    const dataToUpload = JSON.stringify(allocationData);
+    console.log("Allocating wordgroup:", dataToUpload);
+
+    const response = await fetch(SERVER_URL + "/postData.php?type=allocateWordgroup", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: dataToUpload
+    });
+    return response.json();
+}
+
 /**
  * Fetch all text allocations (if needed for a report or review)
  * @returns {Promise} List of allocated texts (JSON)

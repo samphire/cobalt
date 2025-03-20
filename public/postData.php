@@ -567,6 +567,7 @@ if ($_GET['type'] == 'validateUser') {
     }
     echo json_encode($msg);
 }
+
 if($_GET['type'] == 'allocateText'){
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body, true);
@@ -584,8 +585,35 @@ if($_GET['type'] == 'allocateText'){
     echo json_encode($msg);
 }
 
+if($_GET['type'] == 'allocateWordgroup'){
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body, true);
+    if(isset($data['userid']) && isset($data['wordgroupid'])) {
+        $userid = intval($data['userid']); // Ensure it's an integer
+        $wordgroupid = intval($data['wordgroupid']); // Ensure it's an integer
+
+        $sql = "INSERT INTO `reader3`.`lnk_student_gamegroup` (`userid`, `gamegroup_id`) VALUES ($userid, $wordgroupid)";
+        $result = mysqli_query($conn, $sql) or die("oh dear! Problem allocating wordgroups\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+        $msg = (mysqli_affected_rows($conn) > 0) ? "success" : "no records created";
+    } else {
+        $msg = "Invalid input data";
+    }
+    echo json_encode($msg);
+}
+
 if($_GET['type'] == 'getReaders'){
     $sql = "SELECT `id`, `name`, `description`, `wordcount` FROM `reader3`.`text`";
+        $result = mysqli_query($conn, $sql);
+        $array = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($array, $row);
+        }
+        echo json_encode($array);
+}
+
+if($_GET['type'] == 'getWordgroups'){
+    $sql = "SELECT `id`, `group_name`, `numwords` FROM `reader3`.`game_group`";
         $result = mysqli_query($conn, $sql);
         $array = array();
         while ($row = mysqli_fetch_assoc($result)) {

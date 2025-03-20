@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Form, UseForm} from "../../components/useForm";
 import Controls from "../../components/controls/Controls";
-import {allocateText} from "../../services/allocationService"; // Service to post allocation records
+import {allocateText, allocateWordgroup} from "../../services/allocationService"; // Service to post allocation records
 import {getAllClasses} from "../../services/classService";
 import {getAllReaders} from "../../services/readerService";
+import {getAllWordgroups} from "../../services/wordgroupService";
 import {getStudentsForClass} from "../../services/studentService"; // Should use the linking table to fetch students
 import {Paper, Grid} from "@material-ui/core";
 
@@ -12,13 +13,15 @@ const initialFieldValues = {
     classid: '',
     // students will be an array of user_id values from reader3.users
     students: [],
-    textid: ''
+    textid: '',
+    wordgroupid: ''
 };
 
 export default function AllocationForm(props) {
     const {addOrEdit, recordForEdit} = props;
     const [classes, setClasses] = useState([]);
     const [texts, setTexts] = useState([]);
+    const [wordgroups, setWordgroups] = useState([]);
     const [students, setStudents] = useState([]);
 
     const {
@@ -34,13 +37,16 @@ export default function AllocationForm(props) {
         async function fetchData() {
             let myClasses = await getAllClasses();
             let myTexts = await getAllReaders();
+            let myWordgroups = await getAllWordgroups();
 
             // Optionally, if your Controls.Select expects the display field to be 'title'
             myClasses = myClasses.map(item => ({...item, title: item.name}));
             myTexts = myTexts.map(item => ({...item, title: item.name}));
+            myWordgroups = myWordgroups.map(item => ({...item, title: item.group_name}));
 
             setClasses(myClasses);
             setTexts(myTexts);
+            setWordgroups(myWordgroups);
         }
 
         fetchData();
@@ -72,16 +78,31 @@ export default function AllocationForm(props) {
     // Handle form submission to allocate the text to each selected student
     const handleAllocate = async e => {
         e.preventDefault();
-        if (!values.textid || values.students.length === 0) return;
-        try {
-            // Post an allocation record for each selected student
-            await Promise.all(values.students.map(userid =>
-                allocateText({userid, textid: values.textid})
-            ));
-            alert("Reader Allocated Successfully!");
-            resetForm();
-        } catch (error) {
-            alert("Error allocating reader. Check console for details");
+        console.log("Allocate Pressed");
+        if (!values.textid && !values.wordgroupid || values.students.length === 0) return;
+
+        if (values.textid > 0) {
+            try {
+                // Post an allocation record for each selected student
+                await Promise.all(values.students.map(userid =>
+                    allocateText({userid, textid: values.textid})
+                ));
+                alert("Reader Allocated Successfully!");
+                resetForm();
+            } catch (error) {
+                alert("Error allocating reader. Check console for details");
+            }
+        } else{
+            try {
+                // Post an allocation record for each selected student
+                await Promise.all(values.students.map(userid =>
+                    allocateWordgroup({userid, wordgroupid: values.wordgroupid})
+                ));
+                alert("Wordgroup Allocated Successfully!");
+                resetForm();
+            } catch (error) {
+                alert("Error allocating wordgroup. Check console for details");
+            }
         }
     };
 
@@ -127,7 +148,7 @@ export default function AllocationForm(props) {
                             />
                         )}
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={7}>
                         {/* Text Dropdown - appears after students are selected */}
                         {values.students.length > 0 && (
                             <Controls.Select
@@ -139,12 +160,33 @@ export default function AllocationForm(props) {
                             />
                         )}
                     </Grid>
+                    <Grid item xs={4}>
+                        {/* Wordgroup Dropdown - appears after students are selected */}
+                        {values.students.length > 0 && (
+                            <Controls.Select
+                                name="wordgroupid"
+                                label="Word Group"
+                                value={values.wordgroupid}
+                                onChange={handleInputChange}
+                                options={wordgroups}
+                            />
+                        )}
+                    </Grid>
                     <Grid item xs={12}>
                         {/* Allocate Button - appears after a text is selected */}
                         {values.textid && (
                             <Controls.Button
                                 type="submit"
-                                text="Allocate"
+                                text="Allocate Text"
+                            />
+                        )}
+                    </Grid>
+                    <Grid item xs={12}>
+                        {/* Allocate Button - appears after a word group is selected */}
+                        {values.wordgroupid && (
+                            <Controls.Button
+                                type="submit"
+                                text="Allocate Word Group"
                             />
                         )}
                     </Grid>

@@ -11,7 +11,7 @@ export default function ReaderAllocationPage() {
     return (
         <Container maxWidth="md">
             <Typography variant="h4" gutterBottom>
-                Allocate Texts to Students
+                Allocate Texts / Words to Students
             </Typography>
             <AllocationForm addOrEdit={addOrEdit} />
         </Container>
