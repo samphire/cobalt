@@ -78,7 +78,6 @@ export default function AllocationForm(props) {
     // Handle form submission to allocate the text to each selected student
     const handleAllocate = async e => {
         e.preventDefault();
-        console.log("Allocate Pressed");
         if (!values.textid && !values.wordgroupid || values.students.length === 0) return;
 
         if (values.textid > 0) {
@@ -88,21 +87,23 @@ export default function AllocationForm(props) {
                     allocateText({userid, textid: values.textid})
                 ));
                 alert("Reader Allocated Successfully!");
-                resetForm();
+                // resetForm();
             } catch (error) {
                 alert("Error allocating reader. Check console for details");
             }
-        } else{
+            setValues({...values, textid: ''});
+        } else {
             try {
                 // Post an allocation record for each selected student
                 await Promise.all(values.students.map(userid =>
                     allocateWordgroup({userid, wordgroupid: values.wordgroupid})
                 ));
                 alert("Wordgroup Allocated Successfully!");
-                resetForm();
+                // resetForm();
             } catch (error) {
                 alert("Error allocating wordgroup. Check console for details");
             }
+            setValues({...values, wordgroupid: ''});
         }
     };
 
