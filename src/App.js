@@ -12,6 +12,7 @@ import TestAlloc from "./pages/TestAlloc/TestAlloc"
 import StudAlloc from "./pages/StudAlloc/StudAlloc"
 import Register from "./Register"
 import ReaderAllocationPage from "./pages/Readers/ReaderAllocationPage";
+import ReportsFormPage from "./pages/Reports/ReportsFormPage";
 
 const myDir = process.env.REACT_APP_DIR
 
@@ -79,6 +80,9 @@ function App() {
                         </Route>
                         <Route path={myDir + "/ReaderAlloc"}>
                             <ReaderAllocationPage/>
+                        </Route>
+                        <Route path={myDir + "/Reports"}>
+                            <ReportsFormPage/>
                         </Route>
                     </Switch>
                 </BrowserRouter>
