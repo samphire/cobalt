@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 export default function StudentNoteCard({ student, note, editable, onNoteChange, onSave }) {
     const [showToast, setShowToast] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(false);
@@ -31,8 +33,8 @@ export default function StudentNoteCard({ student, note, editable, onNoteChange,
         <Card style={{ position: 'relative' }}>
             <CardContent>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                    <Avatar src={student.image_url} alt={student.user_name} />
-                    <Typography variant="h6">{student.user_name}</Typography>
+                    <Avatar src={`${SERVER_URL}/userPics/${student?.user_email}.png`} alt={student?.user_name} />
+                    <Typography variant="h6">{student?.user_name}</Typography>
                 </div>
 
                 {/* ✅ Fancy animated toast */}

@@ -85,6 +85,7 @@ export default function ReportsForm() {
     }, [values.students, weekString]);
 
     const handleInputChange = e => {
+        values.students = [];
         const {name, value} = e.target;
         setValues({...values, [name]: value});
     };
