@@ -121,6 +121,9 @@ function Header(props) {
                     <Grid item xs={1}>
                         <a href={myDir + "/Reports"}>Reports</a>
                     </Grid>
+                    <Grid item xs={1}>
+                        <a href={myDir + "/WordEntry"}>Word Entry</a>
+                    </Grid>
                     <Grid item xs={2} />
                 </Grid>
             </Toolbar>

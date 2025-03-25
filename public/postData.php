@@ -613,7 +613,7 @@ if($_GET['type'] == 'getReaders'){
 }
 
 if($_GET['type'] == 'getWordgroups'){
-    $sql = "SELECT `id`, `group_name`, `numwords` FROM `reader3`.`game_group`";
+    $sql = "SELECT `id`, `group_name` FROM `reader3`.`game_group`";
         $result = mysqli_query($conn, $sql);
         $array = array();
         while ($row = mysqli_fetch_assoc($result)) {
