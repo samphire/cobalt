@@ -3,8 +3,11 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL
 export async function insertOrUpdateTestAlloc(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     console.log(temp)
+    console.log("data.start: " + data.start + ", data.finish: " + data.finish);
     temp.start = convertDateToMysql(data.start)
     temp.finish = convertDateToMysql(data.finish)
+
+    console.log(temp);
 
     const dataToUpload = JSON.stringify(temp)
 
@@ -62,9 +65,20 @@ export async function getAllTestAllocs() {
 //
 // }
 
-function convertDateToMysql(str) {
+function convertDateToMysql(date) {
+    if(!(date instanceof Date)) date=new Date(date);
+    if(isNaN(date)) return null;
 
-    let inputDate = new Date(str + 'Z')
-    return inputDate.toJSON().slice(0, 10)
+    const pad = n => n.toString().padStart(2, '0');
+
+    return [
+        date.getFullYear(),
+        pad(date.getMonth() + 1),
+        pad(date.getDate())
+    ].join('-') + ' ' + [
+        pad(date.getHours()),
+        pad(date.getMinutes()),
+        pad(date.getSeconds())
+    ].join(':');
 
 }

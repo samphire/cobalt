@@ -159,19 +159,28 @@ export default function TestAlloc(props) {
 
     const addOrEdit = (question, resetForm) => {
         console.warn(question);
-        insertOrUpdateTestAlloc(question, {isEdit}).then()
-        resetForm()
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        setRefreshRecords((num) => ++num)
-        setIsEdit("false")
-        console.log(refreshRecords)
-        setNotify({
-            isOpen: true,
-            message: 'successfully added question',
-            type: 'success'
+
+        insertOrUpdateTestAlloc(question, {isEdit}).then(response => {
+            console.log(response);
+            resetForm()
+            setRecordForEdit(null)
+            setOpenPopup(false)
+            setRefreshRecords(num => num + 1)
+            setIsEdit("false")
+            setNotify({
+                isOpen: true,
+                message: response.message,
+                type: 'success'
+            })
+        }).catch(error => {
+            console.log(error);
+            setNotify({
+                isOpen: true,
+                message: error.message || 'failed to add test allocation',
+                type: 'error'
+            })
         })
-    }
+    };
 
     const onDelete = (classid, testid) => {
         setConfirmDialog({
