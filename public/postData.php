@@ -3,6 +3,7 @@ include "sessionheader.inc";
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
+header('Content-Type: application/json; charset=utf-8');
 
 // ############   STUDENTS   ############
 if ($_GET['type'] == "students") {
@@ -92,7 +93,7 @@ if ($_GET['type'] == "newStudent") {
 
         $msg .= " added";
     }
-    print $msg;
+    echo json_encode($msg);
 }
 
 if ($_GET['type'] == 'delStud') {
@@ -187,7 +188,7 @@ if ($_GET['type'] == "newTest") {
 
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-    print $msg;
+    echo json_encode($msg);
 }
 
 if ($_GET['type'] == 'delTest') {
@@ -267,7 +268,7 @@ if ($_GET['type'] == "newClass") {
 
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-    print $msg;
+    echo json_encode($msg);
 }
 
 if ($_GET['type'] == 'delClass') {
@@ -315,7 +316,7 @@ if ($_GET['type'] == "newTestAlloc") {
 
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-    print $msg;
+    echo json_encode($msg);
 }
 
 if ($_GET['type'] == 'delTestAlloc') {
@@ -407,7 +408,7 @@ if ($_GET['type'] == "newQuestion") {
     }
     echo $sql;
     mysqli_query($conn, $sql) or die("hey! Cannot add question " . mysqli_error($conn));
-    print $msg;
+    echo json_encode($msg);
 }
 
 if ($_GET['type'] == 'delQuestion') {
@@ -436,7 +437,7 @@ if ($_GET['type'] == "newStudAlloc") {
             $data->end . "\")";
     }
     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
-    print $msg;
+    echo json_encode($msg);
 }
 if ($_GET['type'] == "studAllocs") {
     $sql = "select bob.student_id as studid, bob.name as studName, bob.class_id as classid, tbl_classes.name as className, " .
