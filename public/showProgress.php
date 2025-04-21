@@ -58,8 +58,6 @@ mysqli_query($myConn, "use optikon") or die ("cannot 'use' optikon");
  mysqli_query($myConn, $sql) or die("10 ".mysqli_error($myConn));
 
 
-
-
 $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, primary key(`id`))";
 
  mysqli_query($myConn, $sql) or die("11 ".mysqli_error($myConn));
@@ -89,7 +87,7 @@ $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, p
 
  mysqli_query($myConn, $sql) or die("16 ".mysqli_error($myConn));
 
-  $result = mysqli_query($myConn, "select * from dodo") or die("14 ".mysqli_error($myConn));
+  $result = mysqli_query($myConn, "select * from dodo ORDER BY total DESC") or die("14 ".mysqli_error($myConn));
 
 $array = Array();
 while($row = mysqli_fetch_assoc($result)){

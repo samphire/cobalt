@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Grid, makeStyles, Toolbar, Button, Menu, MenuItem } from "@material-ui/core";
+import {AppBar, Grid, makeStyles, Toolbar, Button, Menu, MenuItem} from "@material-ui/core";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
 const myDir = process.env.REACT_APP_DIR;
@@ -51,9 +51,9 @@ function Header(props) {
             <Toolbar className={classes.Toolbar}>
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item onClick={logout} className={classes.logout} xs={2}>
-                        <EmojiPeopleIcon fontSize="large" /> Logout
+                        <EmojiPeopleIcon fontSize="large"/> Logout
                     </Grid>
-                    <Grid item xs={2} />
+                    <Grid item xs={2}/>
 
                     {/* Pull-down menu for 학생 관리 */}
                     <Grid item>
@@ -80,7 +80,7 @@ function Header(props) {
                                 vertical: 'top',
                                 horizontal: 'left'
                             }}
-                            PaperProps={{ style: { marginTop: '12px', marginLeft: '-30px' } }}
+                            PaperProps={{style: {marginTop: '12px', marginLeft: '-30px'}}}
                         >
                             <MenuItem
                                 onClick={handleMenuClose}
@@ -122,9 +122,12 @@ function Header(props) {
                         <a href={myDir + "/Reports"}>Reports</a>
                     </Grid>
                     <Grid item xs={1}>
+                        <a href={myDir + "/ClassNotes"}>ClassNotes</a>
+                    </Grid>
+                    <Grid item xs={1}>
                         <a href={myDir + "/WordEntry"}>Word Entry</a>
                     </Grid>
-                    <Grid item xs={2} />
+                    <Grid item xs={2}/>
                 </Grid>
             </Toolbar>
         </AppBar>

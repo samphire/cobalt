@@ -14,6 +14,7 @@ import Register from "./Register"
 import ReaderAllocationPage from "./pages/Readers/ReaderAllocationPage";
 import ReportsFormPage from "./pages/Reports/ReportsFormPage";
 import WordEntry from "./pages/WordEntry/WordEntry";
+import ClassNotesFormPage from "./pages/ClassNotes/ClassNotesFormPage";
 
 const myDir = process.env.REACT_APP_DIR
 
@@ -84,6 +85,9 @@ function App() {
                         </Route>
                         <Route path={myDir + "/Reports"}>
                             <ReportsFormPage/>
+                        </Route>
+                        <Route path={myDir + "/ClassNotes"}>
+                            <ClassNotesFormPage/>
                         </Route>
                         <Route path={myDir + "/WordEntry"}>
                             <WordEntry/>
