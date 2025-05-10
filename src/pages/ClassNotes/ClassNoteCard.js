@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from 'framer-motion';
  * - onNoteChange: (newNote: string) => void
  * - onSave: () => Promise<void>
  */
-export default function ClassNoteCard({ note, editable, onNoteChange, onSave }) {
+export default function ClassNoteCard({ note, editable, resetTrigger, onNoteChange, onSave }) {
     const [showToast, setShowToast] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(false);
 
@@ -27,6 +27,10 @@ export default function ClassNoteCard({ note, editable, onNoteChange, onSave }) 
             setSaveDisabled(false);
         }
     }, [editable]);
+
+    useEffect(() => {
+        setSaveDisabled(false);
+    }, [resetTrigger]);
 
     const handleSaveClick = async () => {
         try {

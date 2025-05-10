@@ -120,6 +120,7 @@ export default function ClassNotesForm() {
                         <ClassNoteCard
                             note={note}
                             editable={!!classId && isCurrentDay}
+                            resetTrigger={`${classId}-${dateString}`}
                             onNoteChange={setNote}
                             onSave={handleSave}
                         />
