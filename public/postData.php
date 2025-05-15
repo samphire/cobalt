@@ -161,33 +161,36 @@ if ($_GET['type'] == "newTest") {
 
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body);
-    $msg = "test ";
+    $msg = "test " . $data->name;
+
+    $name = $data->name;
+    $description = $data->description;
+    $print_wrong = (int) $data->print_wrong;
+    $print_answer = (int) $data->print_answer;
+    $oneshot = (int) $data->oneshot;
+    $retain = (int) $data->retain;
+    $timer = (int) $data->timer;
+    $id = (int) $data->id;
 
     if ($_GET['isEdit'] == 'yes') {
-        $msg .= "updated";
-        $sql = "update tbl_tests set
-        name = '$data->name'
-        ,description ='$data->description'
-        ,print_wrong = '$data->print_wrong'
-        ,print_answer = '$data->print_answer'
-        ,oneshot = '$data->oneshot'
-        ,retain ='$data->retain'
-        ,timer = '$data->timer'
-        where id='$data->id'";
+    $msg .= ", " . $data->id;
+    $stmt = $conn->prepare("UPDATE tbl_tests SET name = ?, description = ?, print_wrong = ?, print_answer = ?, oneshot = ?, retain = ?, timer = ? WHERE id = ?");
+    if (!$stmt) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt->bind_param("ssiiiiii", $name, $description, $print_wrong, $print_answer, $oneshot, $retain, $timer, $id);
+    $msg .= " updated";
     } else {
-        $sql = "INSERT IGNORE into tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES(\"" .
-            $data->name . "\",\"" .
-            $data->description . "\"," .
-            $data->print_wrong . "," .
-            $data->print_answer . "," .
-            $data->oneshot . "," .
-            $data->retain . "," .
-            $data->timer . ")";
-        $msg .= "added";
+    $stmt = $conn->prepare("INSERT IGNORE INTO tbl_tests(name, description, print_wrong, print_answer, oneshot, retain, timer) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiiiii", $data->name, $data->description, $data->print_wrong, $data->print_answer, $data->oneshot, $data->retain, $data->timer);
+    $msg .= " added";
+    }
+    if (!$stmt->execute()) {
+        echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+        exit;
     }
 
-    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
-
+    echo "Rows updated: " . $stmt->affected_rows;
     echo json_encode($msg);
 }
 
