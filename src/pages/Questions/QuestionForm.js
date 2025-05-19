@@ -47,7 +47,7 @@ export default function QuestionForm(props) {
     }
 
     function makeAudio() {
-        return values.test_id.toString().padStart(5, '0') + values.qnum.toString().padStart(3, '0') + '.mp3'
+        // return values.test_id.toString().padStart(5, '0') + values.qnum.toString().padStart(3, '0') + '.mp3'
     }
 
     function setAnswer(which, input) {
@@ -169,7 +169,32 @@ export default function QuestionForm(props) {
                             name="text2"
                             onChange={handleInputChange}
                             onClick={() => {
-                                setAnswer(values.text2, 2)
+                                if (values.type === "6") {
+                                    const words = values.answer.trim().split(/\s+/);
+                                    let lastWord = words.pop();
+
+                                    // Check if last word has trailing punctuation
+                                    const match = lastWord.match(/^(.+?)([.?!,;:])$/);
+                                    if (match) {
+                                        lastWord = `/${match[1]}/${match[2]}`;
+                                    } else {
+                                        lastWord = `/${lastWord}`;
+                                    }
+
+                                    const modifiedWords = [
+                                        words[0],
+                                        ...words.slice(1).map(word => '/' + word),
+                                        lastWord
+                                    ];
+
+                                    const modified = modifiedWords.join(' ');
+                                    setValues({
+                                        ...values,
+                                        text2: modified
+                                    });
+                                } else {
+                                    setAnswer(values.text2, 2)
+                                }
                             }}
                             tabIndex={values.type === "1" ? "4" : "2"}
                         />
