@@ -3,15 +3,15 @@ import WordEntryForm from './WordEntryForm'; // Adjust the path based on your fo
 import {Container, Typography} from '@material-ui/core';
 
 export default function WordEntry() {
-    const addOrEdit = (data, resetForm) => {
-        console.log("Form submitted with data:", data);
-        resetForm(); // Reset the form after submission
-    };
+    // const addOrEdit = (data, resetForm) => {
+    //     console.log("Form submitted with data:", data);
+    //     resetForm(); // Reset the form after submission
+    // };
 
     return (
         <Container maxWidth="md">
             <Typography variant="h4" gutterBottom>
-                Flutter App Word Entry
+                Vocabore Wordlist Entry
             </Typography>
             <WordEntryForm />
         </Container>

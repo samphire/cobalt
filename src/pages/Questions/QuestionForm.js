@@ -187,7 +187,8 @@ export default function QuestionForm(props) {
                                         lastWord
                                     ];
 
-                                    const modified = modifiedWords.join(' ');
+                                    const modified = modifiedWords.join(' ').trim();
+
                                     setValues({
                                         ...values,
                                         text2: modified

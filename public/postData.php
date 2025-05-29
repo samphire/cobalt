@@ -479,7 +479,8 @@ if ($_GET['type'] == "individual_test_data") {
     on tbl_testscore.student_id = valid_tests.student_id and tbl_testscore.test_id = valid_tests.test_id)
     AS scores_for_student
     on tbl_tests.id = scores_for_student.test_id
-    order by oneshot, score";
+    order by oneshot, id";
+//    order by id";
     $result = mysqli_query($conn, $sql);
     $array = array();
     while ($row = mysqli_fetch_assoc($result)) {

@@ -83,7 +83,8 @@ $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, p
 
  mysqli_query($myConn, $sql) or die("15 ".mysqli_error($myConn));
 
- $sql = "update dodo join chris on dodo.id=chris.student_id set total = least(round(total/student_participation_percent), 100)";
+// Apply 10% boost to every student's score, and modify it according to how long they have been in the class
+ $sql = "update dodo join chris on dodo.id=chris.student_id set total = least(round((total * 1.1)/student_participation_percent), 100)";
 
  mysqli_query($myConn, $sql) or die("16 ".mysqli_error($myConn));
 

@@ -38,12 +38,28 @@ export default function WordEntryForm() {
             });
             const result = await response.json();
             console.log('Server response:', result);
+        } catch (error) {
+            console.error('Error submitting word list:', error);
+        }
+
+        try {
+            const response = await fetch(`${SERVER_URL}/vocaFullBore.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    group_name: groupName,
+                    description: description,
+                    words: cleaned
+                })
+            });
+            const result = await response.json();
+            console.log('Server response:', result);
             // Reset the form after a successful submission
             setEntries([{ word: '', translation: '' }]);
             setGroupName('');
             setDescription('');
         } catch (error) {
-            console.error('Error submitting word list:', error);
+            console.error('Error making fullBore tests:', error);
         }
     };
 
