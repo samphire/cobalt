@@ -618,7 +618,17 @@ if($_GET['type'] == 'getReaders'){
 }
 
 if($_GET['type'] == 'getWordgroups'){
-    $sql = "SELECT `id`, `group_name` FROM `reader3`.`game_group`";
+    $sql = "SELECT `id`, `group_name`, `group_desc` FROM `reader3`.`game_group`";
+        $result = mysqli_query($conn, $sql);
+        $array = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($array, $row);
+        }
+        echo json_encode($array);
+}
+
+if($_GET['type'] == 'getWordgroup'){
+    $sql = "SELECT `word`, `tranny` AS translation FROM `reader3`.`game_words` WHERE `group_id` = " . $_GET['wordgroupid'];
         $result = mysqli_query($conn, $sql);
         $array = array();
         while ($row = mysqli_fetch_assoc($result)) {

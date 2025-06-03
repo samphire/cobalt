@@ -1,3 +1,4 @@
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 /**
@@ -13,5 +14,16 @@ export async function getAllWordgroups() {
         }
     });
 
+    return response.json();
+}
+
+export async function getWordgroup(wordgroupId) {
+    const response = await fetch(SERVER_URL + "/postData.php?type=getWordgroup&wordgroupid=" + wordgroupId, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
     return response.json();
 }

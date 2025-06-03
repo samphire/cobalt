@@ -71,14 +71,13 @@ export default function AllocationForm(props) {
                 setStudents([]);
             }
         }
-
         fetchStudents();
     }, [values.classid]);
 
     // Handle form submission to allocate the text to each selected student
     const handleAllocate = async e => {
         e.preventDefault();
-        if (!values.textid && !values.wordgroupid || values.students.length === 0) return;
+        if ((!values.textid && !values.wordgroupid) || (values.students.length === 0)) return;
 
         if (values.textid > 0) {
             try {
@@ -92,7 +91,6 @@ export default function AllocationForm(props) {
                 alert("Error allocating reader. Check console for details");
             }
             setValues({...values, textid: ''});
-
 
         } else {
             try {
