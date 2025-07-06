@@ -21,6 +21,7 @@ import {
 } from "@material-ui/core";
 import {Paper, Typography, Box, CircularProgress} from '@mui/material';
 import {getBreakdown} from "../services/dataService";
+import {getVocaTestDue} from "../services/dataService";
 import './ProgressReport.css';
 import {getAllClasses} from '../services/classService'
 
@@ -56,7 +57,9 @@ export default function ProgressReport() {
         {classid: '1', name: 'high class 1', start: '2021-09-01', end: '2021-12-20'}
     );
     const [open, setOpen] = useState(false);
+    const [vocaOpen, setVocaOpen] = useState(false);
     const [testData, setTestData] = useState([]);
+    const [vocadueData, setVocadueData] = useState([]);
     const [classList, setClassList] = useState([{
         id: 16,
         name: '고등반',
@@ -69,6 +72,7 @@ export default function ProgressReport() {
     const handleClose = () => {
         setOpen(false);
     }
+    const handleVocaClose = () => setVocaOpen(false);
 
     useEffect(async () => {
         const classInfo = await getAllClasses()
@@ -103,6 +107,15 @@ export default function ProgressReport() {
             setOpen(true);
         });
     };
+
+    const getVocaStuff = (e) => {
+        let stuffArr = Array();
+        getVocaTestDue(e.target.dataset.studid).then((data) => {
+            console.log("voca due is " + data);
+            setVocadueData(data);
+            setVocaOpen(true);
+        })
+    }
 
     return (
         <>
@@ -143,31 +156,41 @@ export default function ProgressReport() {
                     개인 테스트 점수
                 </DialogTitle>
                 <DialogContent sx={{fontSize: '14px'}}>
-                    {console.log("printing item")}
                     {testData.map((item) => {
                         console.log(item);
                         return (
                             item.oneshot === "-1" ? (
                                 <div
-                                    style={{color: '#00F'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
+                                    style={{color: '#c95208'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
                                 <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
                         )
                     })}
-
                 </DialogContent>
 
                 <DialogActions>
                     <Button onClick={handleClose} autofocus>
                         Close
                     </Button>
+                </DialogActions>
+            </Dialog>
 
+            <Dialog
+                open={vocaOpen}
+                aria-labelledby="alert-dialog-title">
+                <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
+                    {vocadueData}
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleVocaClose} autoFocus>
+                        클로즈
+                    </Button>
                 </DialogActions>
             </Dialog>
 
             <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
                 {/*<Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">*/}
                 <Table className={classes.bobby} size="small" aria-label="a dense table">
-                    <TableHead sx={{backgroundColor: "#444"}}>
+                    <TableHead sx={{backgroundColor: "#333"}}>
                         <TableRow sx={{color: "white"}} onClick={() => {
                             console.log('hello from click handler on row')
                         }}>
@@ -199,14 +222,22 @@ export default function ProgressReport() {
                                                }}
                                                onClick={(e) => {
                                                    getStuff(e)
-                                               }}>{item.avgscore}</TableCell>
+                                               }}>
+                                        {item.avgscore}
+                                    </TableCell>
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
-                                    <TableCell
+                                    <TableCell data-studid={item.id}
                                         sx={{
                                             fontSize: "14px",
-                                            lineHeight: "0.23"
-                                        }}>{item.activity > 0 ? item.activity : ''}</TableCell>
+                                            lineHeight: "0.23",
+                                            cursor: "zoom-in"
+                                        }}
+                                        onClick = {(e)=>{
+                                            getVocaStuff(e)
+                                        }}>
+                                        {item.activity > 0 ? item.activity : ''}
+                                    </TableCell>
                                     <TableCell sx={{lineHeight: "0.23"}}>
                                         <Box sx={{position: 'relative', display: 'inline-flex'}}>
                                             <CircularProgress color='success' variant='determinate'

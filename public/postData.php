@@ -489,6 +489,12 @@ if ($_GET['type'] == "individual_test_data") {
     echo json_encode($array);
 }
 
+if($_GET['type'] == "individual_vocatest_due") {
+    $sql = "SELECT count(`userid`) AS bob FROM `reader3`.`learninglist` JOIN `reader3`.`users` ON `learninglist`.`userid` = `users`.`user_id`"
+    . " WHERE `users`.`user_email` = " . $_GET['studid'] . " AND `datenext` < now()";
+    echo (mysqli_query($conn, $sql)->fetch_object()->bob ?? 'default');
+}
+
 if ($_GET['type'] == "languages") {
     $sql = "SELECT * FROM tbl_language";
     $result = mysqli_query($conn, $sql);
@@ -618,7 +624,7 @@ if($_GET['type'] == 'getReaders'){
 }
 
 if($_GET['type'] == 'getWordgroups'){
-    $sql = "SELECT `id`, `group_name`, `group_desc` FROM `reader3`.`game_group`";
+    $sql = "SELECT `id`, `group_name`, `group_desc` FROM `reader3`.`game_group` ORDER BY id DESC";
         $result = mysqli_query($conn, $sql);
         $array = array();
         while ($row = mysqli_fetch_assoc($result)) {

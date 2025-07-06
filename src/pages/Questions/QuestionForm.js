@@ -26,6 +26,7 @@ let initialFieldValues = {
 
 const typeItems = [
     {id: '1', title: 'text input'},
+    {id: '2', title: 'dropdown'},
     {id: '3', title: 'radio buttons'},
     // {id: '4', title: 'file upload'},
     {id: '5', title: 'multi select'},

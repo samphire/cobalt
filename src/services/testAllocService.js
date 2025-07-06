@@ -4,8 +4,8 @@ export async function insertOrUpdateTestAlloc(data, isEdit) {
     let temp = {...data}; // have to copy or date function modified original 'values' object causing error
     console.log(temp)
     console.log("data.start: " + data.start + ", data.finish: " + data.finish);
-    temp.start = convertDateToMysql(data.start)
-    temp.finish = convertDateToMysql(data.finish)
+    temp.start = convertDateToMysql(data.start, true);
+    temp.finish = convertDateToMysql(data.finish, false);
 
     console.log(temp);
 
@@ -56,29 +56,18 @@ export async function getAllTestAllocs() {
     return response.json();
 }
 
-//
-// export async function getAllTests(){
-//     const response = await fetch("https://notborder.org/cobalt/postData.php?type=classes")
-// }
-//
-// export async function getAllClasses(){
-//
-// }
-
-function convertDateToMysql(date) {
+function convertDateToMysql(date, isStart) {
     if(!(date instanceof Date)) date=new Date(date);
     if(isNaN(date)) return null;
 
     const pad = n => n.toString().padStart(2, '0');
 
+    const tyme = isStart ? ' 05:00:00' : ' 23:59:59';
+
     return [
         date.getFullYear(),
         pad(date.getMonth() + 1),
         pad(date.getDate())
-    ].join('-') + ' ' + [
-        pad(date.getHours()),
-        pad(date.getMinutes()),
-        pad(date.getSeconds())
-    ].join(':');
+    ].join('-') + tyme;
 
 }

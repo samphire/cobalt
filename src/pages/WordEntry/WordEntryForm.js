@@ -23,7 +23,6 @@ export default function WordEntryForm() {
             myWordgroups = myWordgroups.map(item => ({...item, title: item.group_name}));
             setWordgroups(myWordgroups);
         }
-
         fetchData();
     }, []);
 
@@ -87,6 +86,11 @@ export default function WordEntryForm() {
         } catch (error) {
             console.error('Error submitting word list:', error);
         }
+
+        let myWordgroups = await getAllWordgroups();
+        myWordgroups = myWordgroups.map(item => ({...item, title: item.group_name}));
+        setWordgroups(myWordgroups);
+
         // Reset the form after a successful submission
         setEntries([{word: '', translation: ''}]);
         setGroupName('');
