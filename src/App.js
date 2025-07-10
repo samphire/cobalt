@@ -33,11 +33,12 @@ function App() {
         sessionStorage.clear()
     }
 
-    const [reggie, setReggie] = useState(0)
+    const [showRegister, setShowRegister] = useState(false);
 
-    const showReg = () => {
-        setReggie(reggie === 99 ? 10 : 99)
-    }
+    const toggleRegister = () => {
+        setShowRegister(prev => !prev);
+    };
+
 
     if (isLoggedin || sessionStorage.getItem("login") === "true") {
 
@@ -99,13 +100,14 @@ function App() {
     } else {
         return (
             <>
-                <Login clicko={login} showReg={showReg} disp={reggie}/>
-                <Register
-                    showReg={showReg}
-                    disp={reggie}
-                />
+                {showRegister ? (
+                    <Register showReg={toggleRegister} />
+                ) : (
+                    <Login clicko={login} showReg={toggleRegister} />
+                )}
             </>
-        )
+        );
+
     }
 }
 

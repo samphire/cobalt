@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Checkbox, Grid, Link, Typography, Paper} from "@mui/material";
-import {FormControlLabel, makeStyles, TextField} from "@material-ui/core";
+import {Avatar, Button, Grid, Link, Typography, Paper, TextField} from "@mui/material";
+import {makeStyles} from '@material-ui/core/styles';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {validateUser} from '../services/credentials'
 
@@ -48,9 +48,7 @@ export default function Login(props) {
     const loginFn = props.clicko;
     const classes = useStyles();
     const [values, setValues] = useState({user: '', pass: ''})
-    const [remember, setRemember] = useState(false)
     const showReg = props.showReg
-    const disp = props.disp
 
     const handleChange = (e, type) => {
         if (type === 'user') {
@@ -66,39 +64,20 @@ export default function Login(props) {
         }
     }
 
-    // const handleCheck = (e) => {
-    //     setRemember(!remember)
-    // }
-
     const login = async () => {
         const result = await validateUser([values.user, values.pass])
         console.log(`user validation result: `)
         console.log(result)
-        // if (values.user === 'matt' && values.pass === 'rahab123') {
-        //     loginFn(true);
-        // } else {
-        //     alert('username or password is incorrect!')
-        //     return
-        // }
-// TODO: this is very insecure... fix it in production!
+
         if (result === "success") {
-            window.localStorage.setItem("user", values.user)
-            window.sessionStorage.setItem("user", values.user)
-            window.sessionStorage.setItem("login", "true")
             loginFn(true)
         } else {
             window.alert(result)
-            return
         }
-        //
-        // if (remember) {
-        //     localStorage.setItem('user', values.user);
-        //     localStorage.setItem('pass', values.pass);
-        // }
     }
 
     return (
-        <Grid className={classes.gridStyle} style={{display: (disp === 99 ? 'none' : 'flex')}}>
+        <Grid className={classes.gridStyle}>
             <Paper elevation={10} className={classes.paperStyle}>
                 <Grid align='center'>
                     <Avatar className={classes.avatarStyle}>
@@ -122,25 +101,13 @@ export default function Login(props) {
                     type='password'
                     value={values.pass}
                     onChange={(e) => handleChange(e, 'pass')}
-                    onKeyPress={(e)=>{
+                    onKeyDown={(e)=>{
                         if(e.key === 'Enter'){
                             e.preventDefault(); // Ensure it is only this code that runs
                             login().then()
                         }
                     }}
                 />
-                {/*<FormControlLabel*/}
-                {/*    control={*/}
-                {/*        <Checkbox*/}
-                {/*            name='checkedB'*/}
-                {/*            color='primary'*/}
-                {/*            value={remember}*/}
-                {/*            onChange={handleCheck}*/}
-                {/*            className={classes.checkBoxStyle}*/}
-                {/*        />*/}
-                {/*    }*/}
-                {/*    label='Remember me'*/}
-                {/*/>*/}
                 <Button type='submit'
                         color='primary'
                         fullWidth

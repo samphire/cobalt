@@ -2,7 +2,7 @@ import React, {useRef, useState, useEffect} from 'react'
 import InfoIcon from '@mui/icons-material/Info';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import {makeStyles} from "@material-ui/core";
+import {makeStyles} from "@mui/styles";
 import Button from './components/controls/Button'
 import {registerUser} from "./services/credentials"
 
@@ -81,7 +81,6 @@ export default function Register(props) {
 
     const classes = useStyles()
 
-    const disp = props.disp
     const showReg = props.showReg
 
     const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
@@ -131,12 +130,12 @@ export default function Register(props) {
     }
 
     return (
-        <div style={(disp === 99 ? {
+        <div style={{
             display: 'flex',
             position: 'relative',
             height: '100vh',
             alignItems: 'center'
-        } : {display: 'none', position: 'absolute'})}>
+        }}>
             {success ? (
                 <section className={classes.section}>
                     <h1>Success!</h1>
