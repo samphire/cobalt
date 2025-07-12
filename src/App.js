@@ -19,34 +19,32 @@ import ClassNotesFormPage from "./pages/ClassNotes/ClassNotesFormPage";
 const myDir = process.env.REACT_APP_DIR
 
 function App() {
-    let temp = window.localStorage.getItem("user") === "matt" ? true : false;
-    const [isLoggedin, setIsLoggedin] = useState(temp);
+    const [isLoggedin, setIsLoggedin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+
+    useEffect(() => {
+        const logged = localStorage.getItem("loggedIn") === "true";
+        setIsLoggedin(logged);
+    }, []);
 
     const login = () => {
+        localStorage.setItem("loggedIn", "true");
         setIsLoggedin(true);
     }
 
     function logout() {
-        // window.confirm("Are you sure you want to logout and remove all local storage?");
         setIsLoggedin(false)
         localStorage.clear()
-        sessionStorage.clear()
     }
 
-    const [showRegister, setShowRegister] = useState(false);
+    const toggleRegister = () => setShowRegister(prev => !prev);
 
-    const toggleRegister = () => {
-        setShowRegister(prev => !prev);
-    };
+    return (
+        <BrowserRouter>
+            {isLoggedin ? (
+                <div className="App">
+                    <Header clicko={logout}/>
 
-
-    if (isLoggedin || sessionStorage.getItem("login") === "true") {
-
-        return (
-            <div className="App">
-                <Header clicko={logout}/>
-
-                <BrowserRouter>
                     <Switch>
                         <Route path={myDir + "/qs/:testid/:testname"}>
                             <Questions/>
@@ -94,21 +92,14 @@ function App() {
                             <WordEntry/>
                         </Route>
                     </Switch>
-                </BrowserRouter>
-            </div>
-        );
-    } else {
-        return (
-            <>
-                {showRegister ? (
-                    <Register showReg={toggleRegister} />
-                ) : (
-                    <Login clicko={login} showReg={toggleRegister} />
-                )}
-            </>
-        );
-
-    }
+                </div>
+            ) : showRegister ? (
+                <Register showReg={toggleRegister}/>
+            ) : (
+                <Login clicko={login} showReg={toggleRegister}/>
+            )}
+        </BrowserRouter>
+    );
 }
 
 export default App;

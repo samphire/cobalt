@@ -70,6 +70,7 @@ export default function Login(props) {
         console.log(result)
 
         if (result === "success") {
+            localStorage.setItem("loggedIn", "true");
             loginFn(true)
         } else {
             window.alert(result)
