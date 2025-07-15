@@ -16,20 +16,32 @@ import ReportsFormPage from "./pages/Reports/ReportsFormPage";
 import WordEntry from "./pages/WordEntry/WordEntry";
 import ClassNotesFormPage from "./pages/ClassNotes/ClassNotesFormPage";
 
-const myDir = process.env.REACT_APP_DIR
-
 function App() {
     const [isLoggedin, setIsLoggedin] = useState(false);
+    const [booting, setBooting] = useState(true);
     const [showRegister, setShowRegister] = useState(false);
 
     useEffect(() => {
-        const logged = localStorage.getItem("loggedIn") === "true";
-        setIsLoggedin(logged);
+        setTimeout(() => {
+            const ls = localStorage.getItem("loggedIn") === "true";
+            const ck = document.cookie.includes("loggedIn=true");
+            const final = ls || ck;
+            setIsLoggedin(final);
+            setBooting(false);
+        }, 500);
+    }, []);
+
+
+    useEffect(() => {
+        console.log("All cookies:", document.cookie);
+        console.log("localStorage keys:", Object.keys(localStorage));
+        console.log("loggedIn?", localStorage.getItem("loggedIn"));
     }, []);
 
     const login = () => {
         localStorage.setItem("loggedIn", "true");
         setIsLoggedin(true);
+        document.cookie = "loggedIn=true;path=/";
     }
 
     function logout() {
@@ -39,56 +51,59 @@ function App() {
 
     const toggleRegister = () => setShowRegister(prev => !prev);
 
+    if (booting) {
+        return <div style={{padding: 50}}>🌀 Loading...</div>
+    }
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={"/cobalt"}>
             {isLoggedin ? (
                 <div className="App">
                     <Header clicko={logout}/>
 
                     <Switch>
-                        <Route path={myDir + "/qs/:testid/:testname"}>
+                        <Route path={"/qs/:testid/:testname"}>
                             <Questions/>
                         </Route>
-                        <Route path={myDir + "/studAlloc/:classid"}>
+                        <Route path={"/studAlloc/:classid"}>
                             <StudAlloc/>
                         </Route>
-                        <Route path={myDir + "/studAlloc"}>
+                        <Route path={"/studAlloc"}>
                             <StudAlloc/>
                         </Route>
-                        <Route path={myDir + "/testAlloc/:testid/:classid"}>
+                        <Route path={"/testAlloc/:testid/:classid"}>
                             <TestAlloc/>
                         </Route>
-                        <Route path={myDir + "/tests/:testid"}>
+                        <Route path={"/tests/:testid"}>
                             <Tests/>
                         </Route>
-                        <Route path={myDir + "/testAlloc"}>
+                        <Route path={"/testAlloc"}>
                             <TestAlloc/>
                         </Route>
-                        <Route path={myDir + "/progress"}>
+                        <Route path={"/progress"}>
                             <ProgressReport/>
                         </Route>
-                        <Route path={myDir + "/students/:barley"}>
+                        <Route path={"/students/:barley"}>
                             <Students/>
                         </Route>
-                        <Route path={myDir + "/students"}>
+                        <Route path={"/students"}>
                             <Students/>
                         </Route>
-                        <Route path={myDir + "/tests"}>
+                        <Route path={"/tests"}>
                             <Tests/>
                         </Route>
-                        <Route path={myDir + "/classes"}>
+                        <Route path={"/classes"}>
                             <Classes/>
                         </Route>
-                        <Route path={myDir + "/ReaderAlloc"}>
+                        <Route path={"/ReaderAlloc"}>
                             <ReaderAllocationPage/>
                         </Route>
-                        <Route path={myDir + "/Reports"}>
+                        <Route path={"/Reports"}>
                             <ReportsFormPage/>
                         </Route>
-                        <Route path={myDir + "/ClassNotes"}>
+                        <Route path={"/ClassNotes"}>
                             <ClassNotesFormPage/>
                         </Route>
-                        <Route path={myDir + "/WordEntry"}>
+                        <Route path={"/WordEntry"}>
                             <WordEntry/>
                         </Route>
                     </Switch>

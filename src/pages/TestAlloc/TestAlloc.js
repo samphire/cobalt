@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import {Tooltip} from "@mui/material";
 import {
     InputAdornment,
@@ -27,7 +26,7 @@ import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import TestAllocForm from "./TestAllocForm";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import {Search} from "@material-ui/icons";
 
 
@@ -91,7 +90,7 @@ export default function TestAlloc(props) {
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
     const myDir = process.env.REACT_APP_DIR
-
+    const history = useHistory();
     const {classid, testid} = useParams();
 
     const {
@@ -276,7 +275,7 @@ export default function TestAlloc(props) {
                                         <Tooltip title="테스트 보기" placement="top-start">
                                             <TableCell
                                                 onClick={() => {
-                                                    window.location = `${myDir}/tests/${item.testid}`;
+                                                    history.push(`/tests/${item.testid}`);
                                                 }}
                                                 className={item.current ? classes.tableRow_current : classes.tableRow_nonCurrent}>{item.testname}
                                             </TableCell>

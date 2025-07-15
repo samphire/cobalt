@@ -1,8 +1,7 @@
 import React from 'react';
 import {AppBar, Grid, makeStyles, Toolbar, Button, Menu, MenuItem} from "@material-ui/core";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
-
-const myDir = process.env.REACT_APP_DIR;
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     logout: {
@@ -84,22 +83,22 @@ function Header(props) {
                         >
                             <MenuItem
                                 onClick={handleMenuClose}
-                                component="a"
-                                href={myDir + "/students"}
+                                component={Link}
+                                to={"/students"}
                             >
                                 학생
                             </MenuItem>
                             <MenuItem
                                 onClick={handleMenuClose}
-                                component="a"
-                                href={myDir + "/classes"}
+                                component={Link}
+                                to={"/classes"}
                             >
                                 반
                             </MenuItem>
                             <MenuItem
                                 onClick={handleMenuClose}
-                                component="a"
-                                href={myDir + "/studAlloc"}
+                                component={Link}
+                                to={"/studAlloc"}
                             >
                                 반 할당
                             </MenuItem>
@@ -107,25 +106,25 @@ function Header(props) {
                     </Grid>
 
                     <Grid item xs={1}>
-                        <a href={myDir + "/tests"}>테스트</a>
+                        <Link to={"/tests"}>테스트</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/testAlloc"}>테스트 할당</a>
+                        <Link to={"/testAlloc"}>테스트 할당</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/progress"}>성능</a>
+                        <Link to={"/progress"}>성능</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/ReaderAlloc"}>리더 할당</a>
+                        <Link to={"/ReaderAlloc"}>리더 할당</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/Reports"}>Reports</a>
+                        <Link to={"/Reports"}>Reports</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/ClassNotes"}>ClassNotes</a>
+                        <Link to={"/ClassNotes"}>ClassNotes</Link>
                     </Grid>
                     <Grid item xs={1}>
-                        <a href={myDir + "/WordEntry"}>Word Entry</a>
+                        <Link to={"/WordEntry"}>Word Entry</Link>
                     </Grid>
                     <Grid item xs={2}/>
                 </Grid>

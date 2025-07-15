@@ -24,6 +24,7 @@ import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog";
 import ClassForm from "./ClassForm";
 import {deleteClass, insertOrUpdateClass} from "../../services/classService";
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -73,7 +74,7 @@ export default function Tests(props) {
     const [refreshRecords, setRefreshRecords] = useState(0)
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
-    const myDir = process.env.REACT_APP_DIR
+    const history = useHistory();
 
     const {
         TblContainer,
@@ -209,7 +210,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
-                                                    window.location = `${myDir}/studAlloc/` + item.name;
+                                                    history.push(`/studAlloc/` + item.name);
                                                 }}
                                             >
                                                 <Tooltip title="해당들" placement="top">
@@ -219,7 +220,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quinternary"
                                                 onClick={() => {
-                                                    window.location = `${myDir}/testAlloc/null/` + item.id;
+                                                    history.push(`/testAlloc/null/` + item.id);
                                                 }}
                                             >
                                                 <Tooltip title="테스트들" placement="top">

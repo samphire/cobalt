@@ -26,7 +26,7 @@ import Notification from "../../components/Notification"
 import ConfirmDialog from "../../components/ConfirmDialog";
 import PeopleIcon from '@mui/icons-material/People';
 import {Tooltip} from "@mui/material";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -82,8 +82,7 @@ export default function Tests(props) {
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
     const {testid} = useParams()
-    const myDir = process.env.REACT_APP_DIR
-
+    const history = useHistory();
     const terry = useRef()
     const aud = useRef()
 
@@ -228,7 +227,7 @@ export default function Tests(props) {
                             multiple
                             onChange={uploadImages}
                             title="그림 선택"
-                            accept = "image/*"
+                            accept="image/*"
                         />
                     </Grid>
                     <Grid ref={aud} style={{display: 'none'}} item xs={1}>
@@ -288,7 +287,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="tertiary"
                                                 onClick={() => {
-                                                    window.location = `${myDir}/qs/${item.id}/${item.name}`
+                                                    history.push(`/qs/${item.id}/${item.name}`);
                                                 }}
                                             >
                                                 <Tooltip title="문재들 추가/변집" placement="top">
@@ -298,7 +297,7 @@ export default function Tests(props) {
                                             <Controls.ActionButton
                                                 color="quaternary"
                                                 onClick={() => {
-                                                    window.location = `${myDir}/testAlloc/` + item.id + "/null";
+                                                    history.push(`/testAlloc/` + item.id + "/null");
                                                 }}
                                             >
                                                 <Tooltip title="해당 반" placement="top">
@@ -330,12 +329,12 @@ export default function Tests(props) {
                                                         //     title: 'Do you want to upload media?',
                                                         //     subTitle: 'Images for this test are not yet on the server',
                                                         //     onConfirm: () => {
-                                                                terry.current.style.display = "inline"
-                                                                // setConfirmDialog({
-                                                                //     ...confirmDialog,
-                                                                //     isOpen: false
-                                                                // })
-                                                            // }
+                                                        terry.current.style.display = "inline"
+                                                        // setConfirmDialog({
+                                                        //     ...confirmDialog,
+                                                        //     isOpen: false
+                                                        // })
+                                                        // }
                                                         // })
                                                     }
                                                     aud.current.style.display = "inline"

@@ -20,8 +20,9 @@ import CloseIcon from "@material-ui/icons/Close";
 import Popup from "../../components/Popup";
 import Notification from "../../components/Notification";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import {Search} from "@material-ui/icons";
+
 
 const myDir = process.env.REACT_APP_DIR
 
@@ -81,6 +82,7 @@ export default function StudAlloc(props) {
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
     const studid = parseInt(useParams().studid)
     const classid = useParams().classid
+    const history = useHistory();
 
     const {
         TblContainer,
@@ -228,7 +230,7 @@ export default function StudAlloc(props) {
 
                                         <Tooltip title="학생 보기" placement="top-start">
                                             <TableCell onClick={() => {
-                                                window.location = `${myDir}/students/${item.studid}`;
+                                                history.push(`/students/${item.studid}`);
                                             }}>{item.studName}</TableCell>
                                         </Tooltip>
                                         <TableCell>{item.classid}</TableCell>
