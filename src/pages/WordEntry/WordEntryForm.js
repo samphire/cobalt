@@ -4,6 +4,7 @@ import {getAllWordgroups} from "../../services/wordgroupService";
 import {getWordgroup} from "../../services/wordgroupService";
 import Controls from "../../components/controls/Controls";
 import {Box} from "@mui/material";
+import {getAllClasses} from "../../services/classService";
 
 const SERVER_URL = "https://notborder.org/optikon";
 
@@ -14,6 +15,9 @@ export default function WordEntryForm() {
     const [wordgroups, setWordgroups] = useState([]);
     const [wordgroupid, setWordgroupid] = useState('');
     const [selectedWordGroup, setSelectedWordGroup] = useState('');
+    const [classes, setClasses] = useState([]);
+    const [classId, setClassId] = useState('');
+
     // const [selectedWordgroupName, setSelectedWordgroupName] = useState('');
     // const [selectedWordgroupDescription, setSelectedWordgroupDescription] = useState('');
 
@@ -22,7 +26,12 @@ export default function WordEntryForm() {
             let myWordgroups = await getAllWordgroups();
             myWordgroups = myWordgroups.map(item => ({...item, title: item.group_name}));
             setWordgroups(myWordgroups);
+            getAllClasses().then(raw => {
+                const opts = raw.map(c => ({id: c.id, title: c.name}));
+                setClasses(opts);
+            });
         }
+
         fetchData();
     }, []);
 
@@ -38,6 +47,37 @@ export default function WordEntryForm() {
         }
     };
 
+    const getSevenDates = () => {
+        const dates = [];
+        let current = new Date();
+
+        // Skip Fri, Sat, Sun
+        while ([0, 5, 6].includes(current.getDay())) {
+            current.setDate(current.getDate() + 1);
+        }
+
+        while (dates.length < 7) {
+            const day = current.getDay();
+            if (day >= 1 && day <= 4) { // Mon–Thu only
+                const y = current.getFullYear();
+                const m = String(current.getMonth() + 1).padStart(2, '0');
+                const d = String(current.getDate()).padStart(2, '0');
+                dates.push(`${y}-${m}-${d} 05:00:00`);
+            }
+            current.setDate(current.getDate() + 1);
+        }
+
+        return dates;
+    }
+
+// Example usage:
+    console.log(getSevenDates());
+
+
+// Example usage:
+    console.log(getSevenDates());
+
+
     const handleWordGroupChange = (e) => {
         setWordgroupid(e);
         const selectedId = parseInt(e, 10);
@@ -45,6 +85,9 @@ export default function WordEntryForm() {
     }
 
     const testifyWordGroup = async () => {
+
+        if (!wordgroupid || !classId) return;
+
         try {
             const wordGroupData = await getWordgroup(wordgroupid);
             console.log(wordGroupData);
@@ -54,7 +97,9 @@ export default function WordEntryForm() {
                 body: JSON.stringify({
                     group_name: selectedWordGroup.group_name,
                     description: setSelectedWordGroup.group_desc,
+                    classId: classId,
                     words: wordGroupData,
+                    dates: getSevenDates()
                 })
             });
             const result = await response.json();
@@ -63,6 +108,8 @@ export default function WordEntryForm() {
             console.error('Error making fullBore tests:', error);
         }
     }
+
+    // TODO: edit vocaFullBore.php in Optikon to use the classId included in the body to make test allocation records.
 
     const handleSubmit = async () => {
         const cleaned = entries.filter(e => e.word.trim() && e.translation.trim());
@@ -140,14 +187,14 @@ export default function WordEntryForm() {
             </Grid>
             <Grid container spacing={2} alignItems="center" style={{marginTop: 20}}>
                 {/* Finalize button on the left */}
-                <Grid item xs={6}>
+                <Grid item xs={2}>
                     <Button variant="contained" color="primary" onClick={handleSubmit}>
                         Finalize
                     </Button>
                 </Grid>
 
                 {/* Dropdown + Monsterize on the right */}
-                <Grid item xs={6}>
+                <Grid item xs={10}>
                     <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
                         <Controls.Select
                             name="wordgroupid"
@@ -157,7 +204,17 @@ export default function WordEntryForm() {
                             options={wordgroups}
                         />
                         {wordgroupid && (
-                            <Button variant="contained" color="primary" onClick={testifyWordGroup}>
+                            <Controls.Select
+                                name="classid"
+                                label="Class"
+                                value={classId}
+                                onChange={e => setClassId(e.target.value)}
+                                options={classes}
+                            />
+                        )}
+                        {wordgroupid && (
+                            <Button variant="contained" size="medium" color="primary"
+                                    onClick={testifyWordGroup}>
                                 Monsterize
                             </Button>
                         )}
