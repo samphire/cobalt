@@ -84,6 +84,15 @@ export default function ProgressReport() {
         setData(result);
     }, [])
 
+    useEffect(() => {
+        if (vocaOpen) {
+            const timer = setTimeout(() => {
+                handleVocaClose();
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+    }, [vocaOpen, handleVocaClose]);
+
     const handleChange = async (e) => {
         const classStuff = JSON.parse(e.target.value)
         console.log('classStuff: ')
@@ -149,17 +158,21 @@ export default function ProgressReport() {
             </div>
 
             <Dialog
+                sx={{fontSize: '18px'}}
                 open={open}
                 onclose={handleClose}
                 aria-labelledby="alert-dialog-title">
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
                     개인 테스트 점수
                 </DialogTitle>
-                <DialogContent sx={{fontSize: '14px'}}>
+                <DialogContent>
                     {testData.map((item) => {
                         console.log(item);
+                        const itemDate = new Date(item.start);
+                        const now = new Date();
                         return (
-                            item.oneshot === "-1" ? (
+                            itemDate > now ? (
+                                // item.oneshot === "-1" ? (
                                 <div
                                     style={{color: '#c95208'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
                                 <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
@@ -168,7 +181,7 @@ export default function ProgressReport() {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={handleClose} autofocus>
+                    <Button onClick={handleClose} autoFocus>
                         Close
                     </Button>
                 </DialogActions>
@@ -176,15 +189,11 @@ export default function ProgressReport() {
 
             <Dialog
                 open={vocaOpen}
-                aria-labelledby="alert-dialog-title">
+                aria-labelledby="alert-dialog-title"
+            >
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
                     {vocadueData}
                 </DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleVocaClose} autoFocus>
-                        클로즈
-                    </Button>
-                </DialogActions>
             </Dialog>
 
             <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
@@ -228,14 +237,14 @@ export default function ProgressReport() {
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
                                     <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
                                     <TableCell data-studid={item.id}
-                                        sx={{
-                                            fontSize: "14px",
-                                            lineHeight: "0.23",
-                                            cursor: "zoom-in"
-                                        }}
-                                        onClick = {(e)=>{
-                                            getVocaStuff(e)
-                                        }}>
+                                               sx={{
+                                                   fontSize: "14px",
+                                                   lineHeight: "0.23",
+                                                   cursor: "zoom-in"
+                                               }}
+                                               onClick={(e) => {
+                                                   getVocaStuff(e)
+                                               }}>
                                         {item.activity > 0 ? item.activity : ''}
                                     </TableCell>
                                     <TableCell sx={{lineHeight: "0.23"}}>
