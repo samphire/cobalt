@@ -168,15 +168,26 @@ export default function ProgressReport() {
                 <DialogContent>
                     {testData.map((item) => {
                         console.log(item);
-                        const itemDate = new Date(item.start);
+                        // id, name, oneshot, score, start, finish
+                        const itemStartDate = new Date(item.start);
+                        const itemEndDate = new Date(item.finish);
                         const now = new Date();
+
                         return (
-                            itemDate > now ? (
-                                // item.oneshot === "-1" ? (
-                                <div
-                                    style={{color: '#c95208'}}>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>) : (
-                                <div>{item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}</div>)
-                        )
+                            now > itemEndDate ? (
+                                <div style={{color: '#c8ad9d'}}>
+                                    {item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}
+                                </div>
+                            ) : now < itemStartDate ? (
+                                <div style={{color: '#a1a7cf'}}>
+                                    {item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}
+                                </div>
+                            ) : (
+                                <div style={{color: '#1c7a02'}}>
+                                    {item.id}: {item.name}, {item.score != null ? item.score : 'no-show'}
+                                </div>
+                            )
+                        );
                     })}
                 </DialogContent>
 

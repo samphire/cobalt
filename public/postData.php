@@ -48,24 +48,24 @@ if ($_GET['type'] == "newStudent") {
        // TODO: IMPLEMENT CHOOSING GROUP FOR STUDENT IN COBALT
 
     } else {
-//optikon
+        //optikon
         $sql = "INSERT IGNORE INTO tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(" .
             "'$data->id', '$data->name', NULLIF('$data->DOB', 'NULL'), '$data->sex', '$data->mobile', '$data->email', '$data->notes', '$data->pass', '$data->picUrl'," .
             "$data->language_id, NULLIF('$data->join_date', 'NULL'), NULLIF('$data->last_active_date', 'NULL'), $data->isActive, '$data->guardianName', '$data->guardianMobile')";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-//math 1
+        //math 1
         $sql = "INSERT IGNORE INTO `math`.`tbl_user`"
                 ." (`id`, `name`, `nickname`, `email`)"
                 ." VALUES ('$data->id', '$data->name', '$data->name', '$data->email')";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-//math 2
+        //math 2
         $sql = "INSERT IGNORE INTO `math`.`tbl_user_has_tbl_story` (`tbl_user_id`, `tbl_story_id`, `avatar_lvl`, `perfects`, `tbl_avatars_id`)"
                 ." VALUES ('$data->id', '4', '1', '0', '1')";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-//math 3
+        //math 3
         $sql = "SELECT * from `math`.`tbl_scores` WHERE `user`='$data->id'";
         if(mysqli_num_rows(mysqli_query($conn, $sql)) < 1){
             $newStoryId = mysqli_query($conn, "SELECT `tbl_story_id` AS story FROM `math`.`tbl_user_has_tbl_story` WHERE `tbl_user_id` ='$data->id'")->fetch_object()->story;
@@ -78,13 +78,13 @@ if ($_GET['type'] == "newStudent") {
             }
         }
 
-//reader3 1
+        //reader3 1
         $sql = "INSERT IGNORE INTO `reader3`.`users`"
                 ."(`user_email`,`user_name`,`pass_word`)"
                 ." VALUES('$data->id', '$data->name', md5('$data->pass'))";
         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-//reader3 2
+        //reader3 2
         $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
         $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
         ." (`users_user_id`, `groups_group_id`)"
