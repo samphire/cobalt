@@ -160,7 +160,7 @@ export default function ProgressReport() {
             <Dialog
                 sx={{fontSize: '18px'}}
                 open={open}
-                onclose={handleClose}
+                onClose={handleClose}
                 aria-labelledby="alert-dialog-title">
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
                     개인 테스트 점수
@@ -190,12 +190,6 @@ export default function ProgressReport() {
                         );
                     })}
                 </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
-                        Close
-                    </Button>
-                </DialogActions>
             </Dialog>
 
             <Dialog
