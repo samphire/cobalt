@@ -7,7 +7,7 @@ import {getAllClasses} from "../../services/classService"
 import {getAllTests} from "../../services/testService"
 
 const bobly = () => {
-    let temp = new Date().setTime(new Date().getTime() + 1 * 86400000)
+    let temp = new Date().setTime(new Date().getTime() + 86400000)
     return new Date(temp)
 }
 
@@ -19,7 +19,6 @@ const initialFieldValues = {
     start: new Date(),
     finish: bobly()
 }
-
 
 export default function ClassForm(props) {
 
@@ -37,37 +36,49 @@ export default function ClassForm(props) {
     }])
     const [classes, setClasses] = useState([{id: 1, title: 'blow', comment: '', session_start: '', session_end: ''}])
 
-    useEffect(async () => {
-        let myTests = await getAllTests()
-        let myClasses = await getAllClasses()
+    useEffect(() => {
+        let cancelled = false;
 
-        myTests.forEach((el) => {
-            Object.keys(el).forEach((myKey) => {
-                if (myKey === 'name') {
-                    el.title = el[myKey]
-                    delete el[myKey]
-                }
-            })
-        })
-        myClasses.forEach((el) => {
-            Object.keys(el).forEach((myKey) => {
-                if (myKey === 'name') {
-                    el.title = el[myKey]
-                    delete el[myKey]
-                }
-            })
-        })
+        async function fetchData() {
+            try {
+                // Fetch in parallel
+                const [testsRaw, classesRaw] = await Promise.all([
+                    getAllTests(),
+                    getAllClasses(),
+                ]);
 
-        setClasses(myClasses)
-        setTests(myTests)
-    }, [])
+                // Don’t mutate: create new arrays with `title` instead of `name`
+                const tests = testsRaw.map(({ name, ...rest }) => ({
+                    ...rest,
+                    title: name,
+                }));
+
+                const classes = classesRaw.map(({ name, ...rest }) => ({
+                    ...rest,
+                    title: name,
+                }));
+
+                if (cancelled) return; // component unmounted → skip setState
+                setTests(tests);
+                setClasses(classes);
+            } catch (err) {
+                console.error('Failed to load tests/classes:', err);
+            }
+        }
+
+        void fetchData();
+
+        // Cleanup to prevent state updates after unmount
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     const {
         values,
         setValues,
         handleInputChange,
-        resetForm,
-        isEdit
+        resetForm
     } = UseForm(initialFieldValues);
 
     const handleSubmit = e => {
@@ -78,7 +89,7 @@ export default function ClassForm(props) {
     useEffect(() => {
         if (recordForEdit != null)
             setValues({...recordForEdit})
-    }, [recordForEdit])
+    }, [recordForEdit, setValues])
 
     return (
         <Form onSubmit={handleSubmit}>

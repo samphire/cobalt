@@ -9,47 +9,21 @@ import {
     FormControl,
     Select,
     MenuItem,
-    InputLabel
-} from "@mui/material";
-import {
-    Button,
+    InputLabel,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
-    makeStyles
-} from "@material-ui/core";
-import {Paper, Typography, Box, CircularProgress} from '@mui/material';
-import {getBreakdown} from "../services/dataService";
-import {getVocaTestDue} from "../services/dataService";
-import './ProgressReport.css';
+    Paper,
+    Typography,
+    Box,
+    CircularProgress
+} from "@mui/material";
+
+import {getVocaTestDue, getBreakdown} from "../services/dataService";
 import {getAllClasses} from '../services/classService'
+import './ProgressReport.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
-
-const useStyles = makeStyles(theme => ({
-    select: {
-        '& .MuiSelect-select': {
-            fontSize: "18px"
-        },
-        '& .MuiInputLabel-formControl': {
-            fontSize: '18px',
-        }
-    },
-    bobby: {
-        maxWidth: '700px',
-        fontSize: '24px',
-        '& thead th': {
-            color: "white",
-            fontSize: "16px",
-            width: "10%"
-        },
-        '& tbody tr:hover': {
-            backgroundColor: '#00fbf2',
-            cursor: 'pointer'
-        }
-    }
-}));
 
 export default function ProgressReport() {
     const [data, setData] = useState([]);
@@ -66,8 +40,6 @@ export default function ProgressReport() {
         start: '2022-03-14',
         end: '2022-06-18'
     }])
-
-    const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
@@ -104,10 +76,10 @@ export default function ProgressReport() {
     };
 
     const getStuff = (e) => {
-        let stuffArr = Array();
+        let stuffArr = [];
         getBreakdown(e.target.dataset.studid, e.target.dataset.classid).then((data) => {
             // console.log(data);
-            data.map((item, idx) => {
+            data.map((item) => {
                 stuffArr.push(item);
             });
         }).then(() => {
@@ -118,7 +90,6 @@ export default function ProgressReport() {
     };
 
     const getVocaStuff = (e) => {
-        let stuffArr = Array();
         getVocaTestDue(e.target.dataset.studid).then((data) => {
             console.log("voca due is " + data);
             setVocadueData(data);
@@ -131,38 +102,42 @@ export default function ProgressReport() {
             <h1>Progress Report</h1>
             <div id='select'>
                 <FormControl>
-                    <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                    <InputLabel
+                        id="demo-simple-select-label"
+                        sx={{fontSize: 18}}
+                    >
+                        Class
+                    </InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Age"
                         value={myClass.classname}
                         onChange={handleChange}
-                        className={classes.select}
+                        sx={{'& .MuiSelect-select': {fontSize: 18}}}
                     >
-                        {classList.map((el) => {
-                            return (
-                                <MenuItem value={JSON.stringify({
-                                    classid: el.id,
-                                    classname: el.name,
-                                    start: el.session_start,
-                                    end: el.session_end
-                                })}>{el.name}</MenuItem>
-                            )
-                        })}
-
-                        {/*<MenuItem value={16}>고등반</MenuItem>*/}
-
+                        {
+                            classList.map((el) => {
+                                return (
+                                    <MenuItem value={JSON.stringify({
+                                        classid: el.id,
+                                        classname: el.name,
+                                        start: el.session_start,
+                                        end: el.session_end
+                                    })}>{el.name}</MenuItem>
+                                )
+                            })
+                        }
                     </Select>
                 </FormControl>
             </div>
 
             <Dialog
-                sx={{fontSize: '18px'}}
+                sx={{fontSize: 18}}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title">
-                <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
+                <DialogTitle sx={{fontSize: 18, fontWeight: 'bold'}}>
                     개인 테스트 점수
                 </DialogTitle>
                 <DialogContent>
@@ -194,6 +169,7 @@ export default function ProgressReport() {
 
             <Dialog
                 open={vocaOpen}
+                // onClose={handleVocaClose()}
                 aria-labelledby="alert-dialog-title"
             >
                 <DialogTitle sx={{fontSize: '18px', fontWeight: 'bold'}}>
@@ -201,11 +177,29 @@ export default function ProgressReport() {
                 </DialogTitle>
             </Dialog>
 
-            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}} component={Paper}>
+            <TableContainer sx={{width: "fit-content", margin: "auto", backgroundColor: "ivory"}}
+                            component={Paper}>
                 {/*<Table sx={{maxWidth: "700px", fontSize: "14px"}} size="small" aria-label="a dense table">*/}
-                <Table className={classes.bobby} size="small" aria-label="a dense table">
-                    <TableHead sx={{backgroundColor: "#333"}}>
-                        <TableRow sx={{color: "white"}} onClick={() => {
+                <Table
+                    size="small"
+                    aria-label="a dense table"
+                    sx={{
+                        maxWidth: 700,
+                        fontSize: 24,
+                        '& thead th': {
+                            color: 'white',
+                            fontSize: 16,
+                            width: '10%',
+                            bgcolor: '#333'
+                        },
+                        '& tbody tr:hover': {
+                            backgroundColor: '#00fbf2',
+                            cursor: 'pointer'
+                        }
+                    }}
+                >
+                    <TableHead>
+                        <TableRow onClick={() => {
                             console.log('hello from click handler on row')
                         }}>
                             <TableCell>학생</TableCell>
@@ -239,8 +233,10 @@ export default function ProgressReport() {
                                                }}>
                                         {item.avgscore}
                                     </TableCell>
-                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
-                                    <TableCell sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
+                                    <TableCell
+                                        sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.math}</TableCell>
+                                    <TableCell
+                                        sx={{fontSize: "14px", lineHeight: "0.23"}}>{item.word}</TableCell>
                                     <TableCell data-studid={item.id}
                                                sx={{
                                                    fontSize: "14px",
@@ -291,8 +287,7 @@ export default function ProgressReport() {
                 </div>
             </TableContainer>
         </>
-    )
-        ;
+    );
 }
 
 async function bob(myClass) {
