@@ -68,7 +68,7 @@ export default function StudentForm(props) {
                 return;
             }
             console.log("Image uploaded successfully.");
-            setValues(prev=>({
+            setValues(prev => ({
                 ...prev,
                 picUrl: newFileName + "?t=" + new Date().getTime()
             }));
@@ -117,8 +117,18 @@ export default function StudentForm(props) {
 
     useEffect(() => {
         if (recordForEdit != null)
-            setValues({...recordForEdit})
-    }, [recordForEdit])
+            setValues({
+                ...recordForEdit,
+                language_id:
+                    recordForEdit.language_id === '' || recordForEdit.language_id == null ? '' : Number(recordForEdit.language_id)
+            });
+    }, [recordForEdit, setValues])
+
+    const handleLanguageChange = e => {
+        const v = e.target.value === '' ? '' : Number(e.target.value);
+        setValues(prev => ({...prev, language_id: v}));
+    }
+
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -167,19 +177,25 @@ export default function StudentForm(props) {
                     />
                     <Controls.Checkbox
                         label="활성?"
-                        value={values.isActive}
                         name="isActive"
+                        // value={values.isActive}
                         onChange={handleInputChange}
-                        checked="false"
+                        checked={Boolean(values.isActive)}
                     />
                     <Controls.Select
                         name="language_id"
                         label="언어"
-                        value={values.language_id}
+                        value={values.language_id ?? ''}
                         onChange={handleInputChange}
-                        options={langosh}
-                        error={errors.language}
+                        options={langosh.map(o => ({
+                            id: Number(o.id ?? o.language_id),      // numeric id
+                            title: o.name                   // ✅ map .name -> .title so it shows
+                        }))}
+                        error={errors.language_id}
                     />
+                    {console.log('current value', values.language_id, typeof values.language_id)};
+                    {console.log('menu values', langosh.map(o => [o.id ?? o.language_id, typeof (o.id ?? o.language_id), o.name, o.title]))}
+
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Controls.Input
