@@ -96,38 +96,54 @@ export default function Students(props) {
         recordsAfterPagingAndSorting
     } = useTable(records, headCells, filterFn);
 
-    useEffect(async () => {
-        let students = await studentService.getAllStudents()
-        let languages = await studentService.getLanguages()
-        if (barley) {
-            setFilterFn({
-                    fn: items => {
-                        return items.filter(x => x.id === barley)
-                    }
+    useEffect(() => {
+        let isMounted = true;
+
+        (async () => {
+            try {
+                const [students = [], languages = []] = await Promise.all([
+                    studentService.getAllStudents(),
+                    studentService.getLanguages(),
+                ]);
+
+                // id -> name lookup (works even if array isn’t ordered)
+                const langMap = new Map(languages.map(l => [Number(l.id), l.name]));
+
+                if (barley) {
+                    setFilterFn({
+                        fn: items => items.filter(x => String(x.id) === String(barley)),
+                    });
                 }
-            )
-        }
-        setLangosh(languages)
-        const studs = students.map(x => ({
-                ...x,
-                languageName: languages[x.language_id - 1].name,
-                isActive: x.isActive === '1' ? <CheckIcon fontSize='medium'/> : 'no'
+
+                setLangosh(languages);
+
+                const studs = students.map(x => ({
+                    ...x,
+                    languageName: langMap.get(Number(x.language_id)) ?? '—',
+                    isActive: x.isActive === '1' ? <CheckIcon fontSize="medium"/> : 'no',
+                }));
+
+                if (isMounted) {
+                    setRecords(studs);
+                    console.log(studs);
+                }
+            } catch (err) {
+                console.error('Failed to load students/languages', err);
             }
-        ))
-        console.log(studs);
-        setRecords(studs)
+        })();
 
-        console.log("type of langosh is: " + typeof langosh);
-        console.log(langosh);
+        return () => {
+            isMounted = false;
+        };
+    }, [refreshRecords, barley]);
 
-    }, [refreshRecords]);
 
     const handleSearch = e => {
         let target = e.target
         setStudentFilterTerm(e.target.value.toLowerCase())
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (target.value === "")
                     return items;
                 else
                     return items.filter(x => x.name.toLowerCase().includes(target.value.toLowerCase()))

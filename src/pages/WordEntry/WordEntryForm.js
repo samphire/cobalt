@@ -96,7 +96,7 @@ export default function WordEntryForm() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     group_name: selectedWordGroup.group_name,
-                    description: setSelectedWordGroup.group_desc,
+                    description: selectedWordGroup.group_desc,
                     classId: classId,
                     words: wordGroupData,
                     dates: getSevenDates()

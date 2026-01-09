@@ -45,16 +45,36 @@ function Header(props) {
         setAnchorEl(null);
     };
 
+    const [newMenuAnchor, setNewMenuAnchor] = React.useState(null);
+
+    const handleNewMenuOpen = (event) => {
+        setNewMenuAnchor(event.currentTarget);
+    };
+
+    const handleNewMenuClose = () => {
+        setNewMenuAnchor(null);
+    };
+
+
     return (
         <AppBar position="static">
             <Toolbar className={classes.Toolbar}>
-                <Grid container justifyContent="space-between" alignItems="center">
-                    <Grid item onClick={logout} className={classes.logout} xs={2}>
-                        <EmojiPeopleIcon fontSize="large"/> Logout
+                <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={3}>
+                    {/* LEFT SIDE — LOGOUT */}
+                    <Grid item>
+                        <div style={{display: 'flex', alignItems: 'center'}} onClick={logout}
+                             className={classes.logout}>
+                            <EmojiPeopleIcon fontSize="large"/> Logout
+                        </div>
                     </Grid>
-                    <Grid item xs={2}/>
+                    {/* FLEX SPACER */}
 
-                    {/* Pull-down menu for 학생 관리 */}
+                    <Grid item xs/>
+                    {/* STUDENT MANAGEMENT MENU */}
                     <Grid item>
                         <Button
                             aria-controls="student-menu"
@@ -105,6 +125,53 @@ function Header(props) {
                         </Menu>
                     </Grid>
 
+                    {/* newMenu */}
+                    <Grid item>
+                        <Button
+                            aria-controls="new-menu"
+                            aria-haspopup="true"
+                            onClick={handleNewMenuOpen}
+                            className={classes.menuButton}
+                        >
+                            newMenu
+                        </Button>
+
+                        <Menu
+                            id="new-menu"
+                            anchorEl={newMenuAnchor}
+                            keepMounted
+                            open={Boolean(newMenuAnchor)}
+                            onClose={handleNewMenuClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left'
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left'
+                            }}
+                            PaperProps={{style: {marginTop: '12px', marginLeft: '-30px'}}}
+                        >
+                            <MenuItem
+                                onClick={handleNewMenuClose}
+                                component={Link}
+                                to={"/ReaderAlloc"}
+                            >
+                                리더 할당
+                            </MenuItem>
+
+                            <MenuItem
+                                onClick={handleNewMenuClose}
+                                component={Link}
+                                to={"/newMenu/page2"}
+                            >
+                                리더 관리
+                            </MenuItem>
+                        </Menu>
+                    </Grid>
+
+
                     <Grid item xs={1}>
                         <Link to={"/tests"}>테스트</Link>
                     </Grid>
@@ -126,11 +193,12 @@ function Header(props) {
                     <Grid item xs={1}>
                         <Link to={"/WordEntry"}>Word Entry</Link>
                     </Grid>
-                    <Grid item xs={2}/>
+                    <Grid item xs={1}/>
                 </Grid>
             </Toolbar>
         </AppBar>
-    );
+    )
+        ;
 }
 
 export default Header;

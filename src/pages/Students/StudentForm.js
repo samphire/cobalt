@@ -110,19 +110,36 @@ export default function StudentForm(props) {
     } = UseForm(initialFieldValues);
 
     const handleSubmit = e => {
-        e.preventDefault()
-        if (validate())
-            addOrEdit(values, resetForm)
-    }
+        e.preventDefault();
+        if (validate()) {
+            const payload = {
+                ...values,
+                isActive: values.isActive ? '1' : '0',  // <- API boundary conversion
+            };
+            addOrEdit(payload, resetForm);
+        }
+    };
+
 
     useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
+        if (recordForEdit != null) {
+            setValues(prev => ({
+                ...prev,
                 ...recordForEdit,
+                // coerce to number for select
                 language_id:
-                    recordForEdit.language_id === '' || recordForEdit.language_id == null ? '' : Number(recordForEdit.language_id)
-            });
-    }, [recordForEdit, setValues])
+                    recordForEdit.language_id === '' || recordForEdit.language_id == null
+                        ? ''
+                        : Number(recordForEdit.language_id),
+                // coerce to boolean for checkbox (handles true/false/1/0/'1'/'0')
+                isActive:
+                    recordForEdit.isActive === true ||
+                    recordForEdit.isActive === 1 ||
+                    recordForEdit.isActive === '1'
+            }));
+        }
+    }, [recordForEdit, setValues]);
+
 
     const handleLanguageChange = e => {
         const v = e.target.value === '' ? '' : Number(e.target.value);
@@ -175,13 +192,20 @@ export default function StudentForm(props) {
                         onChange={handleInputChange}
                         items={genderItems}
                     />
+
+
+
                     <Controls.Checkbox
                         label="활성?"
                         name="isActive"
-                        // value={values.isActive}
-                        onChange={handleInputChange}
                         checked={Boolean(values.isActive)}
+                        onChange={(e) =>
+                            setValues(v => ({ ...v, isActive: e.target.checked }))
+                        }
                     />
+
+
+
                     <Controls.Select
                         name="language_id"
                         label="언어"
@@ -193,7 +217,7 @@ export default function StudentForm(props) {
                         }))}
                         error={errors.language_id}
                     />
-                    {console.log('current value', values.language_id, typeof values.language_id)};
+                    {console.log('current value', values.language_id, typeof values.language_id)}
                     {console.log('menu values', langosh.map(o => [o.id ?? o.language_id, typeof (o.id ?? o.language_id), o.name, o.title]))}
 
                 </Grid>

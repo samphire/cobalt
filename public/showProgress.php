@@ -21,19 +21,36 @@ $result = mysqli_query($myConn, $sql) or die("5".mysqli_error($myConn));
 $sql="drop table if exists optikon.carvery";
 $result = mysqli_query($myConn, $sql) or die("6".mysqli_error($myConn));
 $sql="
-create temporary table optikon.carvery
-select user_email, user_name as name, numLearned, numLearning, avgRepnum from
-reader3.users left join
-(SELECT tim.userid, numLearned, numLearning, avgRepnum from
-(SELECT amy.userid, numLearned, numLearning from
-(SELECT userid, COUNT(headwordid) AS numLearned FROM reader3.learned group by userid) as amy
-left join
-(SELECT userid, COUNT(repnum) AS numLearning FROM reader3.learninglist group by userid) as glob
-on amy.userid = glob.userid) as tim left join
-(SELECT userid, AVG(repnum) AS avgRepnum FROM reader3.learninglist group by userid) as oboe
-on tim.userid = oboe.userid
-) as grey
-on users.user_id=grey.userid;
+
+CREATE TEMPORARY TABLE optikon.carvery AS
+SELECT
+    u.user_email,
+    u.user_name AS name,
+    COALESCE(l.numLearned, 0)   AS numLearned,
+    COALESCE(ll.numLearning, 0) AS numLearning,
+    COALESCE(ob.avgRepnum, 0) AS avgRepnum
+FROM reader3.users AS u
+LEFT JOIN (
+    SELECT userid, COUNT(*) AS numLearned
+    FROM reader3.learned
+    GROUP BY userid
+) AS l
+    ON l.userid = u.user_id
+LEFT JOIN (
+    SELECT userid, COUNT(*) AS numLearning
+    FROM reader3.learninglist
+    GROUP BY userid
+) AS ll
+    ON ll.userid = u.user_id
+LEFT JOIN (
+    SELECT userid, AVG(repnum) AS avgRepnum
+    FROM reader3.learninglist
+    GROUP BY userid
+) AS ob
+    ON ob.userid = u.user_id;
+
+
+
 ";
 $result = mysqli_query($myConn, $sql) or die("7 ".mysqli_error($myConn));
 
@@ -74,12 +91,12 @@ $sql="create temporary table optikon.testscores(id varchar(255), avgscore int, p
  $result = mysqli_query($myConn, $sql) or die("14 ".mysqli_error($myConn));
 
  $sql="create temporary table chris select student_id,
-      coalesce(greatest(datediff(session_end, session_start)
-       - greatest(datediff(begin, session_start), 0)
-       - greatest(datediff(session_end, end), 0), 0)/datediff(session_end, session_start), 0)
-       as student_participation_percent
-       from tbl_classes join lnk_student_class on tbl_classes.id=lnk_student_class.class_id
-      where id={$_GET['classid']}";
+    (datediff(session_end, session_start)
+    - greatest(datediff(begin, session_start), 0)
+    - greatest(datediff(session_end, end), 0))/datediff(session_end, session_start)
+    as student_participation_percent
+    from tbl_classes join lnk_student_class on tbl_classes.id=lnk_student_class.class_id
+    where id={$_GET['classid']}";
 
  mysqli_query($myConn, $sql) or die("15 ".mysqli_error($myConn));
 

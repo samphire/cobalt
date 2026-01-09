@@ -48,11 +48,47 @@ if ($_GET['type'] == "newStudent") {
        // TODO: IMPLEMENT CHOOSING GROUP FOR STUDENT IN COBALT
 
     } else {
-        //optikon
-        $sql = "INSERT IGNORE INTO tbl_students(id, name, DOB, sex, mobile, email, notes, pass, picUrl, language_id, join_date, last_active_date, isActive, guardian_name, guardian_mobile) VALUES(" .
-            "'$data->id', '$data->name', NULLIF('$data->DOB', 'NULL'), '$data->sex', '$data->mobile', '$data->email', '$data->notes', '$data->pass', '$data->picUrl'," .
-            "$data->language_id, NULLIF('$data->join_date', 'NULL'), NULLIF('$data->last_active_date', 'NULL'), $data->isActive, '$data->guardianName', '$data->guardianMobile')";
-        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+$stmt = $conn->prepare("
+    INSERT IGNORE INTO tbl_students
+        (id, `pass`, name, DOB, sex, mobile, email, notes, picUrl,
+         language_id, join_date, last_active_date, isActive,
+         guardian_name, guardian_mobile, guardian_email, `billing date`)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+");
+
+if (!$stmt) {
+    die('Prepare failed: ' . $conn->error);
+}
+
+$stmt->bind_param(
+    "sssssssssississsi",
+    $data->id,              // s
+    $data->pass,            // s
+    $data->name,            // s
+    $data->$dob,                   // s
+    $data->sex,             // s
+    $data->mobile,          // s
+    $data->email,           // s
+    $data->notes,           // s
+    $data->picUrl,          // s
+    $data->language_id,     // i
+    $data->$joinDate,              // s
+    $data->$lastActive,            // s
+    $data->isActive,        // i
+    $data->guardian_name,   // s
+    $data->guardian_mobile, // s
+    $data->guardian_email,  // s
+    $data->billing_date     // i
+);
+
+if (!$stmt->execute()) {
+    die('Execute failed: ' . $stmt->error);
+}
+
+$stmt->close();
+
+
 
         //math 1
         $sql = "INSERT IGNORE INTO `math`.`tbl_user`"
@@ -77,7 +113,6 @@ if ($_GET['type'] == "newStudent") {
                 mysqli_query($conn, $sql) or die("Error creating exercises for new user in optikon math tbl_scores " . mysqli_error($conn) . "\n\n" . $sql);
             }
         }
-
         //reader3 1
         $sql = "INSERT IGNORE INTO `reader3`.`users`"
                 ."(`user_email`,`user_name`,`pass_word`)"
