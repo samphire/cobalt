@@ -246,7 +246,7 @@ export default function ProgressReport() {
                                                onClick={(e) => {
                                                    getVocaStuff(e)
                                                }}>
-                                        {item.activity > 0 ? item.activity : ''}
+                                        {item.activity}
                                     </TableCell>
                                     <TableCell sx={{lineHeight: "0.23"}}>
                                         <Box sx={{position: 'relative', display: 'inline-flex'}}>
