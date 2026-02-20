@@ -49,45 +49,65 @@ if ($_GET['type'] == "newStudent") {
 
     } else {
 
-$stmt = $conn->prepare("
-    INSERT IGNORE INTO tbl_students
+    $stmt = $conn->prepare("
+        INSERT IGNORE INTO tbl_students
         (id, `pass`, name, DOB, sex, mobile, email, notes, picUrl,
-         language_id, join_date, last_active_date, isActive,
-         guardian_name, guardian_mobile, guardian_email, `billing date`)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-");
+        language_id, join_date, last_active_date, isActive,
+        guardian_name, guardian_mobile, guardian_email, `billing date`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
-if (!$stmt) {
-    die('Prepare failed: ' . $conn->error);
-}
+    if (!$stmt) {
+        die('Prepare failed: ' . $conn->error);
+    }
 
-$stmt->bind_param(
-    "sssssssssississsi",
-    $data->id,              // s
-    $data->pass,            // s
-    $data->name,            // s
-    $data->$dob,                   // s
-    $data->sex,             // s
-    $data->mobile,          // s
-    $data->email,           // s
-    $data->notes,           // s
-    $data->picUrl,          // s
-    $data->language_id,     // i
-    $data->$joinDate,              // s
-    $data->$lastActive,            // s
-    $data->isActive,        // i
-    $data->guardian_name,   // s
-    $data->guardian_mobile, // s
-    $data->guardian_email,  // s
-    $data->billing_date     // i
-);
+    $stmt->bind_param(
+        "sssssssssississsi",
+        $data->id,              // s
+        $data->pass,            // s
+        $data->name,            // s
+        $data->$dob,                   // s
+        $data->sex,             // s
+        $data->mobile,          // s
+        $data->email,           // s
+        $data->notes,           // s
+        $data->picUrl,          // s
+        $data->language_id,     // i
+        $data->$joinDate,              // s
+        $data->$lastActive,            // s
+        $data->isActive,        // i
+        $data->guardian_name,   // s
+        $data->guardian_mobile, // s
+        $data->guardian_email,  // s
+        $data->billing_date     // i
+    );
 
-if (!$stmt->execute()) {
-    die('Execute failed: ' . $stmt->error);
-}
+    if (!$stmt->execute()) {
+        die('Execute failed: ' . $stmt->error);
+    }
 
-$stmt->close();
+    $stmt->close();
 
+
+
+    INSERT INTO `notborder`.`nb_users`
+    (`id`,
+    `optikon_id`,
+    `username`,
+    `usertype`,
+    `language_code`,
+    `pass_hash`,
+    `created_at`,
+    `updated_at`)
+    VALUES
+    (<{id: }>,
+    <{optikon_id: }>,
+    <{username: }>,
+    <{usertype: USER}>,
+    <{language_code: en}>,
+    <{pass_hash: }>,
+    <{created_at: current_timestamp()}>,
+    <{updated_at: current_timestamp()}>);
 
 
         //math 1
