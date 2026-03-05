@@ -63,7 +63,7 @@ if ($_GET['type'] == "newStudent") {
 
     $stmt->bind_param(
         "sssssssssississsi",
-        $data->id,              // s
+        $data->id,              // s 'cand001' etc...
         $data->pass,            // s
         $data->name,            // s
         $data->$dob,                   // s
@@ -88,26 +88,35 @@ if ($_GET['type'] == "newStudent") {
 
     $stmt->close();
 
+    // New Stuff, new process, new signon
 
+    $stmt = $conn->prepare("
+        INSERT INTO `notborder`.`nb_users` (`optikon_id`, `username`, `usertype`, `language_code`, `pass_hash`)
+        VALUES(?, ?, ?, ?, ?)
+        ");
 
-    INSERT INTO `notborder`.`nb_users`
-    (`id`,
-    `optikon_id`,
-    `username`,
-    `usertype`,
-    `language_code`,
-    `pass_hash`,
-    `created_at`,
-    `updated_at`)
-    VALUES
-    (<{id: }>,
-    <{optikon_id: }>,
-    <{username: }>,
-    <{usertype: USER}>,
-    <{language_code: en}>,
-    <{pass_hash: }>,
-    <{created_at: current_timestamp()}>,
-    <{updated_at: current_timestamp()}>);
+    $usertype = "USER";
+    $language = "en"; // I have no idea what this is for. I have an int code for this in optikon.tbl_students.
+    $hash = password_hash($data->pass, PASSWORD_BCRYPT);
+
+    $stmt->bind_param(
+            "sssss",
+            $data->id,              // s
+            $data->name,            // s
+            $usertype,              // s
+            // TODO: Fetch this from the cobalt form, which you need to edit in order to enable.
+            $language,              // s
+            $hash                   // s
+        );
+
+    if (!$stmt->execute()) {
+        die('Execute failed: ' . $stmt->error);
+    }
+
+    $lastId = $conn->insert_id;
+
+    $stmt->close();
+
 
 
         //math 1
@@ -134,19 +143,61 @@ if ($_GET['type'] == "newStudent") {
             }
         }
         //reader3 1
-        $sql = "INSERT IGNORE INTO `reader3`.`users`"
-                ."(`user_email`,`user_name`,`pass_word`)"
-                ." VALUES('$data->id', '$data->name', md5('$data->pass'))";
-        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-        //reader3 2
-        $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
-        $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
-        ." (`users_user_id`, `groups_group_id`)"
-        ." VALUES($genID, 4)";
-        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+//         $sql = "INSERT IGNORE INTO `reader3`.`users`"
+//                 ."(`user_email`,`user_name`,`pass_word`)"
+//                 ." VALUES('$data->id', '$data->name', md5('$data->pass'))";
+//         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
-        $msg .= " added";
+    // New Process
+    // Fetch id from notborder.users
+        // TODO: Get rid of password from this table in the database. It is no longer used for anything
+    $stmt = $conn->prepare("
+        INSERT IGNORE INTO `reader3`.`users` (`user_id`, `user_email`,`user_name`)
+        VALUES( ?, ?, ?)
+    ");
+
+    $stmt->bind_param(
+        "iss",
+        $lastId,
+        $data->id,
+        $data->name,
+    );
+
+    if (!$stmt->execute()) {
+        die('Execute failed: ' . $stmt->error);
+    }
+
+    $stmt->close();
+
+    //reader3 2
+//     $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
+    $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
+    ." (`users_user_id`, `groups_group_id`)"
+    ." VALUES($genID, 4)";
+    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+    // New Process
+    $stmt = $conn->prepare("
+        INSERT IGNORE INTO `reader3`.`users_has_groups` (`users_user_id`, `groups_group_id`) VALUES(?, ?)
+    ");
+
+    $groupID = 4; // TODO: as above, fetch this from the supplied cobalt form
+
+    $stmt->bind_param(
+        "ii",
+        $lastId,
+        $groupID
+    );
+
+    if(!$stmt->execute()){
+        die('Execute failed: ' . $stmt->error);
+    }
+    $stmt->close();
+
+    // TODO: I have updated the entry of a new user, but I haven't touched Math yet. Maybe those tables use the old autoden id from reader3.users...
+
+    $msg .= " added";
     }
     echo json_encode($msg);
 }
