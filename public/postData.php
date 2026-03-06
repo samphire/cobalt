@@ -49,57 +49,57 @@ if ($_GET['type'] == "newStudent") {
 
     } else {
 
-    $stmt = $conn->prepare("
-        INSERT IGNORE INTO tbl_students
-        (id, `pass`, name, DOB, sex, mobile, email, notes, picUrl,
-        language_id, join_date, last_active_date, isActive,
-        guardian_name, guardian_mobile, guardian_email, `billing date`)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    if (!$stmt) {
-        die('Prepare failed: ' . $conn->error);
-    }
-
-    $stmt->bind_param(
-        "sssssssssississsi",
-        $data->id,              // s 'cand001' etc...
-        $data->pass,            // s
-        $data->name,            // s
-        $data->$dob,                   // s
-        $data->sex,             // s
-        $data->mobile,          // s
-        $data->email,           // s
-        $data->notes,           // s
-        $data->picUrl,          // s
-        $data->language_id,     // i
-        $data->$joinDate,              // s
-        $data->$lastActive,            // s
-        $data->isActive,        // i
-        $data->guardian_name,   // s
-        $data->guardian_mobile, // s
-        $data->guardian_email,  // s
-        $data->billing_date     // i
-    );
-
-    if (!$stmt->execute()) {
-        die('Execute failed: ' . $stmt->error);
-    }
-
-    $stmt->close();
-
-    // New Stuff, new process, new signon
-
-    $stmt = $conn->prepare("
-        INSERT INTO `notborder`.`nb_users` (`optikon_id`, `username`, `usertype`, `language_code`, `pass_hash`)
-        VALUES(?, ?, ?, ?, ?)
+        $stmt = $conn->prepare("
+            INSERT IGNORE INTO tbl_students
+            (id, `pass`, name, DOB, sex, mobile, email, notes, picUrl,
+            language_id, join_date, last_active_date, isActive,
+            guardian_name, guardian_mobile, guardian_email, `billing date`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
-    $usertype = "USER";
-    $language = "en"; // I have no idea what this is for. I have an int code for this in optikon.tbl_students.
-    $hash = password_hash($data->pass, PASSWORD_BCRYPT);
+        if (!$stmt) {
+            die('Prepare failed: ' . $conn->error);
+        }
 
-    $stmt->bind_param(
+        $stmt->bind_param(
+            "sssssssssississsi",
+            $data->id,              // s 'cand001' etc...
+            $data->pass,            // s
+            $data->name,            // s
+            $data->$dob,                   // s
+            $data->sex,             // s
+            $data->mobile,          // s
+            $data->email,           // s
+            $data->notes,           // s
+            $data->picUrl,          // s
+            $data->language_id,     // i
+            $data->$joinDate,              // s
+            $data->$lastActive,            // s
+            $data->isActive,        // i
+            $data->guardian_name,   // s
+            $data->guardian_mobile, // s
+            $data->guardian_email,  // s
+            $data->billing_date     // i
+        );
+
+        if (!$stmt->execute()) {
+            die('Execute failed: ' . $stmt->error);
+        }
+
+        $stmt->close();
+
+        // New Stuff, new process, new signon
+
+        $stmt = $conn->prepare("
+            INSERT INTO `notborder`.`nb_users` (`optikon_id`, `username`, `usertype`, `language_code`, `pass_hash`)
+            VALUES(?, ?, ?, ?, ?)
+        ");
+
+        $usertype = "USER";
+        $language = "en"; // I have no idea what this is for. I have an int code for this in optikon.tbl_students.
+        $hash = password_hash($data->pass, PASSWORD_BCRYPT);
+
+        $stmt->bind_param(
             "sssss",
             $data->id,              // s
             $data->name,            // s
@@ -109,26 +109,48 @@ if ($_GET['type'] == "newStudent") {
             $hash                   // s
         );
 
-    if (!$stmt->execute()) {
-        die('Execute failed: ' . $stmt->error);
-    }
+        if (!$stmt->execute()) {
+            die('Execute failed: ' . $stmt->error);
+        }
 
-    $lastId = $conn->insert_id;
+        $lastId = $conn->insert_id;
 
-    $stmt->close();
+        $stmt->close();
 
 
 
         //math 1
-        $sql = "INSERT IGNORE INTO `math`.`tbl_user`"
-                ." (`id`, `name`, `nickname`, `email`)"
-                ." VALUES ('$data->id', '$data->name', '$data->name', '$data->email')";
-        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+//         $sql = "INSERT IGNORE INTO `math`.`tbl_user`"
+//                 ." (`id`, `name`, `nickname`, `email`)"
+//                 ." VALUES ('$data->id', '$data->name', '$data->name', '$data->email')";
+//         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+        $stmt = $conn->prepare("
+            INSERT IGNORE INTO `math`.`tbl_user` (`id`, `name`, `nickname`, `email`)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $stmt->bind_param("ssss", $data->id, $data->name, $data->name, $data->email);
+        if(!$stmt->execute()){die('Execute failed: ' . $stmt->error);}
+        $stmt->close();
 
         //math 2
-        $sql = "INSERT IGNORE INTO `math`.`tbl_user_has_tbl_story` (`tbl_user_id`, `tbl_story_id`, `avatar_lvl`, `perfects`, `tbl_avatars_id`)"
-                ." VALUES ('$data->id', '4', '1', '0', '1')";
-        mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+//         $sql = "INSERT IGNORE INTO `math`.`tbl_user_has_tbl_story` (`tbl_user_id`, `tbl_story_id`, `avatar_lvl`, `perfects`, `tbl_avatars_id`)"
+//                 ." VALUES ('$data->id', '4', '1', '0', '1')";
+//         mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+
+        $stmt = $conn->prepare("
+            INSERT IGNORE INTO `math`.`tbl_user_has_tbl_story` (`tbl_user_id`, `tbl_story_id`, `avatar_lvl`, `perfects`, `tbl_avatars_id`)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $storyId = 4;
+        $avatar_lvl = 1;
+        $perfects = 0;
+        $avatarId = 1;
+        $stmt->bind_param("siiii", $data->id, $storyId, $avatar_lvl, $perfects, $avatarId);
+        if(!$stmt->execute()){die('Execute failed: ' . $stmt->error);}
+        $stmt->close();
+
 
         //math 3
         $sql = "SELECT * from `math`.`tbl_scores` WHERE `user`='$data->id'";
@@ -171,11 +193,11 @@ if ($_GET['type'] == "newStudent") {
     $stmt->close();
 
     //reader3 2
-//     $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
-    $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
-    ." (`users_user_id`, `groups_group_id`)"
-    ." VALUES($genID, 4)";
-    mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
+// //     $genID = mysqli_query($conn, "SELECT `user_id` from `reader3`.`users` WHERE `user_email` = '$data->id'")->fetch_object()->user_id;
+//     $sql = "INSERT IGNORE INTO `reader3`.`users_has_groups`"
+//     ." (`users_user_id`, `groups_group_id`)"
+//     ." VALUES($genID, 4)";
+//     mysqli_query($conn, $sql) or die("woah!" . mysqli_error($conn) . "\n\n" . $sql);
 
     // New Process
     $stmt = $conn->prepare("
