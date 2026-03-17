@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Grid, Snackbar} from "@material-ui/core";
+import React, {useEffect} from 'react';
+import {Grid} from "@material-ui/core";
 import {Form, UseForm} from "../../components/useForm"
 import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
@@ -95,31 +95,32 @@ export default function QuestionForm(props) {
         values,
         setValues,
         errors,
-        setErrors,
         handleInputChange,
         resetForm,
-        isEdit
     } = UseForm(initialFieldValues);
 
     const handleSubmit = e => {
         e.preventDefault()
+
         if (validate())
             addOrEdit(values, resetForm)
     }
 
     useEffect(() => {
-        setValues({...values, test_id: id, qnum: qnum + 1})
-        initialFieldValues.test_id = id
-        initialFieldValues.qnum = qnum + 1
+        setValues(prev => ({
+            ...prev,
+            test_id: id,
+            qnum: qnum + 1
 
-    }, [])
+        }));
+    }, [id, qnum, setValues])
 
     useEffect(() => {
         if (recordForEdit != null)
             setValues({...recordForEdit})
-    }, [recordForEdit])
+    }, [recordForEdit, setValues])
 
-    let [jimmy, setJimmy] = useState(0);
+    // let [jimmy, setJimmy] = useState(0);
 
     useEffect(() => {
         if (values.type === '2') {
@@ -136,7 +137,7 @@ export default function QuestionForm(props) {
                 answer: 'false,false,false,false,false,false,'
             })
         }
-    }, [jimmy])
+    }, [values.type, setValues, values])
 
     return (
         <Form style={{width: '800px'}} onSubmit={handleSubmit}>
@@ -172,6 +173,31 @@ export default function QuestionForm(props) {
                             onClick={() => {
                                 if (values.type === "6") {
                                     const words = values.answer.trim().split(/\s+/);
+
+                                    if (words.length === 1) {
+                                        let word = words[0];
+                                        // Check for trailing punctuation
+                                        const match = word.match(/^(.+?)([.?!,;:])$/);
+
+                                        let letters, punctuation = "";
+
+                                        if (match) {
+                                            letters = match[1].split('');
+                                            punctuation = match[2];
+                                        } else {
+                                            letters = word.split('');
+                                        }
+
+                                        const modified = letters.join('/');
+
+                                        setValues({
+                                            ...values,
+                                            text2: punctuation ? modified + '/' + punctuation : modified
+                                        });
+
+                                        return;
+                                    }
+
                                     let lastWord = words.pop();
 
                                     // Check if last word has trailing punctuation
@@ -298,20 +324,14 @@ export default function QuestionForm(props) {
                             name="video"
                             onChange={handleInputChange}
                         />
-                        <div
-                            onClick={() => {
-                                setJimmy(jimmy + 1)
-                            }}
-                        >
-                            <Controls.RadioGroup
-                                name="type"
-                                label="type"
-                                value={values.type}
-                                onChange={handleInputChange}
-                                items={typeItems}
-                            />
+                        <Controls.RadioGroup
+                            name="type"
+                            label="type"
+                            value={values.type}
+                            onChange={handleInputChange}
+                            items={typeItems}
+                        />
 
-                        </div>
                         <Divider light/>
                         <br/>
                         <Grid container direction="row" justifyContent="space-evenly">

@@ -5,6 +5,8 @@ import Controls from "../../components/controls/Controls"
 import {HowToReg} from "@material-ui/icons";
 import {getAllClasses} from "../../services/classService"
 import {getAllTests} from "../../services/testService"
+import {FormControl, TextField} from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const bobly = () => {
     let temp = new Date().setTime(new Date().getTime() + 86400000)
@@ -48,12 +50,12 @@ export default function ClassForm(props) {
                 ]);
 
                 // Don’t mutate: create new arrays with `title` instead of `name`
-                const tests = testsRaw.map(({ name, ...rest }) => ({
+                const tests = testsRaw.map(({name, ...rest}) => ({
                     ...rest,
                     title: name,
                 }));
 
-                const classes = classesRaw.map(({ name, ...rest }) => ({
+                const classes = classesRaw.map(({name, ...rest}) => ({
                     ...rest,
                     title: name,
                 }));
@@ -103,13 +105,33 @@ export default function ClassForm(props) {
                         options={classes}
                     />
 
-                    <Controls.Select
-                        name="testid"
-                        label="테스트"
-                        value={values.testid}
-                        onChange={handleInputChange}
-                        options={tests}
-                    />
+                    {/*<Controls.Select*/}
+                    {/*    name="testid"*/}
+                    {/*    label="테스트"*/}
+                    {/*    value={values.testid}*/}
+                    {/*    onChange={handleInputChange}*/}
+                    {/*    options={tests}*/}
+                    {/*/>*/}
+
+                    <FormControl fullWidth>
+                        <Autocomplete
+                            options={tests}
+                            getOptionLabel={(option) => option.title || "테스트"}
+                            value={tests.find(t => t.id === values.testid) || null}
+                            onChange={(event, newValue) => {
+                                handleInputChange({
+                                    target: {
+                                        name: "testid",
+                                        value: newValue ? newValue.id : ""
+                                    }
+                                });
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} label="테스트" variant="outlined"/>
+                            )}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                        />
+                    </FormControl>
 
                     <Controls.DatePicker
                         label="시작"
