@@ -1,7 +1,9 @@
 <?php
 //session_start();
 
-error_reporting(1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 date_default_timezone_set('Asia/Seoul');
 global $conn;
 $conn = mysqli_connect("localhost", "root", "Fk!i=a0@:K", "optikon") or die('Error connecting to mysql in sessionheader.inc');

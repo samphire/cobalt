@@ -66,15 +66,15 @@ if ($_GET['type'] == "newStudent") {
             $data->id,              // s 'cand001' etc...
             $data->pass,            // s
             $data->name,            // s
-            $data->$dob,                   // s
+            $data->DOB,            // s
             $data->sex,             // s
             $data->mobile,          // s
             $data->email,           // s
             $data->notes,           // s
             $data->picUrl,          // s
             $data->language_id,     // i
-            $data->$joinDate,              // s
-            $data->$lastActive,            // s
+            $data->join_date,          // s
+            $data->last_active_date,   // s
             $data->isActive,        // i
             $data->guardian_name,   // s
             $data->guardian_mobile, // s
@@ -94,6 +94,10 @@ if ($_GET['type'] == "newStudent") {
             INSERT INTO `notborder`.`nb_users` (`optikon_id`, `username`, `usertype`, `language_code`, `pass_hash`)
             VALUES(?, ?, ?, ?, ?)
         ");
+
+        if (!$stmt){
+            die('Prepare failed: ' . $conn->error);
+        }
 
         $usertype = "USER";
         $language = "en"; // I have no idea what this is for. I have an int code for this in optikon.tbl_students.
@@ -269,6 +273,12 @@ if ($_GET['type'] == 'delStud') {
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting usertext\n\n" . mysqli_error($conn) . "\n\n" . $sql);
     $sql = "DELETE FROM `reader3`.`voca_test_activity` WHERE `userid` = '$genID'";
     mysqli_query($conn, $sql) or die("oh dear! Problem deleting voca_test_activity\n\n" . mysqli_error($conn) . "\n\n" . $sql);
+
+//notborder users
+    $stmt = $conn->prepare("DELETE FROM `notborder`.`nb_users` WHERE `optikon_id` = ?");
+    $stmt->bind_param("s", $_GET['studid']);
+    $stmt->execute();
+    $stmt->close();
 
     echo $msg;
 }
