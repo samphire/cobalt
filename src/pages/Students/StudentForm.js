@@ -123,6 +123,7 @@ export default function StudentForm(props) {
 
     useEffect(() => {
         if (recordForEdit != null) {
+
             setValues(prev => ({
                 ...prev,
                 ...recordForEdit,
@@ -192,19 +193,14 @@ export default function StudentForm(props) {
                         onChange={handleInputChange}
                         items={genderItems}
                     />
-
-
-
                     <Controls.Checkbox
                         label="활성?"
                         name="isActive"
                         checked={Boolean(values.isActive)}
                         onChange={(e) =>
-                            setValues(v => ({ ...v, isActive: e.target.checked }))
+                            setValues(v => ({ ...v, isActive: e.target.value }))
                         }
                     />
-
-
 
                     <Controls.Select
                         name="language_id"

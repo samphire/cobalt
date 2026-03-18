@@ -5,7 +5,6 @@ export async function insertOrUpdateStudent(data, isEdit) {
     temp.DOB = convertDateToMysql(data.DOB)
     temp.join_date = convertDateToMysql(data.join_date)
     temp.last_active_date = convertDateToMysql(data.last_active_date)
-    temp.isActive = temp.isActive ? 1 : 0;
 
     const dataToUpload = JSON.stringify(temp)
 

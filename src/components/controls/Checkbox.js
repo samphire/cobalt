@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 
 function Checkbox(props) {
 
-    const {name, label, helperText, value, error = null, onChange} = props
+    const {name, label, helperText, checked, error = null, onChange} = props
     const classes = useStyles()
     const convertToDefaultEventParameter = (name, value) => ({ // originally, the value property does not have anything of value
         target: {    // all controls are checked for 'name' and 'value'. So, for this checkbox, we assign the value of 'checked' to the attribute 'value'
@@ -27,8 +27,7 @@ function Checkbox(props) {
                 className={classes.checky}
                 name={name}
                 color="primary"
-                checked={!(value === null || value === 'no' || !value)}
-                // checked={value}
+                checked={checked}
                 onChange={event => onChange(convertToDefaultEventParameter(name, event.target.checked))} // assigns the boolean value of 'checked' to the 'value' attribute
             />} label={label}/>
             <FormHelperText

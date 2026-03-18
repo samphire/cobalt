@@ -7,6 +7,17 @@ import {getAllClasses} from "../../services/classService"
 import {getAllTests} from "../../services/testService"
 import {FormControl, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import {makeStyles} from "@mui/styles";
+
+const useStyles = makeStyles({
+        option: {
+            backgroundColor: 'white !important',
+            '&:hover': {
+                backgroundColor: '#f5f5f5 !important',
+            }
+        }
+    });
+
 
 const bobly = () => {
     let temp = new Date().setTime(new Date().getTime() + 86400000)
@@ -23,6 +34,8 @@ const initialFieldValues = {
 }
 
 export default function ClassForm(props) {
+
+    const autocompleteClasses = useStyles();
 
     const {addOrEdit, recordForEdit} = props;
     const [tests, setTests] = useState([{
@@ -97,24 +110,17 @@ export default function ClassForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
-                    <Controls.Select
-                        name="classid"
-                        label="반"
-                        value={values.classid}
-                        onChange={handleInputChange}
-                        options={classes}
-                    />
+                    <FormControl fullWidth style={{marginLeft: 0}}>
+                        <Controls.Select
+                            name="classid"
+                            label="반"
+                            value={values.classid}
+                            onChange={handleInputChange}
+                            options={classes}
+                        />
 
-                    {/*<Controls.Select*/}
-                    {/*    name="testid"*/}
-                    {/*    label="테스트"*/}
-                    {/*    value={values.testid}*/}
-                    {/*    onChange={handleInputChange}*/}
-                    {/*    options={tests}*/}
-                    {/*/>*/}
-
-                    <FormControl fullWidth>
                         <Autocomplete
+                            fullWidth
                             options={tests}
                             getOptionLabel={(option) => option.title || "테스트"}
                             value={tests.find(t => t.id === values.testid) || null}
@@ -127,9 +133,12 @@ export default function ClassForm(props) {
                                 });
                             }}
                             renderInput={(params) => (
-                                <TextField {...params} label="테스트" variant="outlined"/>
+                                <TextField {...params} label="테스트" variant="outlined"
+                                           style={{backgroundColor: 'white'}}
+                                           inputProps={{...params.inputProps, style: {backgroundColor: 'white'}}}/>
                             )}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
+                            classes={{option: autocompleteClasses.option}}
                         />
                     </FormControl>
 
@@ -140,7 +149,7 @@ export default function ClassForm(props) {
                         onChange={handleInputChange}
                     />
                     <Controls.DatePicker
-                        label="바감"
+                        label="마감"
                         value={values.finish}
                         name="finish"
                         onChange={handleInputChange}

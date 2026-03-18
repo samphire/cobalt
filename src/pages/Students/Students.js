@@ -116,16 +116,16 @@ export default function Students(props) {
                 }
 
                 setLangosh(languages);
-
+                console.log(students[0].isActive);
                 const studs = students.map(x => ({
                     ...x,
                     languageName: langMap.get(Number(x.language_id)) ?? '—',
-                    isActive: x.isActive === '1' ? <CheckIcon fontSize="medium"/> : 'no',
+                    isActiveDisplay: x.isActive === '1' ? <CheckIcon fontSize="medium"/> : 'no',
                 }));
 
+                console.log(students[0].isActive);
                 if (isMounted) {
                     setRecords(studs);
-                    console.log(studs);
                 }
             } catch (err) {
                 console.error('Failed to load students/languages', err);
@@ -186,6 +186,7 @@ export default function Students(props) {
 
     const openInPopup = item => {
         setRecordForEdit(item)
+        console.log(item);
         setOpenPopup(true)
     }
 
@@ -255,7 +256,7 @@ export default function Students(props) {
                                                 key={Date.now()}
                                             />
                                         </TableCell>
-                                        <TableCell className={classes.tCells}>{item.isActive}</TableCell>
+                                        <TableCell className={classes.tCells}>{item.isActiveDisplay}</TableCell>
                                         <TableCell className={classes.tCells}>
                                             <Controls.ActionButton
                                                 color="primary"

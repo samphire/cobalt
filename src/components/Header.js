@@ -133,7 +133,7 @@ function Header(props) {
                             onClick={handleNewMenuOpen}
                             className={classes.menuButton}
                         >
-                            newMenu
+                            테스트 관리
                         </Button>
 
                         <Menu
@@ -156,28 +156,28 @@ function Header(props) {
                             <MenuItem
                                 onClick={handleNewMenuClose}
                                 component={Link}
-                                to={"/ReaderAlloc"}
+                                to={"/tests"}
                             >
-                                리더 할당
+                                테스트
                             </MenuItem>
 
                             <MenuItem
                                 onClick={handleNewMenuClose}
                                 component={Link}
-                                to={"/newMenu/page2"}
+                                to={"testAlloc"}
                             >
-                                리더 관리
+                                테스트 할당
                             </MenuItem>
                         </Menu>
                     </Grid>
 
 
-                    <Grid item xs={1}>
-                        <Link to={"/tests"}>테스트</Link>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Link to={"/testAlloc"}>테스트 할당</Link>
-                    </Grid>
+                    {/*<Grid item xs={1}>*/}
+                    {/*    <Link to={"/tests"}>테스트</Link>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={1}>*/}
+                    {/*    <Link to={"/testAlloc"}>테스트 할당</Link>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={1}>
                         <Link to={"/progress"}>성능</Link>
                     </Grid>
